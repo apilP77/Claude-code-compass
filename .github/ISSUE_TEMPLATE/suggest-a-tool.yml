@@ -1,0 +1,42 @@
+name: Suggest a tool
+description: Propose a Claude Code skill, plugin, collection, or directory.
+title: "[Tool suggestion]: "
+body:
+  - type: markdown
+    attributes:
+      value: "Suggest a public GitHub repository relevant to Claude Code. A submission is not an endorsement or a guarantee of safety."
+  - type: input
+    id: repository-url
+    attributes:
+      label: Repository URL
+      description: Link to the project's canonical GitHub repository.
+      placeholder: https://github.com/owner/repository
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Best-fit category
+      options:
+        - skills
+        - plugins
+        - collections
+        - directories
+    validations:
+      required: true
+  - type: textarea
+    id: reason
+    attributes:
+      label: Why should it be listed?
+      description: Describe what it does and who may find it useful.
+      placeholder: Include links to relevant documentation when possible.
+    validations:
+      required: true
+  - type: textarea
+    id: review-notes
+    attributes:
+      label: Review notes
+      description: Note anything you checked, such as maintenance, license, or installation behavior.
+      placeholder: Do not include secrets or private information.
+    validations:
+      required: false
