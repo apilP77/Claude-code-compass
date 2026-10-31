@@ -101,6 +101,10 @@ The `votes` table enforces one vote per repository and user with a unique constr
    GEMINI_API_KEY=YOUR_GEMINI_API_KEY
    ```
 
+### Configure the voting database
+
+Apply [`supabase/migrations/001_votes.sql`](./supabase/migrations/001_votes.sql) in the Supabase Dashboard SQL Editor. It creates the votes table, owner-only row policies, and aggregate score function. Configure GitHub in Authentication > Providers as well.
+
    The Supabase variables are used by the app. `GITHUB_TOKEN` is needed by discovery, and `GEMINI_API_KEY` is needed by enrichment. Use valid, unrevoked credentials and keep all secrets private.
 
 4. Start the development server.
