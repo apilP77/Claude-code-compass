@@ -136,7 +136,6 @@ async function searchRepositories(
     );
   }
 
-  console.log(`GitHub token length: ${token.length}`);
   const fetchWithAuthorization = (scheme: "Bearer" | "token") =>
     fetch(url, {
       headers: {
