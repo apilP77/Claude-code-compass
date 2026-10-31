@@ -94,11 +94,11 @@ export default function Header() {
   const email = user?.email ?? "Signed in";
 
   return (
-    <header className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
+    <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/80 shadow-lg shadow-black/10 backdrop-blur-xl">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
         <Link
           href="/"
-          className="text-lg font-bold tracking-tight text-zinc-950 dark:text-white"
+          className="text-lg font-bold tracking-tight text-white transition-colors hover:text-cyan-200"
         >
           Claude Code Compass
         </Link>
@@ -113,7 +113,7 @@ export default function Header() {
                 className="h-9 w-9 rounded-full object-cover"
               />
             ) : (
-              <span className="max-w-40 truncate text-sm text-zinc-700 dark:text-zinc-200">
+              <span className="max-w-40 truncate text-sm text-slate-300">
                 {email}
               </span>
             )}
@@ -124,7 +124,7 @@ export default function Header() {
               type="button"
               disabled={isSubmitting}
               onClick={() => void logOut()}
-              className="rounded-lg border border-zinc-300 px-3 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 disabled:opacity-50 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800"
+              className="rounded-full border border-slate-700 bg-slate-900/70 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-slate-600 hover:bg-slate-800 disabled:opacity-50"
             >
               Log Out
             </button>
@@ -134,14 +134,14 @@ export default function Header() {
             type="button"
             disabled={isSubmitting}
             onClick={() => void logIn()}
-            className="rounded-lg bg-teal-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-teal-700 disabled:opacity-50 dark:bg-teal-300 dark:text-teal-950 dark:hover:bg-teal-200"
+            className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-sm font-semibold text-cyan-100 shadow-sm shadow-cyan-300/10 transition hover:bg-cyan-300/20 disabled:opacity-50"
           >
             Log In
           </button>
         )}
       </div>
       {errorMessage && (
-        <p role="alert" className="mx-auto max-w-6xl px-5 pb-3 text-sm text-red-700 sm:px-8 dark:text-red-300">
+        <p role="alert" className="mx-auto max-w-6xl px-5 pb-3 text-sm text-red-300 sm:px-8">
           {errorMessage}
         </p>
       )}
