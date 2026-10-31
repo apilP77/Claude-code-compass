@@ -124,6 +124,9 @@ export default async function RepositoryPage({ params }: RepositoryPageProps) {
         )}
 
         <VoteButtons repositoryId={repository.id} />
+        <p className="mt-3 text-xs text-zinc-500 dark:text-zinc-400">
+          Votes measure opinion, not security or correctness.
+        </p>
 
         {repository.listing_status !== "reviewed" && (
           <aside
