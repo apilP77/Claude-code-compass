@@ -151,8 +151,8 @@ export default function VoteButtons({ repositoryId }: VoteButtonsProps) {
   }
 
   return (
-    <section className="mt-8 border-t border-zinc-200 pt-6 dark:border-zinc-700">
-      <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+    <section className="mt-8 border-t border-slate-800 pt-6">
+      <h2 className="text-sm font-semibold text-slate-200">
         Community score
       </h2>
       <div className="mt-3 flex items-center gap-3">
@@ -162,7 +162,11 @@ export default function VoteButtons({ repositoryId }: VoteButtonsProps) {
           aria-pressed={userVote === 1}
           disabled={isLoading || isSubmitting}
           onClick={() => void castVote(1)}
-          className="rounded-lg border border-zinc-300 px-3 py-2 text-sm transition hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+          className={`rounded-full border px-4 py-2 text-sm font-medium transition-all disabled:cursor-not-allowed disabled:opacity-50 ${
+            userVote === 1
+              ? "border-emerald-300/40 bg-emerald-300/15 text-emerald-100 shadow-sm shadow-emerald-300/10"
+              : "border-slate-700 bg-slate-900 text-slate-300 hover:border-emerald-300/30 hover:bg-emerald-300/10 hover:text-emerald-100"
+          }`}
         >
           👍 Upvote
         </button>
@@ -172,16 +176,23 @@ export default function VoteButtons({ repositoryId }: VoteButtonsProps) {
           aria-pressed={userVote === -1}
           disabled={isLoading || isSubmitting}
           onClick={() => void castVote(-1)}
-          className="rounded-lg border border-zinc-300 px-3 py-2 text-sm transition hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+          className={`rounded-full border px-4 py-2 text-sm font-medium transition-all disabled:cursor-not-allowed disabled:opacity-50 ${
+            userVote === -1
+              ? "border-rose-300/40 bg-rose-300/15 text-rose-100 shadow-sm shadow-rose-300/10"
+              : "border-slate-700 bg-slate-900 text-slate-300 hover:border-rose-300/30 hover:bg-rose-300/10 hover:text-rose-100"
+          }`}
         >
           👎 Downvote
         </button>
-        <p aria-live="polite" className="text-sm text-zinc-600 dark:text-zinc-300">
-          Score: {score ?? (isLoading ? "Loading…" : "—")}
+        <p aria-live="polite" className="ml-auto text-sm text-slate-400">
+          Score:{" "}
+          <span className="text-2xl font-bold tabular-nums text-white">
+            {score ?? (isLoading ? "…" : "—")}
+          </span>
         </p>
       </div>
       {errorMessage && (
-        <p role="alert" className="mt-3 text-sm text-red-700 dark:text-red-300">
+        <p role="alert" className="mt-3 text-sm text-red-300">
           {errorMessage}
         </p>
       )}
