@@ -8,12 +8,11 @@ import { z } from "zod";
  * module load, so `next build` fails when the data does not match this
  * contract instead of shipping a half-broken listing.
  *
- * Scope: M1 only. This is the minimum needed to list and filter a curated
- * directory. Editorial fields (explanation, features, use_cases, pros, cons,
- * setup notes, security notes, compatibility) and the timestamps that track
- * discovery and review cycles are deliberately absent — we have no data for
- * them yet, and empty fields are not the same as a finished product. They
- * return in M2/M3 alongside the data that fills them.
+ * The core shape is the minimum needed to list and filter a curated directory.
+ * Optional `pros`, `cons`, and `security_notes` fields support M2 AI
+ * enrichment; they remain absent until a repository has been enriched.
+ * Other editorial fields and discovery/review-cycle timestamps remain out of
+ * scope until there is data to populate them.
  *
  * Two rules still matter:
  *
@@ -81,6 +80,20 @@ export const repositorySchema = z
       ),
     stars: z.int().min(0).nullable().describe("GitHub star count. Null if unfetched."),
     forks: z.int().min(0).nullable().describe("GitHub fork count. Null if unfetched."),
+
+    pros: z
+      .tuple([z.string().min(1), z.string().min(1)])
+      .optional()
+      .describe("Two AI-generated repository advantages, when available."),
+    cons: z
+      .tuple([z.string().min(1), z.string().min(1)])
+      .optional()
+      .describe("Two AI-generated repository limitations, when available."),
+    security_notes: z
+      .string()
+      .min(1)
+      .optional()
+      .describe("AI-generated security notes, when available."),
 
     listing_status: z
       .enum(LISTING_STATUSES)
