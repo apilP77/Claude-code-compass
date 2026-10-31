@@ -107,6 +107,22 @@ export default async function RepositoryPage({ params }: RepositoryPageProps) {
           </div>
         </dl>
 
+        {repository.security_notes && (
+          <section className="mt-8 border-t border-zinc-200 pt-6 dark:border-zinc-700">
+            <h2 className="text-lg font-semibold text-zinc-950 dark:text-white">
+              Security notes
+            </h2>
+            <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300">
+              {repository.listing_status === "reviewed"
+                ? "AI-generated; listing reviewed"
+                : "AI-generated, unverified"}
+            </p>
+            <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-zinc-700 dark:text-zinc-300">
+              {repository.security_notes}
+            </p>
+          </section>
+        )}
+
         <VoteButtons repositoryId={repository.id} />
 
         {repository.listing_status !== "reviewed" && (

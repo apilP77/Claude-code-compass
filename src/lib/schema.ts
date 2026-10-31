@@ -82,16 +82,17 @@ export const repositorySchema = z
     forks: z.int().min(0).nullable().describe("GitHub fork count. Null if unfetched."),
 
     pros: z
-      .tuple([z.string().min(1), z.string().min(1)])
+      .tuple([z.string().min(1).max(280), z.string().min(1).max(280)])
       .optional()
       .describe("Two AI-generated repository advantages, when available."),
     cons: z
-      .tuple([z.string().min(1), z.string().min(1)])
+      .tuple([z.string().min(1).max(280), z.string().min(1).max(280)])
       .optional()
       .describe("Two AI-generated repository limitations, when available."),
     security_notes: z
       .string()
       .min(1)
+      .max(500)
       .optional()
       .describe("AI-generated security notes, when available."),
 
