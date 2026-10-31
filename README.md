@@ -151,13 +151,17 @@ npm run dev    # → http://localhost:3000
 
 ```bash
 npx tsx scripts/discover.ts   # find candidates
-npx tsx scripts/enrich.ts     # AI-enrich (up to 3 per run)
+npx tsx scripts/enrich.ts     # AI-enrich (up to 2 per run by default)
 npx tsx scripts/merge.ts      # merge into repos.json, clear queue
 ```
 
 Review candidate and enrichment output before merging into the main directory.
 
 </details>
+
+### Automation
+
+Nightly discovery runs at 02:00 Nepal time and can also be started manually from GitHub Actions. It opens a pull request for new repositories; it never pushes discoveries directly to `main`. Configure the `GEMINI_API_KEY` repository secret. Each run adds at most two repositories by default; `MAX_NEW_REPOS` can be set from 1 to 5.
 
 <details>
 <summary><b>Project checks</b></summary>
