@@ -112,37 +112,35 @@ export default function VoteButtons({ repositoryId }: VoteButtonsProps) {
         return;
       }
 
-      const { error: voteError } = await supabase.from("votes").upsert(
-        {
-          repository_id: repositoryId,
-          user_id: data.user.id,
-          vote_type: voteType,
-        },
-        { onConflict: "repository_id,user_id" },
-      );
-      if (voteError) {
-        throw new Error(`Could not save your vote: ${voteError.message}`);
+      const response = await fetch("/api/votes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ repositoryId, voteType }),
+      });
+      const result: unknown = await response.json();
+      if (!response.ok) {
+        const message =
+          typeof result === "object" &&
+          result !== null &&
+          "error" in result &&
+          typeof result.error === "string"
+            ? result.error
+            : "Could not save your vote.";
+        throw new Error(message);
       }
 
-      setScore((currentScore) =>
-        currentScore === null
-          ? currentScore
-          : currentScore - (userVote ?? 0) + voteType,
-      );
+      if (
+        typeof result !== "object" ||
+        result === null ||
+        !("score" in result) ||
+        typeof result.score !== "number" ||
+        !Number.isInteger(result.score)
+      ) {
+        throw new Error("The vote service returned an invalid score.");
+      }
+
+      setScore(result.score);
       setUserVote(voteType);
-
-      const { data: updatedScore, error: scoreError } = await supabase.rpc(
-        "get_repository_vote_score",
-        { repository_id_input: repositoryId },
-      );
-      if (scoreError) {
-        throw new Error(`Vote saved, but score refresh failed: ${scoreError.message}`);
-      }
-      if (typeof updatedScore !== "number") {
-        throw new Error("Vote saved, but the server returned an invalid score.");
-      }
-      setScore(updatedScore);
-      setScore(updatedScore);
     } catch (error) {
       setErrorMessage(
         error instanceof Error ? error.message : "Could not submit your vote.",

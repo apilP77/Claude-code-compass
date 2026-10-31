@@ -105,6 +105,8 @@ The `votes` table enforces one vote per repository and user with a unique constr
 
 Apply [`supabase/migrations/001_votes.sql`](./supabase/migrations/001_votes.sql) in the Supabase Dashboard SQL Editor. It creates the votes table, owner-only row policies, and aggregate score function. Configure GitHub in Authentication > Providers as well.
 
+Apply [`supabase/migrations/002_vote_rate_limits.sql`](./supabase/migrations/002_vote_rate_limits.sql) in the Supabase Dashboard SQL Editor. It enables server-side vote validation and limits each user to 10 vote mutations per minute.
+
    The Supabase variables are used by the app. `GITHUB_TOKEN` is needed by discovery, and `GEMINI_API_KEY` is needed by enrichment. Use valid, unrevoked credentials and keep all secrets private.
 
 4. Start the development server.
