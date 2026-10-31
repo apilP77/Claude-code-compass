@@ -2,13 +2,20 @@
   "name": "claude-code-compass",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "typecheck": "next typegen && tsc --noEmit",
     "lint": "eslint .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "discover": "tsx scripts/discover.ts",
+    "enrich": "tsx scripts/enrich.ts",
+    "merge": "tsx scripts/merge.ts",
+    "pipeline": "tsx scripts/discover.ts && tsx scripts/enrich.ts && tsx scripts/merge.ts"
   },
   "dependencies": {
     "@google/genai": "^2.32.0",
