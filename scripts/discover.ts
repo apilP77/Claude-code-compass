@@ -24,6 +24,7 @@ type GitHubRepository = {
   html_url: string;
   description: string | null;
   fork: boolean;
+  archived: boolean;
   topics?: string[];
   license?: { spdx_id: string | null } | null;
   stargazers_count: number;
@@ -59,6 +60,7 @@ function isGitHubRepository(value: unknown): value is GitHubRepository {
     typeof value.html_url === "string" &&
     (typeof value.description === "string" || value.description === null) &&
     typeof value.fork === "boolean" &&
+    typeof value.archived === "boolean" &&
     (value.topics === undefined ||
       (Array.isArray(value.topics) &&
         value.topics.every((topic) => typeof topic === "string"))) &&
@@ -146,14 +148,59 @@ async function searchRepositories(
       },
     });
 
-  const initialScheme = token.startsWith("github_pat_") ? "Bearer" : "token";
-  let response = await fetchWithAuthorization(initialScheme);
-  if (response.status === 401) {
-    response = await fetchWithAuthorization(
-      initialScheme === "Bearer" ? "token" : "Bearer",
-    );
+  const initialScheme: "Bearer" | "token" = token.startsWith("github_pat_")
+    ? "Bearer"
+    : "token";
+  let scheme = initialScheme;
+  let response: Response | undefined;
+
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      response = await fetchWithAuthorization(scheme);
+    } catch (error) {
+      if (attempt === 2) {
+        throw error;
+      }
+      await new Promise((resolve) =>
+        setTimeout(resolve, 1_000 * 2 ** attempt),
+      );
+      continue;
+    }
+
+    if (response.status === 401 && attempt === 0) {
+      scheme = initialScheme === "Bearer" ? "token" : "Bearer";
+      continue;
+    }
+
+    const rateLimited =
+      response.status === 403 &&
+      (response.headers.get("x-ratelimit-remaining") === "0" ||
+        response.headers.has("retry-after"));
+    if (
+      response.status !== 429 &&
+      response.status < 500 &&
+      !rateLimited
+    ) {
+      break;
+    }
+    if (attempt === 2) {
+      break;
+    }
+
+    const retryAfter = Number(response.headers.get("retry-after"));
+    const rateLimitReset = Number(response.headers.get("x-ratelimit-reset"));
+    const delayMs =
+      Number.isFinite(retryAfter) && retryAfter > 0
+        ? retryAfter * 1_000
+        : rateLimited && Number.isFinite(rateLimitReset) && rateLimitReset > 0
+          ? Math.max(0, rateLimitReset * 1_000 - Date.now())
+          : 1_000 * 2 ** attempt;
+    await new Promise((resolve) => setTimeout(resolve, delayMs));
   }
 
+  if (!response) {
+    throw new Error(`GitHub search for "${searchTerm}" did not complete.`);
+  }
   if (!response.ok) {
     throw new Error(
       `GitHub search for "${searchTerm}" failed: ${response.status} ${response.statusText}`,
@@ -186,6 +233,7 @@ async function main(): Promise<void> {
 
       if (
         repository.fork ||
+        repository.archived ||
         !description ||
         description.length < 20 ||
         junkRepositoryName.test(repository.name) ||

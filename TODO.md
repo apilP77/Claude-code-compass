@@ -116,8 +116,8 @@ This checklist describes a sensible build order. Keep milestones small, verify e
 - [ ] Add `Most Starred` sorting.
 - [ ] Store periodic metadata snapshots to support trends over time. *(M4 starts collecting snapshots only; display lands in Trending.)*
 - [ ] Keep editor picks, community score, stars, and activity as separate signals.
-- [ ] Add a scheduled GitHub Actions workflow or a reliable server-side scheduler for discovery.
-- [ ] Ensure the scheduled workflow can be run manually for testing.
+- [x] Add a scheduled GitHub Actions workflow or a reliable server-side scheduler for discovery.
+- [x] Ensure the scheduled workflow can be run manually for testing.
 - [ ] Add error reporting for failed discovery runs.
 - [ ] Add a health/status check for the application and discovery job.
 - [ ] Test recovery from API errors, database downtime, and rate-limit responses.
