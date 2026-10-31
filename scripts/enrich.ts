@@ -9,6 +9,11 @@ import {
   enrichmentSystemInstruction,
   parseEnrichment,
 } from "../src/lib/enrichment";
+import {
+  repositorySchema,
+  type Repository,
+} from "../src/lib/schema";
+import { getMaxNewRepositories } from "./discovery-utils";
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const candidatesPath = resolve(projectRoot, "data/candidates.json");
@@ -16,23 +21,12 @@ const enrichedPath = resolve(projectRoot, "data/enriched.json");
 
 config({ path: resolve(projectRoot, ".env.local") });
 
-type Candidate = Record<string, unknown> & {
-  owner: string;
-  name: string;
-};
+type Candidate = Repository;
 
 const geminiTimeoutMs = 15_000;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
-}
-
-function isCandidate(value: unknown): value is Candidate {
-  return (
-    isRecord(value) &&
-    typeof value.owner === "string" &&
-    typeof value.name === "string"
-  );
 }
 
 async function fetchReadme(candidate: Candidate): Promise<string> {
@@ -63,7 +57,7 @@ async function fetchReadme(candidate: Candidate): Promise<string> {
 async function enrichCandidate(
   ai: GoogleGenAI,
   candidate: Candidate,
-): Promise<Candidate | null> {
+): Promise<Candidate> {
   const readme = await fetchReadme(candidate);
   if (!readme.trim()) {
     throw new Error(`README for ${candidate.owner}/${candidate.name} is empty.`);
@@ -83,34 +77,15 @@ async function enrichCandidate(
       },
     });
   } catch {
-    try {
-      response = await ai.models.generateContent({
-        model: "gemini-2.5-flash-lite",
-        contents,
-        config: {
-          responseMimeType: "application/json",
-          responseJsonSchema: enrichmentResponseJsonSchema,
-          systemInstruction: enrichmentSystemInstruction,
-        },
-      });
-    } catch (error) {
-      const status =
-        isRecord(error) && typeof error.status === "number"
-          ? error.status
-          : undefined;
-      const isTimeout =
-        error instanceof Error &&
-        /timeout|timed out/i.test(`${error.name} ${error.message}`);
-
-      if (status === 503 || isTimeout) {
-        console.warn(
-          `Skipping ${candidate.owner}/${candidate.name} due to API timeout`,
-        );
-        return null;
-      }
-
-      throw error;
-    }
+    response = await ai.models.generateContent({
+      model: "gemini-2.5-flash-lite",
+      contents,
+      config: {
+        responseMimeType: "application/json",
+        responseJsonSchema: enrichmentResponseJsonSchema,
+        systemInstruction: enrichmentSystemInstruction,
+      },
+    });
   }
 
   if (!response.text) {
@@ -137,13 +112,6 @@ async function enrichCandidate(
 }
 
 async function main(): Promise<void> {
-  const apiKey = process.env.GEMINI_API_KEY?.trim();
-  if (!apiKey) {
-    throw new Error(
-      "GEMINI_API_KEY is missing. Add it to the project root .env.local file.",
-    );
-  }
-
   const contents = await readFile(candidatesPath, "utf8");
   const input: unknown = JSON.parse(contents);
   if (!isRecord(input) || !Array.isArray(input.repositories)) {
@@ -151,9 +119,33 @@ async function main(): Promise<void> {
   }
 
   const repositoryRecords: unknown[] = input.repositories;
-  const candidates = repositoryRecords.slice(0, 3);
-  if (!candidates.every(isCandidate)) {
-    throw new Error(`${candidatesPath} contains a candidate with no owner or name.`);
+  const candidates: Candidate[] = [];
+  for (const record of repositoryRecords) {
+    const parsedCandidate = repositorySchema.safeParse(record);
+    if (parsedCandidate.success) {
+      candidates.push(parsedCandidate.data);
+    }
+  }
+  const invalidCandidateCount = repositoryRecords.length - candidates.length;
+  if (invalidCandidateCount > 0) {
+    console.warn(`Skipped ${invalidCandidateCount} invalid discovery candidate(s).`);
+  }
+  candidates.splice(getMaxNewRepositories());
+  if (candidates.length === 0) {
+    await writeFile(
+      enrichedPath,
+      `${JSON.stringify({ schema_version: 1, repositories: [] }, null, 2)}\n`,
+      "utf8",
+    );
+    console.log("No candidates to enrich.");
+    return;
+  }
+
+  const apiKey = process.env.GEMINI_API_KEY?.trim();
+  if (!apiKey) {
+    throw new Error(
+      "GEMINI_API_KEY is missing. Add it to the project root .env.local file.",
+    );
   }
 
   const ai = new GoogleGenAI({
@@ -166,9 +158,14 @@ async function main(): Promise<void> {
   const enriched: Candidate[] = [];
   for (const candidate of candidates) {
     const result = await enrichCandidate(ai, candidate);
-    if (result) {
-      enriched.push(result);
+    const validated = repositorySchema.safeParse(result);
+    if (!validated.success) {
+      console.warn(
+        `Skipped invalid enriched repository ${candidate.owner}/${candidate.name}.`,
+      );
+      continue;
     }
+    enriched.push(validated.data);
   }
 
   const output = {

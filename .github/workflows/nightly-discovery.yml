@@ -1,0 +1,64 @@
+name: Nightly discovery
+
+on:
+  schedule:
+    - cron: "15 20 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: nightly-discovery
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      MAX_NEW_REPOS: "2"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4.2.2
+        with:
+          ref: main
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.4.0
+        with:
+          node-version-file: package.json
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Discover repositories
+        run: npm run discover
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enrich repositories
+        run: npm run enrich
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: Merge repositories
+        id: merge
+        run: npm run merge
+
+      - name: Create pull request
+        if: steps.merge.outputs.new_count != '0'
+        uses: peter-evans/create-pull-request@v7.0.8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: main
+          branch: automation/nightly-discovery
+          delete-branch: true
+          add-paths: |
+            data/repos.json
+            data/discovery-runs/*.json
+          title: "Nightly discovery: ${{ steps.merge.outputs.new_count }} new repo(s)"
+          body: "${{ steps.merge.outputs.pr_body }}"
+          commit-message: "chore: nightly repository discovery"
