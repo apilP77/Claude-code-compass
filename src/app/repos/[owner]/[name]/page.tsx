@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import VoteButtons from "@/components/VoteButtons";
 import { repositories } from "@/lib/repos";
 
 type RepositoryPageProps = {
@@ -105,6 +106,8 @@ export default async function RepositoryPage({ params }: RepositoryPageProps) {
             </dd>
           </div>
         </dl>
+
+        <VoteButtons repositoryId={repository.id} />
 
         {repository.listing_status !== "reviewed" && (
           <aside
