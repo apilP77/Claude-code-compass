@@ -1,0 +1,42 @@
+name: Report a bad listing
+description: Report inaccurate, outdated, broken, or concerning listing information.
+title: "[Listing report]: "
+body:
+  - type: markdown
+    attributes:
+      value: "For security vulnerabilities, use the private reporting instructions in SECURITY.md instead of this public form."
+  - type: input
+    id: repository-url
+    attributes:
+      label: Listed repository URL
+      description: Link to the listing or source repository.
+      placeholder: https://github.com/owner/repository
+    validations:
+      required: true
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: What needs attention?
+      options:
+        - Incorrect description or category
+        - Outdated or stale information
+        - Broken source link
+        - Missing or incorrect license information
+        - Other listing concern
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: What is wrong?
+      description: Describe the issue and the correction you recommend.
+      placeholder: Include specific field names or page links when possible.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence or source
+      description: Link to relevant project documentation or other public evidence.
+    validations:
+      required: false
