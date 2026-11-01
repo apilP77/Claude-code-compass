@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "status": "success",
+  "completed_at": "2026-11-01T23:38:46.315Z",
+  "repositories": [
+    {
+      "id": "diet103/claude-code-infrastructure-showcase",
+      "stars": 10043,
+      "forks": 1208
+    },
+    {
+      "id": "zlanqing/codex-claude-academic-skills",
+      "stars": 5550,
+      "forks": 293
+    }
+  ]
+}

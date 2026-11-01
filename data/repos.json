@@ -138,6 +138,29 @@
       "last_reviewed": null
     },
     {
+      "id": "diet103/claude-code-infrastructure-showcase",
+      "owner": "diet103",
+      "name": "claude-code-infrastructure-showcase",
+      "url": "https://github.com/diet103/claude-code-infrastructure-showcase",
+      "description": "Examples of my Claude Code infrastructure with skill auto-activation, hooks, and agents",
+      "category": "skills",
+      "tags": [],
+      "license_spdx": "MIT",
+      "stars": 10043,
+      "forks": 1208,
+      "pros": [
+        "Provides production-tested infrastructure that solves the skill auto-activation problem for Claude Code and Codex.",
+        "Features a modular skill pattern with progressive disclosure to keep skills under context limits."
+      ],
+      "cons": [
+        "Hooks are bash scripts that require macOS, Linux, or WSL2 and will not run in plain cmd or PowerShell on Windows.",
+        "Optional Stop hooks and certain scripts like tsc-check.sh require heavy customization for specific project layouts."
+      ],
+      "security_notes": "Arbitrary code execution is possible because the repository relies on executing custom bash scripts and shell hooks locally within your project environment. API key requirements are documented for optional AI-powered classification supporting Gemini, OpenAI, and Anthropic providers, though no API key is required by default for regex-based matching.",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
       "id": "feiskyer/claude-code-settings",
       "owner": "feiskyer",
       "name": "claude-code-settings",
@@ -246,6 +269,29 @@
       "license_spdx": "MIT",
       "stars": null,
       "forks": null,
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
+      "id": "zlanqing/codex-claude-academic-skills",
+      "owner": "zLanqing",
+      "name": "codex-claude-academic-skills",
+      "url": "https://github.com/zLanqing/codex-claude-academic-skills",
+      "description": "本仓库包含三个面向学术科研人员的Skills，覆盖从文献阅读、论文写作到科学计算的完整研究工作流。office-academic-skill 负责论文阅读报告与学术 PPT/Word 文档生成；research-writing-skill 提供论文写作、润色与审稿回复辅助；scientific-toolkit-skill 整合 MATLAB/Python 科学计算与期刊级图表生成。三个 Skill 专为中文科研用户设计，可在 Claude Code 和 codex 中一键调用。",
+      "category": "skills",
+      "tags": [],
+      "license_spdx": "MIT",
+      "stars": 5550,
+      "forks": 293,
+      "pros": [
+        "Supports multiple platforms including Claude Code and Codex CLI.",
+        "Covers comprehensive academic workflows like paper writing, office document generation, and scientific computing."
+      ],
+      "cons": [
+        "Requires manual global or project-level directory copying for installation.",
+        "Specialized for specific fields like optoelectronics, which may limit general utility."
+      ],
+      "security_notes": "Arbitrary code execution is not documented in the README. API key requirements are not documented in the README.",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
