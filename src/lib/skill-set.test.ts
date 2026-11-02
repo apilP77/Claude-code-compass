@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bearingFor, bearingToPoint, nearestBearing } from "./bearing";
+import { bearingFor, bearingToPoint, headingLabel, nearestBearing } from "./bearing";
 import { createRateLimiter } from "./rate-limit";
 import type { Repository } from "./schema";
 import {
@@ -256,5 +256,16 @@ describe("repeatsSummary", () => {
       ),
     ).toBe(false);
     expect(repeatsSummary("Fits well.", "Fits well.")).toBe(false);
+  });
+});
+
+describe("headingLabel", () => {
+  it("names the nearest of eight points with whole degrees", () => {
+    expect(headingLabel(0)).toBe("N 0°");
+    expect(headingLabel(44)).toBe("NE 44°");
+    expect(headingLabel(90)).toBe("E 90°");
+    expect(headingLabel(-90)).toBe("W 270°");
+    expect(headingLabel(725)).toBe("N 5°");
+    expect(headingLabel(359.6)).toBe("N 0°");
   });
 });

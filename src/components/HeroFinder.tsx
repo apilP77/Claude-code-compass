@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Compass from "@/components/Compass";
 import Contour from "@/components/Contour";
-import { bearingFor, bearingToPoint, nearestBearing } from "@/lib/bearing";
+import { useCompassInput } from "@/components/useCompassInput";
+import { bearingFor, headingLabel } from "@/lib/bearing";
 import { QUERY_MAX_LENGTH, QUERY_MIN_LENGTH } from "@/lib/skill-set";
 
 /** Where the needle starts before it swings to north on first load. */
@@ -21,10 +22,10 @@ type HeroFinderProps = {
  */
 export default function HeroFinder({ query, resultCount }: HeroFinderProps) {
   const [armed, setArmed] = useState(false);
-  const [pointerBearing, setPointerBearing] = useState<number | null>(null);
+  const [spins, setSpins] = useState(0);
   const compassRef = useRef<SVGSVGElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
-  const lastBearing = useRef(START_BEARING);
+  const inputBearing = useCompassInput(compassRef);
 
   // Let the first paint show the needle off-north, then swing it to its bearing.
   useEffect(() => {
@@ -32,18 +33,15 @@ export default function HeroFinder({ query, resultCount }: HeroFinderProps) {
     return () => clearTimeout(timer);
   }, []);
 
-  // While the search box is empty, the needle follows the pointer. People who
-  // ask for reduced motion keep a still needle.
+  // Contour lines drift a little with the pointer (depth set in globals.css).
   useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (reduced.matches) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return;
     }
     let frame = 0;
     function onMove(event: PointerEvent) {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
-        // Contour lines drift a little with the pointer (depth set in globals.css).
         sectionRef.current?.style.setProperty(
           "--px",
           String((event.clientX / window.innerWidth - 0.5) * -2),
@@ -52,19 +50,6 @@ export default function HeroFinder({ query, resultCount }: HeroFinderProps) {
           "--py",
           String((event.clientY / window.innerHeight - 0.5) * -2),
         );
-        const box = compassRef.current?.getBoundingClientRect();
-        if (!box || box.width === 0) {
-          return;
-        }
-        const raw = bearingToPoint(
-          box.left + box.width / 2,
-          box.top + box.height / 2,
-          event.clientX,
-          event.clientY,
-        );
-        const next = nearestBearing(lastBearing.current, raw);
-        lastBearing.current = next;
-        setPointerBearing(next);
       });
     }
     window.addEventListener("pointermove", onMove, { passive: true });
@@ -75,12 +60,14 @@ export default function HeroFinder({ query, resultCount }: HeroFinderProps) {
   }, []);
 
   const lost = resultCount === 0 && query.trim() !== "";
-  const following = query.trim() === "" && pointerBearing !== null;
-  const bearing = !armed
+  const following = query.trim() === "" && inputBearing !== null;
+  const base = !armed
     ? START_BEARING
     : following
-      ? pointerBearing
+      ? inputBearing
       : bearingFor(query);
+  // Each click adds two full turns, so the needle spins and settles back with a bounce.
+  const bearing = base + spins * 720;
 
   return (
     <section
@@ -136,13 +123,19 @@ export default function HeroFinder({ query, resultCount }: HeroFinderProps) {
           </form>
         </div>
 
-        <Compass
-          ref={compassRef}
-          bearing={bearing}
-          tracking={following}
-          lost={lost}
-          className="hidden h-40 w-40 justify-self-center md:block"
-        />
+        <div className="order-first flex flex-col items-center gap-1 justify-self-start md:order-none md:justify-self-center">
+          <Compass
+            ref={compassRef}
+            bearing={bearing}
+            tracking={following}
+            lost={lost}
+            onClick={() => setSpins((count) => count + 1)}
+            className="h-20 w-20 cursor-pointer md:h-40 md:w-40"
+          />
+          <p aria-hidden="true" className="text-xs tabular-nums text-faint">
+            {headingLabel(bearing)}
+          </p>
+        </div>
       </div>
     </section>
   );

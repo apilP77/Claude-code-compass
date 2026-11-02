@@ -29,3 +29,12 @@ export function nearestBearing(previous: number, target: number): number {
   const turns = Math.round((previous - target) / 360);
   return target + turns * 360;
 }
+
+const POINTS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"] as const;
+
+/** Eight-point compass label and whole degrees (0-359) for a bearing, e.g. "NE 42°". */
+export function headingLabel(bearing: number): string {
+  const degrees = ((Math.round(bearing) % 360) + 360) % 360;
+  const point = POINTS[Math.round(degrees / 45) % 8];
+  return `${point} ${degrees}°`;
+}
