@@ -1,54 +1,76 @@
 <div align="center">
 
-<img src="public/logo.png" alt="Claude Code Compass" width="96" onerror="this.style.display='none'" />
+<img src="docs/logo.svg" alt="Claude Code Compass logo" width="96" />
 
-# 🧭 Claude Code Compass
+# Claude Code Compass
 
-**Discover, understand, and vote on community-built tools for Claude Code.**
+**Find your way through Claude Code tools.**
 
-A searchable directory of skills, plugins, and MCP servers, enriched with AI-generated context and ranked by the community.
+A directory of community-built skills, plugins and collections, with plain-English AI summaries, community votes, and a **Skill Set Finder** that turns "here is what I'm building" into a short list of tools that work together.
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-claude--code--compass.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://claude-code-compass.vercel.app)
+[![Live site](https://img.shields.io/badge/Live_site-claude--code--compass.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://claude-code-compass.vercel.app)
 
 [![CI](https://github.com/apilP77/Claude-code-compass/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/apilP77/Claude-code-compass/actions/workflows/ci.yml)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![React 19](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Supabase](https://img.shields.io/badge/Supabase-Postgres_+_Auth-3FCF8E?logo=supabase&logoColor=white)](https://supabase.com/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-[**Live Demo**](https://claude-code-compass.vercel.app) · [**Architecture**](#-architecture) · [**Quick Start**](#-quick-start) · [**Contributing**](#-contributing)
+[**Live site**](https://claude-code-compass.vercel.app) ·
+[**Skill Set Finder**](#-skill-set-finder) ·
+[**How it works**](#-how-it-works) ·
+[**Run it locally**](#-run-it-locally) ·
+[**Contributing**](#-contributing)
+
+<br />
+
+<img src="docs/screenshots/home-light.png" alt="Claude Code Compass home page in the light theme: a topographic map background, a compass, the Skill Set Finder panel and the category filters" width="880" />
 
 </div>
 
-<!-- Add a screenshot or GIF here: ![Claude Code Compass preview](docs/preview.png) -->
-
 ---
 
-## 🧩 Why Compass?
+## Why Compass?
 
-Claude Code skills, plugins, and MCP servers are scattered across GitHub. It's hard to tell what a project does, whether it's maintained, and what to check before installing it.
+Claude Code skills, plugins and collections are scattered across GitHub. It is hard to tell what a project does, whether it is maintained, and what to check before you install it.
 
-**Compass puts it all in one place:** curated repository metadata, clear detail pages, AI-generated pros/cons and security notes, and community votes to surface what's actually useful.
+Compass puts that in one place: a searchable directory, a readable summary of every entry, its license and install command, community votes, and a finder that recommends a set of tools for your project.
 
 > [!IMPORTANT]
-> AI-generated notes and automated discovery are **starting points for human review**, not endorsements or safety guarantees. Entries are labeled *unreviewed* until verified. Votes reflect community opinion; they are not endorsements or safety ratings. Compass is an independent community project and is **not affiliated with or endorsed by Anthropic**.
+> Summaries and security notes are **written by AI from each project's README** and are labelled as such. They are a starting point, not an endorsement or a safety guarantee. Only entries marked **Editor's pick** have been looked at by a person. Votes are community opinion, not a safety rating. Compass is an independent community project and is **not affiliated with or endorsed by Anthropic**.
 
-## ✨ Features
+## ✨ What you can do
 
 | | |
 |---|---|
-| 🔍 **Fast search & filters** | Server-rendered search with category filtering |
-| 🤖 **AI enrichment pipeline** | Gemini reads each README and produces pros, cons, and security notes |
-| 🗳️ **Community voting** | Sign in with GitHub; one vote per user per repository |
-| 📄 **Rich detail pages** | Description, category, tags, license, and source links |
-| ⚠️ **Transparency first** | Visible "unreviewed" status on automated data |
+| 🧭 **Skill Set Finder** | Describe your project and get 3 to 7 tools grouped by role (Plan, Design, Build, Test, Review), each with a reason and a copy-ready install command |
+| 🔍 **Search and filter** | Search by name, tag or summary. Filter by category. Sort by editor's picks, stars, newest, name or last checked |
+| 📝 **Plain-English summaries** | Gemini reads each README and writes a summary, who it is best for, highlights, pros and cons, security notes and the install command quoted from the README |
+| 🗳️ **Community voting** | Sign in with GitHub. One vote per person per repository, change or remove it any time |
+| 🏷️ **Honest labels** | *Editor's pick* for entries a person has checked, *AI-written summary* for the rest. Nothing pretends to be verified |
+| 🌗 **Light and dark** | A "survey chart" light theme and a "night chart" dark theme, with no flash on load |
+| ♿ **Accessible by default** | Keyboard friendly, visible focus, words as well as colour on every status, and no animation for people who ask for reduced motion |
 
-## 🏗️ Architecture
+## 🧭 Skill Set Finder
 
-### 1. Data pipeline
+Type what you are building, for example *"A Next.js SaaS with Stripe and Supabase, with good tests"*. You get a short route of tools that fit together, each with why it was picked and how to install it.
 
-Repositories flow from discovery to the frontend in four scripted stages.
+<div align="center">
+<img src="docs/screenshots/skill-set-finder.png" alt="Skill Set Finder results: numbered stops on a dashed route for Plan, Design and Build, each with a repository card and a copy install command button" width="560" />
+</div>
+
+- **Only real tools.** Gemini may only choose repositories that exist in the directory. Anything else it returns is dropped before you see it.
+- **Copy everything.** Copy one install command, all of them at once, or a link that reopens the same result (`/skill-set?q=...`).
+- **Works without AI.** If Gemini is down, rate limited, or no key is set, the page falls back to keyword matching and tells you so.
+- **Built to resist misuse.** Your text is treated as data, never as instructions. Input is capped, requests are rate limited per visitor, repeat questions are cached, and the API key never leaves the server.
+
+## 🏗️ How it works
+
+### Data pipeline
+
+Repositories flow from GitHub to the site in four scripted stages.
 
 ```mermaid
 flowchart LR
@@ -59,17 +81,31 @@ flowchart LR
     E --> N[(enriched.json)]
     N --> M[merge.ts]
     M --> R[(repos.json)]
-    R --> UI[Next.js App]
+    R --> UI[Next.js app]
 ```
 
-| Stage | Script | Output |
+| Stage | Script | What it does |
 |---|---|---|
-| **Discover** | `scripts/discover.ts` | Candidate repos from the GitHub Search API |
-| **Enrich** | `scripts/enrich.ts` | AI-generated summaries, pros, cons, security notes |
-| **Merge** | `scripts/merge.ts` | New entries appended to the main directory |
-| **Serve** | Next.js App Router | Server-rendered search, filters, detail pages |
+| **Discover** | `scripts/discover.ts` | Finds candidate repos with the GitHub Search API and skips forks, archived and junk repos |
+| **Enrich** | `scripts/enrich.ts` | Reads each README and asks Gemini for the summary, best-for, highlights, pros, cons, security notes and install command. Output is validated with Zod and the install command must appear in the README |
+| **Merge** | `scripts/merge.ts` | Adds new entries to `data/repos.json` and clears the queue |
+| **Serve** | Next.js App Router | Server-rendered search, filters and detail pages |
 
-### 2. Voting & auth
+### Skill Set Finder
+
+```mermaid
+flowchart LR
+    U[You describe a project] --> P[/skill-set page/]
+    P -->|POST| A[/api/skill-set/]
+    A --> K{Origin, length,<br/>rate limit, cache}
+    K -->|catalog + your text| G[Google Gemini]
+    G --> V[Validate with Zod,<br/>drop unknown ids]
+    V --> P
+    K -. Gemini unavailable .-> W[Keyword matching]
+    W --> P
+```
+
+### Voting and auth
 
 ```mermaid
 erDiagram
@@ -86,121 +122,140 @@ erDiagram
     }
 ```
 
-- **One vote per user per repo**, enforced by a unique `(repository_id, user_id)` constraint
-- **Row-level security** restricts vote rows to their owner
-- **Aggregate-only exposure:** the frontend reads totals through the `get_repository_vote_score` Postgres function, never raw votes
+- **One vote per user per repository**, enforced by a unique `(repository_id, user_id)` constraint.
+- **Row-level security** keeps vote rows private to their owner.
+- **Aggregate-only reads.** The site reads totals through the `get_repository_vote_score` Postgres function, never raw votes.
+- **Server-side checks.** Votes go through `SECURITY DEFINER` functions that validate input and allow at most 10 changes per user per minute.
 
-## 🧰 Tech Stack
+## 🖼️ A look around
+
+<div align="center">
+
+| Night chart (dark) | Repository detail |
+|:---:|:---:|
+| <img src="docs/screenshots/home-dark.png" alt="Home page in the dark theme" width="420" /> | <img src="docs/screenshots/repo-detail.png" alt="A repository detail page with summary, best for, highlights, install command, pros, cons and security notes" width="420" /> |
+
+<img src="docs/screenshots/home-mobile.png" alt="Home page on a phone in the dark theme" width="220" />
+
+</div>
+
+The look is documented in [`DESIGN.md`](DESIGN.md): a topographic "survey map" with a live compass whose needle follows your pointer (or your scrolling on a phone), contour lines that drift as you move, and a route layout for finder results. Every motion is switched off for visitors who ask for reduced motion.
+
+## 🧰 Tech stack
 
 | Layer | Technology |
 |---|---|
-| Framework | Next.js 16 (App Router, Cache Components, partial prefetching) |
-| Language | TypeScript, validated at runtime with Zod |
-| Testing & Lint | Vitest, ESLint |
-| Styling | Tailwind CSS |
-| Database & Auth | Supabase (Postgres + GitHub OAuth) |
-| AI | Google Gemini API |
-| Hosting & CI | Vercel, GitHub Actions |
+| Framework | Next.js 16 (App Router, Cache Components, partial prerendering), React 19 |
+| Language | TypeScript, with runtime validation by Zod |
+| Styling | Tailwind CSS v4, CSS variables for the two themes |
+| Database and auth | Supabase (Postgres, Row Level Security, GitHub OAuth) |
+| AI | Google Gemini through `@google/genai`, with structured JSON output |
+| Testing and checks | Vitest, ESLint, `tsc`, GitHub Actions |
+| Hosting | Vercel (production from `main`, a preview for every branch) |
 
-## 📁 Project Structure
+## 📁 Project structure
 
 ```text
 .
-├── src/          # Next.js app (routes, components, lib)
-├── scripts/      # discover → enrich → merge pipeline
-├── data/         # candidates.json, enriched.json, repos.json
-├── public/       # static assets
-└── .github/      # CI workflows
+├── src/
+│   ├── app/              # Routes: home, repo pages, /skill-set, /api/skill-set, /api/votes, auth
+│   ├── components/       # UI: compass, hero, search, sort, repo rows, finder, vote buttons
+│   └── lib/              # Search, schema, Gemini prompts and validation, rate limiting, helpers
+├── scripts/              # discover, enrich and merge pipeline
+├── data/                 # candidates.json, enriched.json, repos.json, discovery run logs
+├── supabase/migrations/  # 001 votes, 002 rate limits, 003 remove vote
+├── docs/                 # logo and screenshots used by this README
+├── .github/workflows/    # CI and nightly discovery
+└── .githooks/            # commit-msg hook (see Contributing)
 ```
 
-## 🚀 Quick Start
+## 🚀 Run it locally
 
-**Prerequisites:** Node.js 20+, a Supabase project (GitHub Auth, `votes` table, RLS policies, `get_repository_vote_score` function), a GitHub token, and a Gemini API key.
+**You need:** Node.js 20.9 or newer, a Supabase project, a Gemini API key, and (only for discovery) a GitHub token.
 
 ```bash
 git clone https://github.com/apilP77/Claude-code-compass.git
 cd Claude-code-compass
 npm install
+cp .env.example .env.local    # then fill in the values below
+npm run dev                   # http://localhost:3000
 ```
 
-Create `.env.local` in the project root (never commit it):
+| Variable | Needed for | Notes |
+|---|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Voting and sign-in | Public by design |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Voting and sign-in | Public by design; protected by Row Level Security |
+| `GEMINI_API_KEY` | Skill Set Finder and enrichment | **Server only.** Never prefix it with `NEXT_PUBLIC_`. Without it the finder uses keyword matching |
+| `GITHUB_TOKEN` | Discovery script | Read-only access is enough |
+| `GEMINI_MODEL` | Optional | Defaults to `gemini-3.5-flash-lite` |
+| `GEMINI_TIMEOUT_MS` | Optional, enrichment | Defaults to `15000`; raise it for very large READMEs |
+| `MAX_NEW_REPOS` | Optional, discovery | Between 1 and 5 per run (default 2) |
 
-```bash
-NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
-GITHUB_TOKEN=YOUR_GITHUB_TOKEN        # discovery
-GEMINI_API_KEY=YOUR_GEMINI_API_KEY    # enrichment
-```
+> [!WARNING]
+> Never commit `.env.local` or print its values. It is already in `.gitignore`.
 
-The Supabase variables are used by the app. `GITHUB_TOKEN` is needed by discovery, and `GEMINI_API_KEY` is needed by enrichment. Use valid, unrevoked credentials and keep all secrets private.
+### Set up the database
 
-### Configure the voting database
+In the Supabase dashboard open **SQL Editor** and run these files from [`supabase/migrations/`](./supabase/migrations/), in order, pasting each file's *contents*:
 
-Apply [`supabase/migrations/001_votes.sql`](./supabase/migrations/001_votes.sql) to your Supabase project. In the Supabase Dashboard, open **SQL Editor**, paste the migration contents, and run it. It creates the `votes` table, owner-only row policies, and the public aggregate score function. Configure GitHub as a provider under **Authentication → Providers** as well.
+1. [`001_votes.sql`](./supabase/migrations/001_votes.sql): the `votes` table, owner-only policies and the public score function
+2. [`002_vote_rate_limits.sql`](./supabase/migrations/002_vote_rate_limits.sql): server-side validation and the limit of 10 vote changes per user per minute
+3. [`003_remove_vote.sql`](./supabase/migrations/003_remove_vote.sql): lets people remove their vote
 
-Apply [`supabase/migrations/002_vote_rate_limits.sql`](./supabase/migrations/002_vote_rate_limits.sql) the same way to enable server-side vote validation and the limit of 10 vote changes per user per minute.
+Then enable **GitHub** under **Authentication → Providers**. Set your **Site URL**, and add your site and `https://*.vercel.app/**` to the redirect URLs so sign-in works on preview deployments.
 
-```bash
-npm run dev    # → http://localhost:3000
-```
+### Commands
 
-<details>
-<summary><b>Run the data pipeline</b></summary>
-
-<br />
-
-```bash
-npx tsx scripts/discover.ts   # find candidates
-npx tsx scripts/enrich.ts     # AI-enrich (up to 2 per run by default)
-npx tsx scripts/merge.ts      # merge into repos.json, clear queue
-```
-
-Review candidate and enrichment output before merging into the main directory.
-
-</details>
+| Command | What it does |
+|---|---|
+| `npm run dev` | Start the dev server |
+| `npm run build` / `npm start` | Production build and server |
+| `npm run typecheck` | Generate route types and run `tsc` |
+| `npm run lint` | ESLint |
+| `npm test` | Vitest |
+| `npm run discover` | Find new candidate repositories |
+| `npm run enrich` | Write AI summaries for the candidates (`-- --all` backfills `repos.json`, add `--force` to redo) |
+| `npm run merge` | Add enriched candidates to the directory |
+| `npm run pipeline` | discover, enrich and merge in one go |
 
 ### Automation
 
-Nightly discovery runs at 02:00 Nepal time and can also be started manually from GitHub Actions. It opens a pull request for new repositories; it never pushes discoveries directly to `main`. Configure the `GEMINI_API_KEY` repository secret. Each run adds at most two repositories by default; `MAX_NEW_REPOS` can be set from 1 to 5.
+A nightly GitHub Action (02:00 Nepal time, also runnable by hand) discovers repositories, enriches them and opens a **pull request**. It never pushes to `main`, and each run adds at most `MAX_NEW_REPOS` entries. It needs the `GEMINI_API_KEY` repository secret.
 
-<details>
-<summary><b>Project checks</b></summary>
+### Deploying
 
-<br />
-
-```bash
-npm run typecheck
-npm run lint
-npm run test
-npm run build
-```
-
-</details>
+Import the repo into Vercel and add the environment variables above (`GEMINI_API_KEY` as a sensitive variable, for Production and Preview). `main` deploys to production and every other branch gets its own preview. Variables only apply to deployments built after you add them, so redeploy once.
 
 ## 🗺️ Roadmap
 
-Progress is tracked in [`TODO.md`](TODO.md).
+Detailed progress lives in [`TODO.md`](TODO.md).
 
-| Milestone | Scope | Status |
+| | Milestone | Status |
 |---|---|---|
-| **M1: Curated directory** | Search, filters, detail pages, editorial template, CI, deploy | 🚧 In progress |
-| **M2: Discovery** | GitHub API client, dedup, `unreviewed` labeling, maintainer review flow | 🚧 In progress |
-| **M3: Voting** | Postgres + Supabase Auth, one vote per user, change/remove votes | 🚧 In progress |
-| **M4: Scheduled discovery** | GitHub Actions cron, *New* / *Recently Updated* / *Most Starred* views, snapshots | 📋 Planned |
-| **Trending** | Star-growth formula, shown only once ~4 weeks of snapshots exist | 📋 Planned |
-| **Community** | `CONTRIBUTING.md`, issue templates, submission form, moderation policy | 📋 Planned |
+| ✅ | Curated directory with search, filters, detail pages and CI | Done |
+| ✅ | Discovery pipeline with pull-request review | Done |
+| ✅ | Voting with GitHub sign-in, change and remove | Done |
+| ✅ | AI-written summaries, best-for, highlights and install commands | Done |
+| ✅ | Skill Set Finder | Done |
+| ✅ | Redesign with light and dark themes and the live compass | Done |
+| 🔜 | Vote counts on the home list, and sort by votes | Next |
+| 🔜 | Starter kits that work without AI, stale-repository warnings, link previews | Planned |
+| 📋 | Submit-a-repo form and moderation, trending views from star snapshots | Planned |
 
 > Votes and GitHub stars are community signals, **never** a safety score.
 
 ## 🤝 Contributing
 
-Contributions are welcome. Open an issue to discuss larger changes, then:
+Contributions are welcome. Open an issue first for larger changes, and read [`CONTRIBUTING.md`](CONTRIBUTING.md), [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) and [`SECURITY.md`](SECURITY.md).
 
-1. Fork the repo and create a branch: `git checkout -b feat/your-feature`
-2. Run `npm run typecheck && npm run lint && npm run test`
-3. Open a pull request with a clear description
+1. Fork the repo and create a branch: `git checkout -b feat/your-feature` (never work on `main`)
+2. Turn on the repo's commit hook once: `git config core.hooksPath .githooks`
+3. Before you push, run `npm run typecheck && npm run lint && npm test && npm run build`
+4. Open a pull request with a clear description
 
 Found a tool that should be listed? Open an issue with the repository link.
+
+Commit rules for this repository, including for AI coding assistants, are in [`CLAUDE.md`](CLAUDE.md): work on a branch, never commit to `main`, and only a human may be listed as a co-author.
 
 ## 📄 License
 
