@@ -276,3 +276,28 @@ export function toEntries(
   }
   return entries;
 }
+
+// ---- Avoiding repeated text on a result card --------------------------------
+
+function words(text: string): string[] {
+  return text
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter((word) => word.length > 3);
+}
+
+/** True when most of the reason's words already appear in the summary, so showing both just repeats it. */
+export function repeatsSummary(reason: string, summary: string): boolean {
+  const reasonWords = new Set(words(reason));
+  if (reasonWords.size < 4) {
+    return false;
+  }
+  const summaryWords = new Set(words(summary));
+  let shared = 0;
+  for (const word of reasonWords) {
+    if (summaryWords.has(word)) {
+      shared += 1;
+    }
+  }
+  return shared / reasonWords.size >= 0.6;
+}

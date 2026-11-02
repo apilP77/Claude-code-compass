@@ -14,7 +14,9 @@ export default function ListingBadge({
 }) {
   if (repository.listing_status === "reviewed") {
     return (
-      <span className={`${base} border-verified/40 bg-verified/10 text-verified`}>
+      <span
+        className={`${base} -rotate-2 border-2 border-double border-verified/70 bg-verified/10 font-bold uppercase tracking-wider text-verified`}
+      >
         <svg viewBox="0 0 12 12" aria-hidden="true" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
           <path d="m2.5 6.5 2.2 2.2 4.8-5.4" />
         </svg>

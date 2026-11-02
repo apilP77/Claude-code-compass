@@ -8,6 +8,7 @@ import {
   MAX_PICKS,
   parseQuery,
   parseSkillSet,
+  repeatsSummary,
   skillSetSystemInstruction,
   toEntries,
 } from "./skill-set";
@@ -234,5 +235,26 @@ describe("bearing helpers", () => {
     expect(nearestBearing(170, -170)).toBe(190);
     expect(nearestBearing(-170, 170)).toBe(-190);
     expect(nearestBearing(10, 20)).toBe(20);
+  });
+});
+
+describe("repeatsSummary", () => {
+  it("flags a reason that mostly repeats the summary", () => {
+    expect(
+      repeatsSummary(
+        "Provides a comprehensive development methodology and skills library designed to guide coding agents.",
+        "Provides a comprehensive development methodology and skills library designed to guide coding agents through structured workflows.",
+      ),
+    ).toBe(true);
+  });
+
+  it("keeps a reason that adds something new, or a very short one", () => {
+    expect(
+      repeatsSummary(
+        "Covers pytest fixtures for your data pipeline tests.",
+        "Interface design guidance for landing pages.",
+      ),
+    ).toBe(false);
+    expect(repeatsSummary("Fits well.", "Fits well.")).toBe(false);
   });
 });

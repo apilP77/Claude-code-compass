@@ -23,6 +23,7 @@ export default function HeroFinder({ query, resultCount }: HeroFinderProps) {
   const [armed, setArmed] = useState(false);
   const [pointerBearing, setPointerBearing] = useState<number | null>(null);
   const compassRef = useRef<SVGSVGElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const lastBearing = useRef(START_BEARING);
 
   // Let the first paint show the needle off-north, then swing it to its bearing.
@@ -42,6 +43,15 @@ export default function HeroFinder({ query, resultCount }: HeroFinderProps) {
     function onMove(event: PointerEvent) {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
+        // Contour lines drift a little with the pointer (depth set in globals.css).
+        sectionRef.current?.style.setProperty(
+          "--px",
+          String((event.clientX / window.innerWidth - 0.5) * -2),
+        );
+        sectionRef.current?.style.setProperty(
+          "--py",
+          String((event.clientY / window.innerHeight - 0.5) * -2),
+        );
         const box = compassRef.current?.getBoundingClientRect();
         if (!box || box.width === 0) {
           return;
@@ -73,7 +83,10 @@ export default function HeroFinder({ query, resultCount }: HeroFinderProps) {
       : bearingFor(query);
 
   return (
-    <section className="relative overflow-hidden border-b border-line bg-[radial-gradient(ellipse_at_78%_48%,var(--c-glow),transparent_58%)]">
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden border-b border-line bg-[radial-gradient(ellipse_at_78%_48%,var(--c-glow),transparent_58%)]"
+    >
       <Contour />
       <div className="relative mx-auto grid w-full max-w-6xl items-center gap-8 px-5 py-12 sm:px-8 sm:py-16 md:grid-cols-[minmax(0,1fr)_auto]">
         <div className="min-w-0">

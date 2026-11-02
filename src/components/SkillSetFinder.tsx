@@ -11,6 +11,7 @@ import { bearingFor } from "@/lib/bearing";
 import {
   QUERY_MAX_LENGTH,
   QUERY_MIN_LENGTH,
+  repeatsSummary,
   type SkillSetEntry,
   type SkillSetResult,
 } from "@/lib/skill-set";
@@ -307,7 +308,9 @@ export default function SkillSetFinder() {
                       </div>
 
                       <p className="mt-3 text-[15px] leading-6">{pick.reason}</p>
-                      <p className="mt-2 line-clamp-2 text-sm text-muted">{pick.summary}</p>
+                      {!repeatsSummary(pick.reason, pick.summary) && (
+                        <p className="mt-2 line-clamp-2 text-sm text-muted">{pick.summary}</p>
+                      )}
 
                       {pick.getting_started && (
                         <div className="mt-4">
