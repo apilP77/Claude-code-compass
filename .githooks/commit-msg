@@ -1,0 +1,23 @@
+#!/bin/sh
+# Removes AI / bot `Co-authored-by:` trailers from every commit message.
+# Human co-authors are kept. Enable with: git config core.hooksPath .githooks
+# (`npm install` does this automatically via the "prepare" script.)
+
+msg_file="$1"
+[ -f "$msg_file" ] || exit 0
+
+tmp="$msg_file.tmp.$$"
+
+# Drop trailer lines whose name or address mentions an AI tool or a bot.
+sed -E '/^[Cc]o-[Aa]uthored-[Bb]y:.*([Cc]laude|[Aa]nthropic|[Cc]opilot|[Cc]hat[Gg][Pp][Tt]|[Oo]pen[Aa][Ii]|[Cc]odex|[Gg]emini|[Cc]ursor|\[bot\]|[Bb]ot@|noreply@anthropic\.com)/d' \
+  "$msg_file" > "$tmp" || { rm -f "$tmp"; exit 0; }
+
+# Remove blank lines left at the end of the message.
+sed -e :a -e '/^[[:space:]]*$/{$d;N;ba' -e '}' "$tmp" > "$tmp.2" && mv "$tmp.2" "$tmp"
+
+if ! cmp -s "$msg_file" "$tmp"; then
+  cat "$tmp" > "$msg_file"
+  echo "commit-msg: removed AI co-author trailer(s)." >&2
+fi
+rm -f "$tmp" "$tmp.2"
+exit 0
