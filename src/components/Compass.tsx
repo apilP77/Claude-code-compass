@@ -1,8 +1,15 @@
+import type { Ref } from "react";
+
 type CompassProps = {
   /** Degrees clockwise from north. The needle springs to this bearing. */
   bearing: number;
   /** True when a search found nothing: the needle wobbles instead of settling. */
   lost: boolean;
+  /** True while the needle follows the pointer: it turns faster than a settle. */
+  tracking?: boolean;
+  ref?: Ref<SVGSVGElement>;
+  /** Decorative flourish only (the compass is hidden from assistive tech). */
+  onClick?: () => void;
   className?: string;
 };
 
@@ -12,11 +19,20 @@ type CompassProps = {
  * decorative (the results text carries the information), so it is hidden from
  * assistive tech.
  */
-export default function Compass({ bearing, lost, className = "h-36 w-36" }: CompassProps) {
+export default function Compass({
+  bearing,
+  lost,
+  tracking = false,
+  ref,
+  onClick,
+  className = "h-36 w-36",
+}: CompassProps) {
   const ticks = Array.from({ length: 24 }, (_, index) => index * 15);
 
   return (
     <svg
+      ref={ref}
+      onClick={onClick}
       viewBox="0 0 120 120"
       aria-hidden="true"
       className={className}
@@ -51,6 +67,7 @@ export default function Compass({ bearing, lost, className = "h-36 w-36" }: Comp
       <g
         className="needle"
         data-lost={lost ? "true" : "false"}
+        data-tracking={tracking ? "true" : "false"}
         style={{ ["--bearing" as string]: `${bearing}deg` }}
       >
         <polygon points="60,22 66,60 54,60" className="fill-blaze" />

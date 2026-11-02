@@ -7,9 +7,11 @@ import CategorySymbol from "@/components/CategorySymbol";
 import Compass from "@/components/Compass";
 import CopyCommand from "@/components/CopyCommand";
 import ListingBadge from "@/components/ListingBadge";
+import { bearingFor } from "@/lib/bearing";
 import {
   QUERY_MAX_LENGTH,
   QUERY_MIN_LENGTH,
+  repeatsSummary,
   type SkillSetEntry,
   type SkillSetResult,
 } from "@/lib/skill-set";
@@ -115,14 +117,25 @@ export default function SkillSetFinder() {
     ? result.picks.flatMap((pick) => (pick.getting_started ? [pick.getting_started] : []))
     : [];
   const tooShort = text.trim().length < QUERY_MIN_LENGTH;
+  // Searching: the needle wobbles. Done: it swings toward the first pick.
+  const needleBearing = result?.picks[0] ? bearingFor(result.picks[0].id) : 0;
 
   return (
     <div className="mx-auto w-full max-w-3xl px-5 py-10 sm:px-8 sm:py-14">
-      <h1 className="display text-4xl sm:text-5xl">Find your skill set</h1>
-      <p className="mt-4 max-w-[60ch] text-base text-muted">
-        Describe what you are working on. You get a short list of skills,
-        plugins and collections from this directory that fit together.
-      </p>
+      <div className="flex items-start justify-between gap-6">
+        <div className="min-w-0">
+          <h1 className="display text-4xl sm:text-5xl">Find your skill set</h1>
+          <p className="mt-4 max-w-[60ch] text-base text-muted">
+            Describe what you are working on. You get a short list of skills,
+            plugins and collections from this directory that fit together.
+          </p>
+        </div>
+        <Compass
+          bearing={needleBearing}
+          lost={loading}
+          className="hidden h-24 w-24 shrink-0 sm:block"
+        />
+      </div>
 
       <form
         onSubmit={(event) => {
@@ -178,10 +191,7 @@ export default function SkillSetFinder() {
 
       <div aria-live="polite" className="mt-10">
         {loading && (
-          <div className="flex items-center gap-4 text-muted">
-            <Compass bearing={20} lost className="h-14 w-14 shrink-0" />
-            <p>Plotting your route…</p>
-          </div>
+          <p className="text-muted">Plotting your route…</p>
         )}
 
         {outcome && "error" in outcome && (
@@ -251,9 +261,25 @@ export default function SkillSetFinder() {
               </p>
             )}
 
-            {groupByRole(result.picks).map((group) => (
-              <section key={group.role} className="mt-8" aria-labelledby={`role-${group.role}`}>
-                <h2 id={`role-${group.role}`} className="display text-xl">
+            <ol className="relative mt-8 space-y-8 pl-12 sm:pl-14">
+              <span
+                aria-hidden="true"
+                className="route-line absolute bottom-3 left-[17px] top-3 border-l-2 border-dashed border-line-strong sm:left-[19px]"
+              />
+              {groupByRole(result.picks).map((group, index) => (
+              <li
+                key={group.role}
+                className="route-stop relative"
+                style={{ ["--i" as string]: index }}
+                aria-labelledby={`role-${group.role}`}
+              >
+                <span
+                  aria-hidden="true"
+                  className="display absolute -left-12 top-0 flex h-9 w-9 items-center justify-center rounded-full border-2 border-accent bg-bg text-sm text-accent sm:-left-14 sm:h-10 sm:w-10"
+                >
+                  {index + 1}
+                </span>
+                <h2 id={`role-${group.role}`} className="display text-xl leading-9 sm:leading-10">
                   {group.role}
                 </h2>
                 <ul className="mt-3 space-y-4">
@@ -282,7 +308,9 @@ export default function SkillSetFinder() {
                       </div>
 
                       <p className="mt-3 text-[15px] leading-6">{pick.reason}</p>
-                      <p className="mt-2 line-clamp-2 text-sm text-muted">{pick.summary}</p>
+                      {!repeatsSummary(pick.reason, pick.summary) && (
+                        <p className="mt-2 line-clamp-2 text-sm text-muted">{pick.summary}</p>
+                      )}
 
                       {pick.getting_started && (
                         <div className="mt-4">
@@ -303,8 +331,9 @@ export default function SkillSetFinder() {
                     </li>
                   ))}
                 </ul>
-              </section>
-            ))}
+              </li>
+              ))}
+            </ol>
           </>
         )}
       </div>

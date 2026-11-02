@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { User } from "@supabase/supabase-js";
-import Compass from "@/components/Compass";
+import LogoCompass from "@/components/LogoCompass";
 import ThemeToggle from "@/components/ThemeToggle";
 import { createBrowserSupabaseClient, isSessionMissing } from "@/lib/supabase";
 
@@ -102,7 +102,7 @@ export default function Header() {
           href="/"
           className="flex items-center gap-2 display text-lg text-fg transition-colors hover:text-accent"
         >
-          <Compass className="h-7 w-7 shrink-0" bearing={0} lost={false} />
+          <LogoCompass />
           Claude Code Compass
         </Link>
 

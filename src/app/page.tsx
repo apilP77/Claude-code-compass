@@ -4,6 +4,8 @@ import CategorySymbol from "@/components/CategorySymbol";
 import FeaturedEntry from "@/components/FeaturedEntry";
 import HeroFinder from "@/components/HeroFinder";
 import RepoRow from "@/components/RepoRow";
+import SearchBar from "@/components/SearchBar";
+import SortSelect from "@/components/SortSelect";
 import { repositories } from "@/lib/repos";
 import {
   REPOSITORY_SORTS,
@@ -118,10 +120,17 @@ async function RepositoryDirectory({ searchParams }: HomeProps) {
 
   return (
     <>
-      <HeroFinder query={query} sort={sort} resultCount={results.length} />
+      <HeroFinder query={query} resultCount={results.length} />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-8 sm:py-10">
-        <nav aria-label="Filter by category" className="flex flex-wrap items-center gap-2">
+        <div className="max-w-2xl">
+          <SearchBar query={query} />
+        </div>
+
+        <nav
+          aria-label="Filter by category"
+          className="mt-4 flex flex-wrap items-center gap-2"
+        >
           <span className="mr-1 text-sm text-faint">Legend</span>
           <Link
             href={directoryHref(query, sort)}
@@ -168,7 +177,8 @@ async function RepositoryDirectory({ searchParams }: HomeProps) {
             <h2 id="index-heading" className="display text-2xl">
               {filtered ? "Results" : "All repositories"}
             </h2>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-4">
+              <SortSelect sort={sort} />
               <p aria-live="polite" className="text-sm text-faint">
                 {results.length}{" "}
                 {results.length === 1 ? "repository" : "repositories"}

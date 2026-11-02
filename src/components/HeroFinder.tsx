@@ -1,70 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import Compass from "@/components/Compass";
 import Contour from "@/components/Contour";
-import { REPOSITORY_SORTS, type RepositorySort } from "@/lib/search";
+import { useCompassInput } from "@/components/useCompassInput";
+import { bearingFor, headingLabel } from "@/lib/bearing";
 import { QUERY_MAX_LENGTH, QUERY_MIN_LENGTH } from "@/lib/skill-set";
 
-const SORT_LABELS: Record<RepositorySort, string> = {
-  verified: "Editor's picks first",
-  stars: "Most stars",
-  newest: "Recently added",
-  name: "Name (A–Z)",
-  last_checked: "Recently checked",
-};
-
-const DEBOUNCE_MS = 250;
 /** Where the needle starts before it swings to north on first load. */
 const START_BEARING = 150;
 
-/** Returns the URL with `changes` applied; empty values remove the param. */
-function hrefWith(
-  current: { toString(): string },
-  changes: Record<string, string>,
-): string {
-  const next = new URLSearchParams(current.toString());
-  for (const [key, value] of Object.entries(changes)) {
-    if (value) {
-      next.set(key, value);
-    } else {
-      next.delete(key);
-    }
-  }
-  const search = next.toString();
-  return search ? `/?${search}` : "/";
-}
-
-/** A stable bearing from the text: the same query always points the same way. */
-function bearingFor(text: string): number {
-  const query = text.trim().toLowerCase();
-  if (query === "") {
-    return 0;
-  }
-  let hash = 0;
-  for (const char of query) {
-    hash = (hash * 31 + char.charCodeAt(0)) % 1000;
-  }
-  return (hash % 141) - 70;
-}
-
 type HeroFinderProps = {
   query: string;
-  sort: RepositorySort;
   resultCount: number;
 };
 
 /**
- * The URL is the source of truth (?q=&category=&sort=). This writes to it:
- * typing updates `q` after a short pause, the select updates `sort`
- * immediately, and other params (category) are preserved.
+ * The top of the home page: the title, the Skill Set Finder entry, and the
+ * compass. Searching and sorting the list live next to the list, in SearchBar
+ * and SortSelect; the needle reads the current search from the URL.
  */
-export default function HeroFinder({ query, sort, resultCount }: HeroFinderProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [text, setText] = useState(query);
+export default function HeroFinder({ query, resultCount }: HeroFinderProps) {
   const [armed, setArmed] = useState(false);
+  const [spins, setSpins] = useState(0);
+  const compassRef = useRef<SVGSVGElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const inputBearing = useCompassInput(compassRef);
 
   // Let the first paint show the needle off-north, then swing it to its bearing.
   useEffect(() => {
@@ -72,21 +33,47 @@ export default function HeroFinder({ query, sort, resultCount }: HeroFinderProps
     return () => clearTimeout(timer);
   }, []);
 
+  // Contour lines drift a little with the pointer (depth set in globals.css).
   useEffect(() => {
-    const trimmed = text.trim();
-    if (trimmed === (searchParams.get("q") ?? "").trim()) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return;
     }
-    const timer = setTimeout(() => {
-      router.replace(hrefWith(searchParams, { q: trimmed }), { scroll: false });
-    }, DEBOUNCE_MS);
-    return () => clearTimeout(timer);
-  }, [text, searchParams, router]);
+    let frame = 0;
+    function onMove(event: PointerEvent) {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        sectionRef.current?.style.setProperty(
+          "--px",
+          String((event.clientX / window.innerWidth - 0.5) * -2),
+        );
+        sectionRef.current?.style.setProperty(
+          "--py",
+          String((event.clientY / window.innerHeight - 0.5) * -2),
+        );
+      });
+    }
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
 
   const lost = resultCount === 0 && query.trim() !== "";
+  const following = query.trim() === "" && inputBearing !== null;
+  const base = !armed
+    ? START_BEARING
+    : following
+      ? inputBearing
+      : bearingFor(query);
+  // Each click adds two full turns, so the needle spins and settles back with a bounce.
+  const bearing = base + spins * 720;
 
   return (
-    <section className="relative overflow-hidden border-b border-line bg-[radial-gradient(ellipse_at_78%_48%,var(--c-glow),transparent_58%)]">
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden border-b border-line bg-[radial-gradient(ellipse_at_78%_48%,var(--c-glow),transparent_58%)]"
+    >
       <Contour />
       <div className="relative mx-auto grid w-full max-w-6xl items-center gap-8 px-5 py-12 sm:px-8 sm:py-16 md:grid-cols-[minmax(0,1fr)_auto]">
         <div className="min-w-0">
@@ -100,61 +87,9 @@ export default function HeroFinder({ query, sort, resultCount }: HeroFinderProps
           </p>
 
           <form
-            action="/"
-            method="get"
-            role="search"
-            onSubmit={(event) => {
-              event.preventDefault();
-              router.replace(hrefWith(searchParams, { q: text.trim() }), {
-                scroll: false,
-              });
-            }}
-            className="mt-8 flex max-w-2xl flex-col gap-3 sm:flex-row"
-          >
-            <div className="min-w-0 flex-1">
-              <label htmlFor="repository-search" className="sr-only">
-                Search repositories
-              </label>
-              <input
-                id="repository-search"
-                name="q"
-                type="search"
-                value={text}
-                onChange={(event) => setText(event.target.value)}
-                placeholder="Search skills, plugins, collections"
-                autoComplete="off"
-                className="h-12 w-full rounded-md border border-line-strong bg-surface px-4 text-base text-fg outline-none transition-colors placeholder:text-faint hover:border-ink focus:border-accent"
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <label htmlFor="repository-sort" className="text-sm text-faint">
-                Sort
-              </label>
-              <select
-                id="repository-sort"
-                name="sort"
-                value={sort}
-                onChange={(event) =>
-                  router.replace(
-                    hrefWith(searchParams, { sort: event.target.value }),
-                    { scroll: false },
-                  )
-                }
-                className="h-12 rounded-md border border-line-strong bg-surface px-3 text-sm text-fg outline-none transition-colors hover:border-ink focus:border-accent"
-              >
-                {REPOSITORY_SORTS.map((value) => (
-                  <option key={value} value={value}>
-                    {SORT_LABELS[value]}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </form>
-
-          <form
             action="/skill-set"
             method="get"
-            className="mt-6 max-w-2xl rounded-[10px] border border-accent/60 bg-surface p-4 shadow-sm sm:p-5"
+            className="mt-8 max-w-2xl rounded-[10px] border border-accent/60 bg-surface p-4 shadow-sm sm:p-5"
           >
             <p className="text-[13px] font-semibold uppercase tracking-wide text-accent">
               New · Skill set finder
@@ -188,11 +123,19 @@ export default function HeroFinder({ query, sort, resultCount }: HeroFinderProps
           </form>
         </div>
 
-        <Compass
-          bearing={armed ? bearingFor(text) : START_BEARING}
-          lost={lost}
-          className="hidden h-40 w-40 justify-self-center md:block"
-        />
+        <div className="order-first flex flex-col items-center gap-1 justify-self-start md:order-none md:justify-self-center">
+          <Compass
+            ref={compassRef}
+            bearing={bearing}
+            tracking={following}
+            lost={lost}
+            onClick={() => setSpins((count) => count + 1)}
+            className="h-20 w-20 cursor-pointer md:h-40 md:w-40"
+          />
+          <p aria-hidden="true" className="text-xs tabular-nums text-faint">
+            {headingLabel(bearing)}
+          </p>
+        </div>
       </div>
     </section>
   );

@@ -12,11 +12,13 @@ export default function FeaturedEntry({ repository }: { repository: Repository }
   return (
     <Link
       href={repoHref(repository)}
-      className="group flex h-full flex-col rounded-[10px] border border-line-strong bg-surface p-6 transition-colors hover:border-ink"
+      className="group flex h-full flex-col rounded-[10px] border border-line-strong bg-surface p-6 transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:border-ink hover:shadow-lg"
     >
       <div className="flex items-center justify-between gap-3 text-faint">
         <span className="inline-flex items-center gap-2 text-sm capitalize">
-          <CategorySymbol category={repository.category} />
+          <span className="inline-flex transition-transform duration-200 group-hover:rotate-[12deg]">
+            <CategorySymbol category={repository.category} />
+          </span>
           {repository.category}
         </span>
         {repository.stars !== null && (
