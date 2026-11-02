@@ -53,7 +53,7 @@ export default function Header() {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "github",
-        options: { redirectTo: window.location.origin },
+        options: { redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(window.location.pathname + window.location.search)}` },
       });
       if (error) {
         throw new Error(error.message);

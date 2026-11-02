@@ -18,3 +18,19 @@ export function parseVoteRequest(
 
   return parsed.data;
 }
+
+const removeVoteRequestSchema = z.strictObject({
+  repositoryId: z.string().min(1).max(201),
+});
+
+export function parseRemoveVoteRequest(
+  value: unknown,
+  knownRepositoryIds: ReadonlySet<string>,
+): { repositoryId: string } | null {
+  const parsed = removeVoteRequestSchema.safeParse(value);
+  if (!parsed.success || !knownRepositoryIds.has(parsed.data.repositoryId)) {
+    return null;
+  }
+
+  return parsed.data;
+}

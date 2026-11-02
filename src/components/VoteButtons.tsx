@@ -102,9 +102,10 @@ export default function VoteButtons({ repositoryId }: VoteButtonsProps) {
       }
 
       if (!data.user) {
+        setErrorMessage("Redirecting to GitHub to sign in…");
         const { error: signInError } = await supabase.auth.signInWithOAuth({
           provider: "github",
-          options: { redirectTo: window.location.origin },
+          options: { redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(window.location.pathname + window.location.search)}` },
         });
         if (signInError) {
           throw new Error(`Could not start GitHub login: ${signInError.message}`);
@@ -112,10 +113,13 @@ export default function VoteButtons({ repositoryId }: VoteButtonsProps) {
         return;
       }
 
+      const removing = userVote === voteType;
       const response = await fetch("/api/votes", {
-        method: "POST",
+        method: removing ? "DELETE" : "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ repositoryId, voteType }),
+        body: JSON.stringify(
+          removing ? { repositoryId } : { repositoryId, voteType },
+        ),
       });
       const result: unknown = await response.json();
       if (!response.ok) {
@@ -140,7 +144,7 @@ export default function VoteButtons({ repositoryId }: VoteButtonsProps) {
       }
 
       setScore(result.score);
-      setUserVote(voteType);
+      setUserVote(removing ? null : voteType);
     } catch (error) {
       setErrorMessage(
         error instanceof Error ? error.message : "Could not submit your vote.",

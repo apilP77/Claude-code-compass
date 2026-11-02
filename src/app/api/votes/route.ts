@@ -1,6 +1,6 @@
 import { repositories } from "@/lib/repos";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
-import { parseVoteRequest } from "@/lib/vote-request";
+import { parseRemoveVoteRequest, parseVoteRequest } from "@/lib/vote-request";
 
 const knownRepositoryIds = new Set(repositories.map((repository) => repository.id));
 
@@ -74,6 +74,75 @@ export async function POST(request: Request) {
 
   if (typeof score !== "number" || !Number.isInteger(score)) {
     console.error("Vote RPC returned a non-integer score.");
+    return errorResponse("The vote service returned an invalid score.", 502);
+  }
+
+  return Response.json({ score });
+}
+
+export async function DELETE(request: Request) {
+  const origin = request.headers.get("origin");
+  if (!origin || origin !== new URL(request.url).origin) {
+    return errorResponse("Cross-origin vote requests are not allowed.", 403);
+  }
+
+  if (!request.headers.get("content-type")?.includes("application/json")) {
+    return errorResponse("Content-Type must be application/json.", 415);
+  }
+
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return errorResponse("Request body must be valid JSON.", 400);
+  }
+
+  const removeRequest = parseRemoveVoteRequest(body, knownRepositoryIds);
+  if (!removeRequest) {
+    return errorResponse("Vote request is invalid.", 400);
+  }
+
+  const supabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
+  if (authError) {
+    console.error("Could not verify the voter:", authError);
+    return errorResponse("Could not verify your login. Please try again.", 503);
+  }
+  if (!user) {
+    return errorResponse("Sign in before voting.", 401);
+  }
+
+  const { data: score, error: removeError } = await supabase.rpc(
+    "remove_repository_vote",
+    { repository_id_input: removeRequest.repositoryId },
+  );
+
+  if (removeError) {
+    if (removeError.code === "P0001" && removeError.message === "vote_rate_limited") {
+      return errorResponse("Vote limit reached. Try again in a minute.", 429, {
+        "Retry-After": "60",
+      });
+    }
+    if (removeError.code === "22023") {
+      return errorResponse("Vote request is invalid.", 400);
+    }
+    if (removeError.code === "42501") {
+      return errorResponse("Sign in before voting.", 401);
+    }
+    if (removeError.code === "PGRST202") {
+      return errorResponse("Vote removal is not set up yet. Apply migration 003.", 501);
+    }
+
+    console.error("Could not remove repository vote:", removeError);
+    return errorResponse("Could not remove your vote. Please try again.", 500);
+  }
+
+  if (typeof score !== "number" || !Number.isInteger(score)) {
+    console.error("Remove-vote RPC returned a non-integer score.");
     return errorResponse("The vote service returned an invalid score.", 502);
   }
 
