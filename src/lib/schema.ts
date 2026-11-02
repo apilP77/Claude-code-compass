@@ -96,6 +96,45 @@ export const repositorySchema = z
       .optional()
       .describe("AI-generated security notes, when available."),
 
+    summary: z
+      .string()
+      .min(1)
+      .max(600)
+      .optional()
+      .describe("AI-generated plain-English summary of what it does, when available."),
+    best_for: z
+      .string()
+      .min(1)
+      .max(280)
+      .optional()
+      .describe("AI-generated note on who should use it and when, when available."),
+    highlights: z
+      .tuple([
+        z.string().min(1).max(280),
+        z.string().min(1).max(280),
+        z.string().min(1).max(280),
+      ])
+      .optional()
+      .describe("Three AI-generated highlights, when available."),
+    getting_started: z
+      .string()
+      .min(1)
+      .max(280)
+      .nullable()
+      .optional()
+      .describe(
+        "Install/first-run command quoted from the README. Null when the README does not document one; absent when not enriched.",
+      ),
+    ai_generated_at: z.iso
+      .datetime()
+      .optional()
+      .describe("When the AI fields were generated."),
+    ai_model: z
+      .string()
+      .min(1)
+      .optional()
+      .describe("Model that generated the AI fields."),
+
     listing_status: z
       .enum(LISTING_STATUSES)
       .describe("Editorial state; drives the status label in the UI."),

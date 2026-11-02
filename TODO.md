@@ -29,19 +29,19 @@ What I checked: the `get_repository_vote_score` function is deployed in Supabase
 
 Today all 20 listings show an orange "⚠ Unreviewed" badge, which reads like a danger warning. Only 2 of 20 have pros/cons. Descriptions are the raw GitHub one-liners.
 
-- [ ] Extend the enrichment output (`src/lib/enrichment.ts` + `src/lib/schema.ts`):
+- [x] Extend the enrichment output (`src/lib/enrichment.ts` + `src/lib/schema.ts`):
   - `summary`: 2–3 plain-English sentences on what it does.
   - `best_for`: who should use it and when.
   - `highlights`: 3 short bullets.
   - `getting_started`: install command, **quoted from the README only**, or null.
   - Keep `pros`, `cons`, and `security_notes`.
-- [ ] Add `ai_generated_at` and `ai_model` fields so every AI text says where it came from.
-- [ ] Replace the badge: "✨ AI summary · not editor-verified" (neutral/info style) for enriched repos. Keep "Unreviewed" only for repos with no summary yet. Never present AI text as verified.
-- [ ] Improve the prompt: a good vs. bad example, no marketing words ("powerful", "seamless"), every claim grounded in the README, plain language, and a length cap.
-- [ ] Backfill: add `npm run enrich -- --all` to re-enrich the 20 existing repos, not only new candidates.
-- [ ] Make one failure non-fatal. Right now a single README 404 or Gemini error throws inside the loop in `scripts/enrich.ts` and aborts the whole run. Catch it per repo, log it, and continue.
-- [ ] Log which model actually answered (it silently falls back to `gemini-2.5-flash-lite` on *any* error), and confirm the primary model ID is current.
-- [ ] Keep the prompt-injection defenses and the `malicious-readme.md` test passing. Add tests for the new fields.
+- [x] Add `ai_generated_at` and `ai_model` fields so every AI text says where it came from.
+- [x] Replace the badge: "✨ AI summary · not editor-verified" (neutral/info style) for enriched repos. Keep "Unreviewed" only for repos with no summary yet. Never present AI text as verified.
+- [x] Improve the prompt: a good vs. bad example, no marketing words ("powerful", "seamless"), every claim grounded in the README, plain language, and a length cap.
+- [x] Backfill: add `npm run enrich -- --all` to re-enrich the 20 existing repos, not only new candidates.
+- [x] Make one failure non-fatal. Right now a single README 404 or Gemini error throws inside the loop in `scripts/enrich.ts` and aborts the whole run. Catch it per repo, log it, and continue.
+- [x] Log which model actually answered. *(Found: the `gemini-2.5-flash-lite` fallback returns 404 now, so it was removed; `GEMINI_MODEL` env overrides the default. Free tier is 15 requests/min, so calls are paced and 429s are retried.)*
+- [x] Keep the prompt-injection defenses and the `malicious-readme.md` test passing. Add tests for the new fields.
 
 ### 3. Better interface / UI (items 3 + 5 combined)
 

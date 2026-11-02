@@ -22,14 +22,24 @@
       "stars": 54693,
       "forks": 4173,
       "pros": [
-        "Provides a comprehensive, multi-stage academic research and writing pipeline ranging from initial planning to peer review.",
-        "Includes built-in integrity gates, data access level metadata, and reproducibility controls."
+        "Covers the complete research-to-publication pipeline across multiple specialized modules.",
+        "Incorporates structured human-in-the-loop integrity gates and verification checks."
       ],
       "cons": [
-        "The pipeline relies heavily on LLM outputs, which are not byte-reproducible and may require rigorous human oversight.",
-        "Complex multi-agent workflows may incur significant token costs and overhead for simple research tasks."
+        "Complex multi-stage setup and pipeline rules require significant user familiarity.",
+        "Output quality and adherence to guidelines depend heavily on the underlying LLM capabilities."
       ],
-      "security_notes": "The README does not explicitly document whether arbitrary code execution occurs. API keys are required, as the prerequisites state that ANTHROPIC_API_KEY must be exported or set on the first run.",
+      "security_notes": "The README does not document arbitrary code execution. Regarding API keys, the README states that an ANTHROPIC_API_KEY must be exported or set on the first run.",
+      "summary": "This repository provides a comprehensive suite of Claude Code skills tailored for academic research, guiding users from initial research planning through writing and peer review. It includes multiple specialized modules such as deep research, academic paper writing, peer review, and systematic review study screening. Each module incorporates integrity gates and validation checks to help maintain rigorous academic standards.",
+      "best_for": "Researchers and academics looking for an AI-assisted pipeline to plan, write, and review scholarly papers within Claude Code.",
+      "highlights": [
+        "A 13-agent deep research team with Socratic guided modes and systematic review workflows.",
+        "A 12-agent academic paper writing pipeline supporting multiple reference styles and formats.",
+        "A 7-agent peer review module with multi-perspective narrative judgments."
+      ],
+      "getting_started": "/plugin marketplace add Imbad0202/academic-research-skills",
+      "ai_generated_at": "2026-11-02T15:54:09.159Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -44,6 +54,25 @@
       "license_spdx": "MIT",
       "stars": null,
       "forks": null,
+      "pros": [
+        "Encodes mature, production-proven engineering standards and workflows into AI agent behavior.",
+        "Highly portable format compatible with over 70 different AI coding agents and tools."
+      ],
+      "cons": [
+        "Installing single skills via npx excludes repo-level supplementary reference directories unless managed manually.",
+        "Host-specific native setups may require navigating separate configuration guides for tools like Cursor or Windsurf."
+      ],
+      "security_notes": "Arbitrary code execution and API key requirements are not documented in the README.",
+      "summary": "This repository provides production-grade engineering skills and slash commands designed to guide AI coding agents through the entire software development lifecycle. Each skill is packaged as a structured Markdown file that enforces consistent workflows, quality gates, and best practices across tasks.",
+      "best_for": "Developers who want to enforce strict engineering standards, test-driven development, and quality gates when using AI coding assistants.",
+      "highlights": [
+        "Includes 25 structured engineering skills covering specification, planning, building, verification, review, and shipping.",
+        "Provides 9 lifecycle slash commands that map directly to development tasks like /spec, /plan, /build, and /test.",
+        "Supports multiple AI agent environments including Claude Code, Cursor, Copilot, Codex, and Gemini CLI."
+      ],
+      "getting_started": "npx skills add addyosmani/agent-skills",
+      "ai_generated_at": "2026-11-02T15:52:50.553Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -58,6 +87,25 @@
       "license_spdx": "MIT",
       "stars": null,
       "forks": null,
+      "pros": [
+        "Comprehensive coverage of multiple AI coding assistant harnesses from a single repository source.",
+        "Flexible installation methods including marketplace registries, skills-only installers, and Makefile targets."
+      ],
+      "cons": [
+        "Available components, tool permissions, and model configurations vary depending on the chosen harness.",
+        "Experimental LLM evaluation and Monte Carlo layers require optional dependencies and manual setup."
+      ],
+      "security_notes": "Arbitrary code execution and API key requirements are not explicitly detailed in the README, though optional evaluation features mention using ANTHROPIC_API_KEY when set or falling back to the Claude Code login.",
+      "summary": "This repository provides a multi-harness collection of plugins, agents, skills, and commands designed for AI coding tools like Claude Code and Codex CLI. It allows developers to share one Markdown-based component source across multiple coding environments with adapted installation routes.",
+      "best_for": "Developers using AI coding tools who want to share a unified set of specialist agents, skills, and plugins across multiple harnesses.",
+      "highlights": [
+        "Contains 94 plugins, 202 agents, 185 skills, and 105 commands derived from a shared source.",
+        "Supports multiple coding tool harnesses including Claude Code, Codex CLI, Cursor, OpenCode, Antigravity CLI, GitHub Copilot, and Pi.",
+        "Includes optional experimental evaluation tools with static checks and LLM-backed scoring."
+      ],
+      "getting_started": "/plugin marketplace add wshobson/agents",
+      "ai_generated_at": "2026-11-02T15:52:53.101Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -93,14 +141,24 @@
       "stars": 56945,
       "forks": 4895,
       "pros": [
-        "Comprehensive, hand-picked collection of resources, skills, plugins, and tooling tailored for Claude Code agents.",
-        "Well-organized into distinct, highly categorized sections ranging from core documentation and learning materials to monitoring, security, and orchestration."
+        "Comprehensive categorization of Claude Code resources and community projects.",
+        "Provides quick access to specialized skills and alternative interfaces."
       ],
       "cons": [
-        "The sheer volume of listed projects can be overwhelming to navigate without a specific use-case in mind.",
-        "As an aggregated list of external third-party repositories, maintenance and quality vary significantly across the referenced projects."
+        "Serves primarily as a directory rather than an installable software package.",
+        "Individual projects listed may vary in maintenance status and quality."
       ],
-      "security_notes": "The README does not explicitly discuss arbitrary code execution. Whether API keys are required is not documented.",
+      "security_notes": "Arbitrary code execution and API key requirements are not documented for the repository itself, as it is a curated list of external links and tools.",
+      "summary": "This repository provides a curated collection of resources, skills, plugins, and tools for Claude Code. Users can explore community-contributed guides and extensions designed to enhance developer workflows.",
+      "best_for": "Developers and technical users looking to discover tools, skills, and plugins to extend Claude Code.",
+      "highlights": [
+        "A hand-picked collection of resources and plugins for Claude Code.",
+        "Categorized directory covering documentation, UI/UX, testing, security, and memory.",
+        "Includes alternative clients, status lines, and agent orchestration tools."
+      ],
+      "getting_started": null,
+      "ai_generated_at": "2026-11-02T15:52:56.964Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -115,6 +173,25 @@
       "license_spdx": "MIT",
       "stars": null,
       "forks": null,
+      "pros": [
+        "Large catalog of pre-configured agents, commands, and hooks across multiple categories.",
+        "Supports multiple installation options including a native marketplace command."
+      ],
+      "cons": [
+        "Requires using Claude Code and understanding its plugin structure.",
+        "Relies on external community ecosystem components that may change over time."
+      ],
+      "security_notes": "The README does not document API key requirements or specific arbitrary code execution warnings, though the tools involve executing commands, file modifications, and MCP server connections.",
+      "summary": "Build with Claude is a plugin marketplace and discovery platform that provides curated collections of agents, commands, hooks, and plugins to extend Claude Code workflows. You get access to hundreds of community-indexed tools and a web interface for browsing and installing them.",
+      "best_for": "Developers and teams using Claude Code who want to extend their workflows with pre-built agents, slash commands, and event hooks.",
+      "highlights": [
+        "Includes collections of specialized AI agents, automation commands, and event hooks.",
+        "Provides a community discovery index for external plugins, MCP servers, and marketplaces.",
+        "Offers both marketplace installation commands and manual file copy methods."
+      ],
+      "getting_started": "/plugin marketplace add davepoon/buildwithclaude",
+      "ai_generated_at": "2026-11-02T15:52:59.506Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -134,6 +211,25 @@
       "license_spdx": "MIT",
       "stars": 30520,
       "forks": 4179,
+      "pros": [
+        "Comprehensive coverage of all game development phases from initial concept to release checklists.",
+        "Flexible configuration via project.yaml allowing adjustable process rigor and personal settings overrides."
+      ],
+      "cons": [
+        "Requires Python 3 at the project root for settings and hook evaluation, otherwise settings silently fall back to defaults.",
+        "Desktop notifications via the notify hook are currently limited to Windows via PowerShell and are a no-op on other platforms."
+      ],
+      "security_notes": "The repository documentation does not explicitly document API key requirements. Arbitrary code execution is inherent to Claude Code when running shell commands and executing tasks via tools like Bash, though the project implements permission rules and hooks to block destructive operations such as force pushes and specific rm -rf commands.",
+      "summary": "Claude Code Game Studios turns a Claude Code session into a structured game development studio using specialized agents, slash commands, and hooks. The repository provides a template you clone into your project root to organize tasks across design, programming, art, and QA.",
+      "best_for": "Solo developers and teams building games with Claude Code who want structured project management, design documentation, and multi-agent workflows.",
+      "highlights": [
+        "Includes 49 specialized agents organized into directors, department leads, and specialists for Godot, Unity, and Unreal.",
+        "Provides 74 slash commands for tasks ranging from brainstorming and design reviews to sprint planning and release checklists.",
+        "Features 15 automated validation hooks and 14 path-scoped coding standards enforced during edits and commits."
+      ],
+      "getting_started": "git clone https://github.com/Donchitos/Claude-Code-Game-Studios.git my-game",
+      "ai_generated_at": "2026-11-02T15:53:01.878Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -149,14 +245,24 @@
       "stars": 10043,
       "forks": 1208,
       "pros": [
-        "Provides production-tested infrastructure that solves the skill auto-activation problem for Claude Code and Codex.",
-        "Features a modular skill pattern with progressive disclosure to keep skills under context limits."
+        "Solves the limitation of skills requiring manual activation through automatic prompt and edit hooks",
+        "Includes a comprehensive built-in verification script to perform health checks and validate setup"
       ],
       "cons": [
-        "Hooks are bash scripts that require macOS, Linux, or WSL2 and will not run in plain cmd or PowerShell on Windows.",
-        "Optional Stop hooks and certain scripts like tsc-check.sh require heavy customization for specific project layouts."
+        "Requires macOS, Linux, or WSL2 since the infrastructure relies on bash scripts",
+        "Stop hooks and certain checks require manual configuration and adjustment for monorepo layouts"
       ],
-      "security_notes": "Arbitrary code execution is possible because the repository relies on executing custom bash scripts and shell hooks locally within your project environment. API key requirements are documented for optional AI-powered classification supporting Gemini, OpenAI, and Anthropic providers, though no API key is required by default for regex-based matching.",
+      "security_notes": "Arbitrary code execution is not explicitly discussed beyond standard script execution and hooks running in the local shell environment. API key requirements are documented for optional AI-powered skill classification, supporting Gemini, OpenAI, and Anthropic keys.",
+      "summary": "This repository provides production-tested infrastructure patterns designed to scale Claude Code for enterprise development. Users receive a reference library containing auto-activating skills, lifecycle hooks, specialized agents, and developer documentation systems that can be copied into their projects.",
+      "best_for": "Developers scaling Claude Code across complex TypeScript projects who want automated skill activation and consistent architectural guidelines.",
+      "highlights": [
+        "Auto-activating skills driven by configuration rules and lifecycle hooks",
+        "Modular skill organization following a 500-line rule for progressive disclosure",
+        "Eight specialized agents and custom slash commands for architecture and documentation"
+      ],
+      "getting_started": "npx tsx setup.ts ~/my-project",
+      "ai_generated_at": "2026-11-02T15:53:04.213Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -171,6 +277,25 @@
       "license_spdx": "MIT",
       "stars": null,
       "forks": null,
+      "pros": [
+        "Offers multiple installation methods including official marketplace plugins and manual configuration.",
+        "Includes configuration templates for numerous LLM providers and local gateways."
+      ],
+      "cons": [
+        "Manual installation will overwrite the existing ~/.claude directory if precautions are not taken.",
+        "Some features require separate third-party API keys or dependencies like Python and specific CLI tools."
+      ],
+      "security_notes": "Arbitrary code execution risks are mentioned regarding the bypassPermissions setting in configuration templates. API key requirements are documented for specific skills such as GEMINI_API_KEY and OPENAI_API_KEY, along with authorization steps for GitHub Copilot.",
+      "summary": "This repository provides a collection of skills, sub-agents, and model configuration templates to extend Claude Code with capabilities like deep research, image generation, and GitHub automation. Users can install these capabilities as a plugin or via manual configuration to support multiple LLM providers.",
+      "best_for": "Developers using Claude Code who want to integrate automated research, code review, multi-provider model routing, and specialized workflow skills.",
+      "highlights": [
+        "Includes reusable skills for brainstorming, deep research, code reviews, and image generation.",
+        "Provides preconfigured settings templates for multiple model providers including GitHub Copilot and LiteLLM.",
+        "Contains specialized sub-agents for PR reviews and issue fixing."
+      ],
+      "getting_started": "/plugin marketplace add feiskyer/claude-code-settings",
+      "ai_generated_at": "2026-11-02T15:53:06.659Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -185,6 +310,25 @@
       "license_spdx": "Apache-2.0",
       "stars": null,
       "forks": null,
+      "pros": [
+        "Supports multiple AI coding platforms including Claude Code, Codex CLI, Gemini CLI, and Cursor.",
+        "Provides modular plugins that can be installed selectively based on project requirements."
+      ],
+      "cons": [
+        "Requires manual configuration and understanding of multiple distinct CLI ecosystems.",
+        "Some plugins and configuration recipes depend on external third-party API keys or tools."
+      ],
+      "security_notes": "The repository configures local shell commands and permissions allowlists for automated AI execution, but arbitrary code execution risks depend entirely on the capabilities of the underlying AI coding tools being utilized. API key requirements are explicitly documented for integrations such as Z.ai, Kimi, MiniMax, and Tavily.",
+      "summary": "This repository provides a battle-tested configuration and plugin marketplace for AI coding tools like Claude Code, OpenAI Codex, and Cursor. It bundles specialized skills, commands, hooks, subagents, and MCP servers to improve code quality, enforce development guardrails, and integrate third-party services.",
+      "best_for": "Developers using AI coding assistants who want to install structured plugins, custom hooks, and multi-model settings for cleaner workflows.",
+      "highlights": [
+        "Includes various plugins for tasks like code simplification, humanized writing, cross-model advisors, and office document processing.",
+        "Provides configuration files and recipes for alternative backend APIs like Z.ai, Kimi K3, and MiniMax M3.",
+        "Features automation hooks to block force-pushes, enforce review steps, and format edited files automatically."
+      ],
+      "getting_started": "claude plugin marketplace add fcakyon/claude-codex-settings",
+      "ai_generated_at": "2026-11-02T15:53:09.920Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -199,6 +343,25 @@
       "license_spdx": "MIT",
       "stars": null,
       "forks": null,
+      "pros": [
+        "Modular installation lets you pick only the specific plugins you need",
+        "Comprehensive built-in safety guards to block dangerous commands and protect credentials"
+      ],
+      "cons": [
+        "Updates are not automatic by default and require manual configuration",
+        "Requires specific versions of Claude Code and Python 3.9+ for hooks"
+      ],
+      "security_notes": "Plugins run inside your Claude Code session and can read or edit your repo, run shell commands, and call external services. The README documents safety guards against destructive commands and credential reading, but does not explicitly document API key requirements or arbitrary code execution details beyond warning users to review plugins before installation.",
+      "summary": "A plugin marketplace for Claude Code providing 23 independent plugins across foundation, utility, domain, and meta layers. It enables git workflows, code reviews, TDD enforcement, and autonomous agent tasks directly within your coding session.",
+      "best_for": "Developers using Claude Code who want to install modular plugins for git operations, code review, and spec-driven development.",
+      "highlights": [
+        "Includes 23 modular plugins grouped into foundation, utility, domain, and meta layers",
+        "Provides built-in TDD enforcement and destructive command blockers for safety",
+        "Offers everyday commands for managing project lifecycles, PR reviews, and catchups"
+      ],
+      "getting_started": "/plugin marketplace add athola/claude-night-market",
+      "ai_generated_at": "2026-11-02T15:53:12.629Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -213,6 +376,25 @@
       "license_spdx": "MIT",
       "stars": null,
       "forks": null,
+      "pros": [
+        "Comprehensive coverage of external recon methodologies, dorks, and vendor fingerprints",
+        "Self-contained SKILL.md files that can be easily dropped into a local Claude environment"
+      ],
+      "cons": [
+        "Requires manual file copying or script execution to sync and install skills into Claude",
+        "Limited strictly to reconnaissance and explicitly excludes active exploitation or credential submission"
+      ],
+      "security_notes": "The README does not document arbitrary code execution. It mentions modern AI API keys within the secret-regex catalog and provides read-only credential validators for services like AWS, GitHub, Slack, and others.",
+      "summary": "This repository provides a collection of structured Markdown skills and helper scripts that turn Claude into an external recon operator for authorized security assessments. It includes methodology guides, regex secret-scanning patterns, and organization-grade depth skills designed to handle enterprise attack-surface reasoning.",
+      "best_for": "Penetration testers and bug bounty hunters who want Claude Code to assist with authorized external reconnaissance and attack-surface analysis.",
+      "highlights": [
+        "Eight structured Claude skills including methodology and tactical recon arsenals",
+        "Eighty-pattern secret-regex catalog and included secret scanning script",
+        "Organization-grade depth skills covering attack surfaces, email security, and risk quantification"
+      ],
+      "getting_started": "git clone https://github.com/elementalsouls/Claude-OSINT.git",
+      "ai_generated_at": "2026-11-02T15:54:13.226Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -227,6 +409,25 @@
       "license_spdx": "MIT",
       "stars": null,
       "forks": null,
+      "pros": [
+        "Wide variety of specialized plugins for different use cases",
+        "Compatible with both Claude Code native installation and other agents via npx"
+      ],
+      "cons": [
+        "Some MCP servers require Claude Code exclusively and do not support npx installation",
+        "Relies on external repositories and separate plugin packages for individual features"
+      ],
+      "security_notes": "The README does not document requirements for API keys. Regarding arbitrary code execution, the README mentions plugins and MCP servers that modify AI behavior, perform system maintenance, and execute code generation or remote diagnostics, but it does not detail specific security sandboxing or arbitrary code execution controls.",
+      "summary": "A collection of 28 plugins and MCP servers designed for Claude Code and other agent environments. It provides tools for parallel exploration, binary reverse engineering, structured testing, and executive workflows.",
+      "best_for": "Developers and technical users looking to extend Claude Code with specialized workflows for testing, system maintenance, and development.",
+      "highlights": [
+        "Includes 28 plugins and MCP servers covering development, testing, and utilities",
+        "Supports installation via npx or directly inside Claude Code",
+        "Provides specialized features like binary reverse engineering, scenario testing, and tiered delegation"
+      ],
+      "getting_started": "npx skills add 2389-research/simmer",
+      "ai_generated_at": "2026-11-02T15:53:18.056Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -241,6 +442,25 @@
       "license_spdx": "Apache-2.0",
       "stars": null,
       "forks": null,
+      "pros": [
+        "Provides a centralized marketplace for discovering officially recognized and community plugins",
+        "Includes clear guidelines and metadata structures for contributing new plugins"
+      ],
+      "cons": [
+        "Plugin names are immutable slugs, meaning renames require mapping entries to prevent installation errors",
+        "Relies entirely on individual plugin homepages for licensing information"
+      ],
+      "security_notes": "The repository notes that Anthropic does not control what MCP servers, files, or other software are included in plugins and cannot verify their safety or behavior, meaning it does not document or restrict arbitrary code execution. It also does not document API keys.",
+      "summary": "This repository provides a curated directory of internal and third-party plugins for Claude Code. You get access to a structured marketplace structure containing plugin metadata, commands, agents, and skill definitions.",
+      "best_for": "Developers using Claude Code who want to discover, install, or contribute internal and external plugins.",
+      "highlights": [
+        "Separates internal Anthropic plugins and community external plugins into distinct directories",
+        "Defines a standard plugin layout including metadata, MCP server configurations, and slash commands",
+        "Supports skill-bundle plugins that expose curated subsets of SKILL.md files from repositories"
+      ],
+      "getting_started": "/plugin install {plugin-name}@claude-plugins-official",
+      "ai_generated_at": "2026-11-02T15:54:17.473Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -255,6 +475,25 @@
       "license_spdx": "MIT",
       "stars": null,
       "forks": null,
+      "pros": [
+        "Zero external Python dependencies for CLI scripts, minimizing setup friction.",
+        "Broad multi-tool support allowing the same skill set to be used across Claude Code, Cursor, Aider, and others."
+      ],
+      "cons": [
+        "Requires careful manual plugin bundle selection since individual skills must be installed via their containing domain packages.",
+        "Windows users must configure specific symlink clone options and console environment variables to prevent installation issues."
+      ],
+      "security_notes": "The repository includes a skill-security-auditor tool that scans skills for arbitrary code execution risks before installation. The README does not document API keys.",
+      "summary": "This repository provides a large, open-source library of production-ready skills, plugins, and agent instructions designed for Claude Code and 12 other AI coding platforms. It includes structured instruction files, standard library-only Python tools, and reference documentation spanning engineering, marketing, research, and executive advisory domains.",
+      "best_for": "Developers and teams wanting to extend AI coding agents like Claude Code or Cursor with domain-specific workflows, testing tools, and pre-built operational checklists.",
+      "highlights": [
+        "Over 400 production-ready skills spanning 20 domains such as engineering, product, marketing, and finance.",
+        "Includes hundreds of standard library-only Python CLI scripts with zero pip install requirements.",
+        "Native compatibility across 13 different AI coding agents and tools with conversion scripts."
+      ],
+      "getting_started": "/plugin marketplace add alirezarezvani/claude-skills",
+      "ai_generated_at": "2026-11-02T15:54:22.303Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -269,6 +508,25 @@
       "license_spdx": "MIT",
       "stars": null,
       "forks": null,
+      "pros": [
+        "Covers a broad spectrum of domain areas including backend, frontend, DevOps, and security",
+        "Integrates project workflows with external tools like Jira and Confluence"
+      ],
+      "cons": [
+        "Workflow commands require setting up an Atlassian MCP server",
+        "Relies on a specific plugin architecture environment (Claude Code)"
+      ],
+      "security_notes": "Arbitrary code execution capabilities depend on the underlying Claude Code tool execution environment. API key requirements are not explicitly documented in the README, though integration with external tools like Atlassian implies necessary authentication setup.",
+      "summary": "This repository provides a collection of 67 specialized skills and 9 workflow commands designed for Claude Code. It helps developers manage full-stack development, security hardening, and project lifecycles directly within their coding assistant.",
+      "best_for": "Full-stack developers using Claude Code who want context-aware assistance across languages, frameworks, and project workflows.",
+      "highlights": [
+        "Includes 67 specialized skills across 12 categories covering languages, frameworks, and infrastructure",
+        "Provides 9 workflow commands for managing epics from discovery through retrospectives",
+        "Features context engineering tools like /common-ground to surface hidden project assumptions"
+      ],
+      "getting_started": "/plugin marketplace add jeffallan/claude-skills",
+      "ai_generated_at": "2026-11-02T15:53:25.276Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -284,14 +542,24 @@
       "stars": 5550,
       "forks": 293,
       "pros": [
-        "Supports multiple platforms including Claude Code and Codex CLI.",
-        "Covers comprehensive academic workflows like paper writing, office document generation, and scientific computing."
+        "Covers multiple end-to-end academic scenarios from drafting to presentation and simulation.",
+        "Cross-platform compatibility supporting both Claude Code and Codex CLI."
       ],
       "cons": [
-        "Requires manual global or project-level directory copying for installation.",
-        "Specialized for specific fields like optoelectronics, which may limit general utility."
+        "Installation requires manual copying of skill directories or plugin configurations.",
+        "Relies heavily on external tools and scripts for full functionality in specialized domains like MATLAB."
       ],
-      "security_notes": "Arbitrary code execution is not documented in the README. API key requirements are not documented in the README.",
+      "security_notes": "The provided README does not document arbitrary code execution risks or API key requirements.",
+      "summary": "This repository provides three academic skill packages for Claude Code and Codex, designed to assist researchers with paper writing, academic Office documents, and scientific computing. It includes modular templates, checklists, and reference guides tailored for Chinese-speaking academic workflows.",
+      "best_for": "Researchers and students looking to use Claude Code or Codex for academic writing, document generation, and data analysis.",
+      "highlights": [
+        "Includes research-writing-skill for structuring and refining paper sections and rebuttal responses.",
+        "Includes office-academic-skill for generating editable Word reports and PowerPoint presentations.",
+        "Includes scientific-toolkit-skill containing tools and libraries for MATLAB, Python, and literature management."
+      ],
+      "getting_started": "git clone https://github.com/你的用户名/claude-academic-skills.git",
+      "ai_generated_at": "2026-11-02T15:53:27.680Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -306,6 +574,25 @@
       "license_spdx": "MIT",
       "stars": null,
       "forks": null,
+      "pros": [
+        "Supports a wide array of popular AI agent hosts and CLI tools.",
+        "Promotes sustainable engineering practices by capturing project learnings automatically for future sessions."
+      ],
+      "cons": [
+        "Upgrading existing installations requires specific manual refresh order steps to prevent staying on older versions.",
+        "The project is opinionated by design, meaning maintainers may reject pull requests that do not align with their vision."
+      ],
+      "security_notes": "The README does not document arbitrary code execution or API keys.",
+      "summary": "Compound Engineering provides 37 skills for AI coding agents to structure engineering work around a continuous loop of brainstorming, planning, building, reviewing, and capturing knowledge. It supports 14 different agent hosts and ensures that insights from each task are recorded for future changes to read.",
+      "best_for": "Developers using AI coding agents who want to enforce structured, iterative planning, review, and knowledge-compounding workflows.",
+      "highlights": [
+        "Includes 37 skills for AI coding agents organized into functional groups like the core loop, testing, design, and git workflows.",
+        "Runs across 14 agent hosts including Claude Code, Cursor, Codex, and others.",
+        "Features a core feedback loop that records learnings into solutions documentation so subsequent iterations start with better context."
+      ],
+      "getting_started": "/plugin marketplace add EveryInc/compound-engineering-plugin",
+      "ai_generated_at": "2026-11-02T15:54:26.814Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -320,6 +607,25 @@
       "license_spdx": "MIT",
       "stars": null,
       "forks": null,
+      "pros": [
+        "Encodes proven product management frameworks directly into your daily AI workflow.",
+        "Compatible with multiple CLI tools and assistants like Claude Code, Codex, and OpenCode."
+      ],
+      "cons": [
+        "Slash commands do not natively expose as commands on Codex and require plain language descriptions.",
+        "Some plugins and components have moved to separate companion repositories."
+      ],
+      "security_notes": "The README does not mention arbitrary code execution or API keys.",
+      "summary": "This repository provides a collection of product management skills, chained workflows, and plugins designed for Claude Code, Cowork, and other AI assistants. It includes structured frameworks covering product discovery, strategy, execution, market research, data analytics, and go-to-market planning.",
+      "best_for": "Product managers and teams looking to integrate structured PM frameworks into their AI-assisted workflows.",
+      "highlights": [
+        "Includes 69 product management skills across 9 distinct plugins.",
+        "Features 42 chained workflows accessible via slash commands.",
+        "Provides reusable reference skills based on established product methodologies."
+      ],
+      "getting_started": "claude plugin marketplace add phuryn/pm-skills",
+      "ai_generated_at": "2026-11-02T15:54:31.480Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -334,6 +640,25 @@
       "license_spdx": "MIT",
       "stars": null,
       "forks": null,
+      "pros": [
+        "Eliminates manual file preparation when sharing code context with LLMs.",
+        "Offers flexible output formats and rich configuration options including git integration and file filtering."
+      ],
+      "cons": [
+        "Packed output can become extremely large for extensive codebases, requiring careful token budget management or splitting.",
+        "Processing untrusted remote repository configurations or custom file processors carries risks regarding arbitrary code execution."
+      ],
+      "security_notes": "The repository documents that file processors and configuration loading can lead to arbitrary code execution if untrusted repositories are loaded without proper review. It also documents a security check feature that uses Secretlint to scan files for sensitive information like API keys and passwords.",
+      "summary": "Repomix packs an entire codebase into a single AI-friendly file like XML, Markdown, JSON, or plain text. It helps developers feed project structures and file contents directly to Large Language Models for tasks like code review, refactoring, and documentation generation.",
+      "best_for": "Developers who want to package a local or remote repository into a single consolidated file for AI analysis and context sharing.",
+      "highlights": [
+        "Packs entire repositories into a single AI-optimized output file with hierarchical directory structures and token counts.",
+        "Supports code compression using Tree-sitter to extract essential signatures and reduce token usage.",
+        "Includes a security check feature via Secretlint to detect files matching known credential formats."
+      ],
+      "getting_started": "npx repomix@latest",
+      "ai_generated_at": "2026-11-02T15:54:37.185Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -350,6 +675,25 @@
       "license_spdx": null,
       "stars": null,
       "forks": null,
+      "pros": [
+        "Provides self-contained example folders with SKILL.md files for easy reference.",
+        "Supports direct installation into Claude Code via marketplace commands."
+      ],
+      "cons": [
+        "Skills are provided for demonstration and educational purposes only.",
+        "Document skills are source-available rather than fully open source."
+      ],
+      "security_notes": "The README does not document arbitrary code execution. The README does not document API keys.",
+      "summary": "This repository provides folders of instructions, scripts, and resources called skills that Claude loads dynamically to improve performance on specialized tasks. It includes demonstration examples ranging from creative applications to technical tasks, enterprise workflows, and source-available document editing skills.",
+      "best_for": "Developers and users wanting to understand, create, or integrate custom skills for Claude across Claude Code, Claude.ai, and the API.",
+      "highlights": [
+        "Contains example skills for creative, technical, enterprise, and document workflows.",
+        "Includes document creation and editing skills powering docx, pdf, pptx, and xlsx capabilities.",
+        "Provides a skill template and the Agent Skills specification for creating custom skills."
+      ],
+      "getting_started": "/plugin marketplace add anthropics/skills",
+      "ai_generated_at": "2026-11-02T15:54:39.998Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -364,6 +708,25 @@
       "license_spdx": "MIT",
       "stars": null,
       "forks": null,
+      "pros": [
+        "Skills can be pulled in on demand to save context window space.",
+        "Includes automated workflows for generating and syncing custom skills from source documentation."
+      ],
+      "cons": [
+        "Positioned as a proof-of-concept project with performance that is not yet fully tested in practice.",
+        "Agents may suffer from false negatives where they fail to pull in expected skills."
+      ],
+      "security_notes": "The repository README does not document arbitrary code execution or API keys.",
+      "summary": "This repository provides a collection of agent skills reflecting Anthony Fu's preferences and best practices alongside skills generated from official documentation like Vue, Nuxt, and Vite. It serves as a proof-of-concept project for generating agent skills from source documentation and keeping them synchronized.",
+      "best_for": "Developers using AI coding agents who want to load opinionated workflows and framework-specific guidelines on demand.",
+      "highlights": [
+        "Includes hand-maintained skills for tasks like creating pull requests, issuing triage, and simplifying code changes.",
+        "Features documentation-generated skills for modern stacks such as Vue, Nuxt, Pinia, Vite, and Vitest.",
+        "Utilizes git submodules to directly reference source documentation and stay up-to-date with upstream changes."
+      ],
+      "getting_started": "pnpx skills add antfu/skills --skill='*'",
+      "ai_generated_at": "2026-11-02T15:54:44.892Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     },
@@ -378,6 +741,25 @@
       "license_spdx": "MIT",
       "stars": null,
       "forks": null,
+      "pros": [
+        "Structures the AI agent's development process from initial intent to final review.",
+        "Compatible with a wide variety of popular AI coding tools and CLIs."
+      ],
+      "cons": [
+        "Installation commands and methods vary significantly depending on the chosen coding harness.",
+        "Relies entirely on the coding agent correctly respecting and loading the provided skill files."
+      ],
+      "security_notes": "The README does not document arbitrary code execution. The README does not document API keys.",
+      "summary": "Superpowers provides a comprehensive development methodology and skills library designed to guide coding agents through structured workflows like brainstorming, planning, and TDD. It installs as a plugin across multiple AI coding harnesses to enforce systematic development practices rather than ad-hoc code generation.",
+      "best_for": "Developers using AI coding agents who want to enforce strict requirements, test-driven development, and structured planning.",
+      "highlights": [
+        "A library of automated skills covering testing, debugging, collaboration, and meta-development.",
+        "Support for multiple coding agent harnesses including Claude Code, Cursor, Codex, and others via custom plugins.",
+        "A mandatory workflow spanning brainstorming, git worktrees, task planning, and TDD execution."
+      ],
+      "getting_started": "/plugin install superpowers@claude-plugins-official",
+      "ai_generated_at": "2026-11-02T15:54:49.442Z",
+      "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
     }

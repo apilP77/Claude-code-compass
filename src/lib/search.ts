@@ -36,7 +36,12 @@ function compareLastChecked(
 }
 
 function matchesQuery(repository: Repository, query: string): boolean {
-  return [repository.name, repository.description, ...repository.tags].some(
+  return [
+    repository.name,
+    repository.description,
+    repository.summary ?? "",
+    ...repository.tags,
+  ].some(
     (value) => value.toLocaleLowerCase().includes(query),
   );
 }

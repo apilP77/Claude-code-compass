@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import CopyCommand from "@/components/CopyCommand";
 import VoteButtons from "@/components/VoteButtons";
 import { repositories } from "@/lib/repos";
 
@@ -60,8 +61,76 @@ export default async function RepositoryPage({ params }: RepositoryPageProps) {
           {repository.name}
         </h1>
         <p className="mt-6 text-base leading-7 text-zinc-700 dark:text-zinc-300">
-          {repository.description}
+          {repository.summary ?? repository.description}
         </p>
+        {repository.summary && (
+          <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-violet-700 dark:text-violet-300">
+            {repository.listing_status === "reviewed"
+              ? "AI-written summary; listing reviewed"
+              : "AI-written summary · not editor-verified"}
+          </p>
+        )}
+
+        {repository.best_for && (
+          <section className="mt-8">
+            <h2 className="text-lg font-semibold text-zinc-950 dark:text-white">
+              Best for
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-zinc-700 dark:text-zinc-300">
+              {repository.best_for}
+            </p>
+          </section>
+        )}
+
+        {repository.highlights && (
+          <section className="mt-8">
+            <h2 className="text-lg font-semibold text-zinc-950 dark:text-white">
+              Highlights
+            </h2>
+            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6 text-zinc-700 dark:text-zinc-300">
+              {repository.highlights.map((highlight) => (
+                <li key={highlight}>{highlight}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {repository.getting_started && (
+          <section className="mt-8">
+            <h2 className="text-lg font-semibold text-zinc-950 dark:text-white">
+              Getting started
+            </h2>
+            <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+              Quoted from the project&apos;s README. Read it before you run it.
+            </p>
+            <CopyCommand command={repository.getting_started} />
+          </section>
+        )}
+
+        {repository.pros && repository.cons && (
+          <section className="mt-8 grid gap-6 sm:grid-cols-2">
+            <div>
+              <h2 className="text-lg font-semibold text-zinc-950 dark:text-white">
+                Pros
+              </h2>
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6 text-zinc-700 dark:text-zinc-300">
+                {repository.pros.map((pro) => (
+                  <li key={pro}>{pro}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h2 className="text-lg font-semibold text-zinc-950 dark:text-white">
+                Cons
+              </h2>
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6 text-zinc-700 dark:text-zinc-300">
+                {repository.cons.map((con) => (
+                  <li key={con}>{con}</li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        )}
 
         <dl className="mt-8 grid gap-6 border-t border-zinc-200 pt-6 sm:grid-cols-2 dark:border-zinc-700">
           <div>

@@ -39,8 +39,8 @@ export default function RepoCard({ repository }: RepoCardProps) {
         </span>
       </div>
 
-      <p className="mt-4 flex-1 text-sm leading-6 text-slate-300">
-        {repository.description}
+      <p className="mt-4 line-clamp-4 flex-1 text-sm leading-6 text-slate-300">
+        {repository.summary ?? repository.description}
       </p>
 
       <div className="mt-6 flex flex-wrap items-center gap-2">
@@ -55,6 +55,13 @@ export default function RepoCard({ repository }: RepoCardProps) {
         {repository.listing_status === "reviewed" ? (
           <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-300">
             ✓ Verified
+          </span>
+        ) : repository.summary ? (
+          <span
+            title="Written by AI from the README. Not yet verified by an editor."
+            className="rounded-full border border-violet-300/20 bg-violet-300/10 px-3 py-1 text-xs font-semibold text-violet-200"
+          >
+            ✨ AI summary · not editor-verified
           </span>
         ) : (
           <span className="rounded-full border border-orange-400/20 bg-orange-400/10 px-3 py-1 text-xs font-semibold text-orange-300">
