@@ -1,26 +1,217 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Design tokens (DESIGN.md): "survey chart" (light) and "night chart" (dark).
+ * Components use the Tailwind names below (bg-bg, bg-surface, border-line,
+ * text-fg, text-muted, text-accent, bg-ink, ...) and never raw colors. Those
+ * names point at the --c-* variables, which switch with <html data-theme>.
+ * The theme is set before first paint by the script in layout.tsx.
+ */
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+  --c-bg: #e8ede9; /* chart: cool map paper */
+  --c-surface: #f6f8f6; /* sheet: raised entries */
+  --c-surface-2: #edf1ee;
+  --c-line: #cbd6cf;
+  --c-line-strong: #9fb4a9; /* contour */
+
+  --c-fg: #16233a; /* ink: survey navy */
+  --c-ink: #16233a; /* primary button fill */
+  --c-muted: #46546a;
+  --c-faint: #596573;
+
+  --c-accent: #2f6a8a; /* lake: links, focus, selected */
+  --c-blaze: #d9a21b; /* trail-blaze yellow: needle and fills only */
+  --c-star: #7d5800; /* blaze, dark enough to read as text */
+  --c-verified: #25694b;
+  --c-ai: #5f4f9e;
+  --c-warn: #9a4720;
+  --c-danger: #b3261e;
+
+  --c-code: #16233a;
+  --c-code-fg: #e8ede9;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --c-bg: #0f1b2a; /* deep chart navy */
+  --c-surface: #162538;
+  --c-surface-2: #1b2d43;
+  --c-line: #2a3e55;
+  --c-line-strong: #3f5a74;
+
+  --c-fg: #e6edf3;
+  --c-ink: #e6edf3;
+  --c-muted: #b3c0ce;
+  --c-faint: #93a3b4;
+
+  --c-accent: #6db6d9;
+  --c-blaze: #e8b93a;
+  --c-star: #f0c75a;
+  --c-verified: #5fcb9b;
+  --c-ai: #b7a8f0;
+  --c-warn: #f2a06a;
+  --c-danger: #f29b94;
+
+  --c-code: #0a121d;
+  --c-code-fg: #e6edf3;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-surface-2: var(--c-surface-2);
+  --color-line: var(--c-line);
+  --color-line-strong: var(--c-line-strong);
+  --color-fg: var(--c-fg);
+  --color-ink: var(--c-ink);
+  --color-muted: var(--c-muted);
+  --color-faint: var(--c-faint);
+  --color-accent: var(--c-accent);
+  --color-blaze: var(--c-blaze);
+  --color-star: var(--c-star);
+  --color-verified: var(--c-verified);
+  --color-ai: var(--c-ai);
+  --color-warn: var(--c-warn);
+  --color-danger: var(--c-danger);
+  --color-code: var(--c-code);
+  --color-code-fg: var(--c-code-fg);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-archivo), var(--font-public-sans), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+}
+
+:root {
+  /* A damped spring: overshoots, then settles, like a real compass needle. */
+  --ease-needle: linear(
+    0, 0.34 7%, 0.82 15%, 1.1 24%, 1.16 30%, 1.08 38%, 0.97 48%, 0.95 56%,
+    1.01 70%, 1
+  );
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--c-bg);
+  color: var(--c-fg);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
+
+/* Map lettering: Archivo set expanded. Used for titles only. */
+.display {
+  font-family: var(--font-display);
+  font-stretch: 118%;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+/* One focus style for every interactive element. */
+:where(a, button, input, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--c-blaze) 45%, transparent);
+}
+
+/* ---- Hero: contour lines draw in once -------------------------------- */
+.contour path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: contour-draw 1600ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.contour path:nth-child(2) { animation-delay: 120ms; }
+.contour path:nth-child(3) { animation-delay: 240ms; }
+.contour path:nth-child(4) { animation-delay: 360ms; }
+.contour path:nth-child(5) { animation-delay: 480ms; }
+.contour path:nth-child(6) { animation-delay: 600ms; }
+
+@keyframes contour-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---- Compass needle -------------------------------------------------- */
+.needle {
+  transform-origin: 50% 50%;
+  transform: rotate(var(--bearing, 0deg));
+  transition: transform 1100ms var(--ease-needle);
+}
+.needle[data-lost="true"] {
+  animation: needle-wobble 900ms ease-in-out 2;
+}
+
+@keyframes needle-wobble {
+  0%, 100% { transform: rotate(var(--bearing, 0deg)); }
+  25% { transform: rotate(calc(var(--bearing, 0deg) + 14deg)); }
+  75% { transform: rotate(calc(var(--bearing, 0deg) - 14deg)); }
+}
+
+/* ---- Vote count rolls to its new value ------------------------------- */
+.roll-up { animation: roll-up 260ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+.roll-down { animation: roll-down 260ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+@keyframes roll-up {
+  from { transform: translateY(60%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes roll-down {
+  from { transform: translateY(-60%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ---- View transitions (React <ViewTransition>, no extra library) ----- */
+::view-transition-group(.morph) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+::view-transition-old(.slide-down) {
+  animation:
+    150ms ease-out both fade-out,
+    150ms ease-out both slide-down;
+}
+::view-transition-new(.slide-up) {
+  animation:
+    220ms ease-out 150ms both fade-in,
+    380ms cubic-bezier(0.2, 0.8, 0.2, 1) both slide-up;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fade-out {
+  to { opacity: 0; }
+}
+@keyframes slide-up {
+  from { transform: translateY(10px); }
+  to { transform: translateY(0); }
+}
+@keyframes slide-down {
+  to { transform: translateY(10px); }
+}
+
+/* Anyone who asks for reduced motion gets no animation at all. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .contour path {
+    stroke-dashoffset: 0;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }

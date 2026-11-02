@@ -104,6 +104,24 @@ describe("searchRepositories", () => {
     ).toEqual(["owner/mike", "owner/alpha", "owner/bravo", "owner/zulu"]);
   });
 
+  it("sorts by stars descending, with unknown counts last", () => {
+    const starred = [
+      repository("o/low", "Low", { stars: 5 }),
+      repository("o/none", "None"),
+      repository("o/high", "High", { stars: 500 }),
+    ];
+
+    expect(
+      searchRepositories(starred, { sort: "stars" }).map((repo) => repo.id),
+    ).toEqual(["o/high", "o/low", "o/none"]);
+  });
+
+  it("sorts newest first using the order repositories were added", () => {
+    expect(
+      searchRepositories(repositories, { sort: "newest" }).map((repo) => repo.id),
+    ).toEqual(["owner/bravo", "owner/mike", "owner/alpha", "owner/zulu"]);
+  });
+
   it("defaults filtered results to verified-first, then name", () => {
     expect(
       searchRepositories(repositories, { query: "tool" }).map((repo) => repo.id),

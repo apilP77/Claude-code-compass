@@ -3,31 +3,52 @@
 import { useState } from "react";
 
 export default function CopyCommand({ command }: { command: string }) {
-  const [copied, setCopied] = useState(false);
+  const [state, setState] = useState<"idle" | "copied" | "failed">("idle");
 
   async function copy() {
     try {
       await navigator.clipboard.writeText(command);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setState("copied");
     } catch {
-      setCopied(false);
+      setState("failed");
     }
+    setTimeout(() => setState("idle"), 2000);
   }
 
   return (
-    <div className="mt-2 flex items-stretch gap-2">
-      <code className="min-w-0 flex-1 overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-100 px-3 py-2 font-mono text-sm whitespace-pre text-zinc-900 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100">
+    <div className="flex items-stretch gap-2">
+      <code className="min-w-0 flex-1 overflow-x-auto whitespace-pre rounded-md border border-line-strong bg-code px-4 py-3 font-mono text-sm text-code-fg">
         {command}
       </code>
       <button
         type="button"
         onClick={() => void copy()}
-        aria-live="polite"
-        className="shrink-0 rounded-lg border border-zinc-300 px-3 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800 dark:focus-visible:outline-teal-300"
+        className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-md border border-line-strong bg-surface px-4 text-sm font-medium text-fg transition-colors hover:border-ink"
       >
-        {copied ? "Copied" : "Copy"}
+        <svg
+          viewBox="0 0 16 16"
+          aria-hidden="true"
+          className="h-4 w-4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          {state === "copied" ? (
+            <path d="m3 8.5 3.2 3.2L13 4.5" />
+          ) : (
+            <>
+              <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" />
+              <path d="M10.5 5.5v-2a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2" />
+            </>
+          )}
+        </svg>
+        {state === "copied" ? "Copied" : state === "failed" ? "Copy failed" : "Copy command"}
       </button>
+      <span aria-live="polite" className="sr-only">
+        {state === "copied" ? "Command copied to clipboard" : ""}
+      </span>
     </div>
   );
 }

@@ -1,15 +1,30 @@
-import { Suspense } from "react";
+import { Suspense, ViewTransition } from "react";
 import Link from "next/link";
-import RepoCard from "@/components/RepoCard";
+import CategorySymbol from "@/components/CategorySymbol";
+import FeaturedEntry from "@/components/FeaturedEntry";
+import HeroFinder from "@/components/HeroFinder";
+import RepoRow from "@/components/RepoRow";
 import { repositories } from "@/lib/repos";
-import { searchRepositories } from "@/lib/search";
+import {
+  REPOSITORY_SORTS,
+  searchRepositories,
+  type RepositorySort,
+} from "@/lib/search";
 import { CATEGORIES, type Category } from "@/lib/schema";
 
 type HomeProps = {
   searchParams: Promise<{
     q?: string | string[];
     category?: string | string[];
+    sort?: string | string[];
   }>;
+};
+
+const CATEGORY_LABELS: Record<Category, string> = {
+  skills: "Skills",
+  plugins: "Plugins",
+  collections: "Collections",
+  directories: "Directories",
 };
 
 function firstValue(value: string | string[] | undefined): string {
@@ -20,7 +35,15 @@ function isCategory(value: string): value is Category {
   return CATEGORIES.some((category) => category === value);
 }
 
-function directoryHref(query: string, category?: Category): string {
+function isSort(value: string): value is RepositorySort {
+  return REPOSITORY_SORTS.some((sort) => sort === value);
+}
+
+function directoryHref(
+  query: string,
+  sort: RepositorySort,
+  category?: Category,
+): string {
   const params = new URLSearchParams();
   if (query) {
     params.set("q", query);
@@ -28,24 +51,55 @@ function directoryHref(query: string, category?: Category): string {
   if (category) {
     params.set("category", category);
   }
+  if (sort !== "verified") {
+    params.set("sort", sort);
+  }
 
   const search = params.toString();
   return search ? `/?${search}` : "/";
 }
 
+const categoryCounts = CATEGORIES.reduce(
+  (counts, category) => ({
+    ...counts,
+    [category]: repositories.filter((repo) => repo.category === category).length,
+  }),
+  {} as Record<Category, number>,
+);
+
+const legendBase =
+  "inline-flex min-h-10 items-center gap-2 rounded-md border px-3 text-sm font-medium transition-colors";
+const legendOff = "border-line-strong text-fg hover:border-ink hover:bg-surface";
+const legendOn = "border-ink bg-ink text-bg";
+
+function DirectorySkeleton() {
+  return (
+    <div aria-busy="true" aria-label="Loading repositories">
+      <div className="h-80 border-b border-line bg-surface-2" />
+      <div className="mx-auto mt-8 w-full max-w-6xl space-y-px px-5 sm:px-8">
+        {Array.from({ length: 6 }, (_, index) => (
+          <div key={index} className="h-24 animate-pulse rounded bg-surface" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Home({ searchParams }: HomeProps) {
   return (
-    <Suspense
-      fallback={
-        <main className="mx-auto w-full max-w-6xl flex-1 px-5 py-12 sm:px-8 sm:py-16">
-          <p className="text-center text-sm text-zinc-500 dark:text-zinc-400">
-            Loading repository directory…
-          </p>
-        </main>
-      }
-    >
-      <RepositoryDirectory searchParams={searchParams} />
-    </Suspense>
+    <main className="flex-1">
+      <Suspense
+        fallback={
+          <ViewTransition exit="slide-down" default="none">
+            <DirectorySkeleton />
+          </ViewTransition>
+        }
+      >
+        <ViewTransition enter="slide-up" default="none">
+          <RepositoryDirectory searchParams={searchParams} />
+        </ViewTransition>
+      </Suspense>
+    </main>
   );
 }
 
@@ -53,128 +107,111 @@ async function RepositoryDirectory({ searchParams }: HomeProps) {
   const params = await searchParams;
   const query = firstValue(params.q);
   const categoryValue = firstValue(params.category);
+  const sortValue = firstValue(params.sort);
   const category = isCategory(categoryValue) ? categoryValue : undefined;
-  const results = searchRepositories(repositories, { query, category });
+  const sort = isSort(sortValue) ? sortValue : "verified";
+  const results = searchRepositories(repositories, { query, category, sort });
+  const filtered = query !== "" || category !== undefined;
+  const featured = filtered
+    ? []
+    : searchRepositories(repositories, { sort: "stars" }).slice(0, 3);
 
   return (
-    <div className="flex min-h-full flex-1 flex-col bg-zinc-50 font-sans text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50">
-      <main className="mx-auto w-full max-w-6xl flex-1 px-5 py-12 sm:px-8 sm:py-16">
-        <header className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold tracking-[0.2em] text-teal-700 uppercase dark:text-teal-300">
-            A community-curated directory
-          </p>
-          <h1 className="mt-5 text-4xl font-bold tracking-tight sm:text-6xl">
-            Claude Code Compass
-          </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-zinc-600 dark:text-zinc-300">
-            Find the right skills, plugins, and tools for your Claude Code
-            workflow.
-          </p>
-          <p className="mt-3 text-sm text-zinc-500 dark:text-zinc-400">
-            A searchable guide to community-built resources, with clear
-            licensing and review status.
-          </p>
-        </header>
+    <>
+      <HeroFinder query={query} sort={sort} resultCount={results.length} />
+
+      <div className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-8 sm:py-10">
+        <nav aria-label="Filter by category" className="flex flex-wrap items-center gap-2">
+          <span className="mr-1 text-sm text-faint">Legend</span>
+          <Link
+            href={directoryHref(query, sort)}
+            aria-current={category === undefined ? "page" : undefined}
+            className={`${legendBase} ${category === undefined ? legendOn : legendOff}`}
+          >
+            All
+            <span className="opacity-70">{repositories.length}</span>
+          </Link>
+          {CATEGORIES.map((item) => (
+            <Link
+              key={item}
+              href={directoryHref(query, sort, item)}
+              aria-current={category === item ? "page" : undefined}
+              className={`${legendBase} ${category === item ? legendOn : legendOff}`}
+            >
+              <CategorySymbol category={item} />
+              {CATEGORY_LABELS[item]}
+              <span className="opacity-70">{categoryCounts[item]}</span>
+            </Link>
+          ))}
+        </nav>
+
+        {featured.length > 0 && (
+          <section className="mt-10" aria-labelledby="featured-heading">
+            <h2 id="featured-heading" className="display text-2xl">
+              Most starred
+            </h2>
+            <ul className="mt-4 grid gap-4 md:grid-cols-3">
+              {featured.map((repository) => (
+                <li key={repository.id}>
+                  <FeaturedEntry repository={repository} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         <section
-          className="mx-auto mt-10 max-w-3xl"
-          aria-label="Search and filter repositories"
+          className="mt-10"
+          aria-labelledby="index-heading"
         >
-          <form action="/" method="get" role="search" className="flex gap-2">
-            <label htmlFor="repository-search" className="sr-only">
-              Search repositories
-            </label>
-            <input
-              id="repository-search"
-              name="q"
-              type="search"
-              defaultValue={query}
-              placeholder="Search by name, description, or tag"
-              className="min-w-0 flex-1 rounded-xl border border-zinc-300 bg-white px-4 py-3 text-sm shadow-sm outline-none placeholder:text-zinc-400 focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 dark:border-zinc-700 dark:bg-zinc-900 dark:placeholder:text-zinc-500 dark:focus:border-teal-400 dark:focus:ring-teal-400/20"
-            />
-            {category && (
-              <input type="hidden" name="category" value={category} />
-            )}
-            <button
-              type="submit"
-              className="rounded-xl bg-teal-800 px-5 py-3 text-sm font-semibold text-white transition hover:bg-teal-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 dark:bg-teal-300 dark:text-teal-950 dark:hover:bg-teal-200 dark:focus-visible:outline-teal-300"
-            >
-              Search
-            </button>
-          </form>
-
-          <nav
-            aria-label="Filter by category"
-            className="mt-5 flex flex-wrap justify-center gap-2"
-          >
-            <Link
-              href={directoryHref(query)}
-              aria-current={category === undefined ? "page" : undefined}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 dark:focus-visible:outline-teal-300 ${
-                category === undefined
-                  ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
-                  : "bg-white text-zinc-600 hover:bg-zinc-100 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
-              }`}
-            >
-              All categories
-            </Link>
-            {CATEGORIES.map((item) => (
-              <Link
-                key={item}
-                href={directoryHref(query, item)}
-                aria-current={category === item ? "page" : undefined}
-                className={`rounded-full px-4 py-2 text-sm font-medium capitalize transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 dark:focus-visible:outline-teal-300 ${
-                  category === item
-                    ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
-                    : "bg-white text-zinc-600 hover:bg-zinc-100 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
-                }`}
-              >
-                {item}
-              </Link>
-            ))}
-          </nav>
-        </section>
-
-        <section className="mt-12" aria-label="Repository directory">
-          <div className="mb-5 flex items-center justify-between gap-4">
-            <h2 className="text-xl font-semibold tracking-tight">
-              Explore repositories
+          <div className="flex flex-wrap items-baseline justify-between gap-3">
+            <h2 id="index-heading" className="display text-2xl">
+              {filtered ? "Results" : "All repositories"}
             </h2>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">
-              {results.length} {results.length === 1 ? "repository" : "repositories"}
-            </p>
+            <div className="flex items-center gap-4">
+              <p aria-live="polite" className="text-sm text-faint">
+                {results.length}{" "}
+                {results.length === 1 ? "repository" : "repositories"}
+                {filtered && " match"}
+              </p>
+              {filtered && (
+                <Link
+                  href={directoryHref("", sort)}
+                  className="rounded text-sm font-medium text-accent underline underline-offset-4"
+                >
+                  Clear filters
+                </Link>
+              )}
+            </div>
           </div>
 
           {results.length > 0 ? (
-            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-4 divide-y divide-line overflow-hidden rounded-[10px] border border-line-strong bg-surface">
               {results.map((repository) => (
                 <li key={repository.id}>
-                  <RepoCard repository={repository} />
+                  <RepoRow repository={repository} />
                 </li>
               ))}
             </ul>
           ) : (
-            <div className="rounded-2xl border border-dashed border-zinc-300 bg-white px-6 py-14 text-center dark:border-zinc-700 dark:bg-zinc-900">
-              <p className="text-lg font-semibold">
-                No repos match your search
+            <div className="mt-4 rounded-[10px] border border-dashed border-line-strong bg-surface px-6 py-14 text-center">
+              <p className="display text-xl">
+                {query ? `Nothing matches “${query}”` : "Nothing in this category yet"}
               </p>
-              <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-300">
-                Try a different query or clear your filters.
+              <p className="mx-auto mt-2 max-w-md text-[15px] text-muted">
+                Try a shorter or different word, or clear the filters to see
+                every repository.
               </p>
               <Link
-                href="/"
-                className="mt-5 inline-flex rounded-lg px-3 py-2 text-sm font-semibold text-teal-800 underline underline-offset-4 hover:text-teal-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 dark:text-teal-300 dark:hover:text-teal-200 dark:focus-visible:outline-teal-300"
+                href={directoryHref("", sort)}
+                className="mt-6 inline-flex min-h-11 items-center rounded-md bg-ink px-5 text-sm font-semibold text-bg transition-colors hover:bg-accent"
               >
                 Clear filters
               </Link>
             </div>
           )}
         </section>
-      </main>
-
-      <footer className="border-t border-zinc-200 px-5 py-6 text-center text-sm text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
-        Independent community project, not an official Anthropic site.
-      </footer>
-    </div>
+      </div>
+    </>
   );
 }
