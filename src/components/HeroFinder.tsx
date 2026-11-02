@@ -4,16 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Compass from "@/components/Compass";
 import Contour from "@/components/Contour";
-import { REPOSITORY_SORTS, type RepositorySort } from "@/lib/search";
 import { QUERY_MAX_LENGTH, QUERY_MIN_LENGTH } from "@/lib/skill-set";
-
-const SORT_LABELS: Record<RepositorySort, string> = {
-  verified: "Editor's picks first",
-  stars: "Most stars",
-  newest: "Recently added",
-  name: "Name (A–Z)",
-  last_checked: "Recently checked",
-};
 
 const DEBOUNCE_MS = 250;
 /** Where the needle starts before it swings to north on first load. */
@@ -51,16 +42,15 @@ function bearingFor(text: string): number {
 
 type HeroFinderProps = {
   query: string;
-  sort: RepositorySort;
   resultCount: number;
 };
 
 /**
- * The URL is the source of truth (?q=&category=&sort=). This writes to it:
- * typing updates `q` after a short pause, the select updates `sort`
- * immediately, and other params (category) are preserved.
+ * The URL is the source of truth (?q=&category=&sort=). Typing updates `q`
+ * after a short pause; other params (category, sort) are preserved. Sorting
+ * lives next to the list, in SortSelect.
  */
-export default function HeroFinder({ query, sort, resultCount }: HeroFinderProps) {
+export default function HeroFinder({ query, resultCount }: HeroFinderProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [text, setText] = useState(query);
@@ -109,7 +99,7 @@ export default function HeroFinder({ query, sort, resultCount }: HeroFinderProps
                 scroll: false,
               });
             }}
-            className="mt-8 flex max-w-2xl flex-col gap-3 sm:flex-row"
+            className="mt-8 max-w-2xl"
           >
             <div className="min-w-0 flex-1">
               <label htmlFor="repository-search" className="sr-only">
@@ -125,29 +115,6 @@ export default function HeroFinder({ query, sort, resultCount }: HeroFinderProps
                 autoComplete="off"
                 className="h-12 w-full rounded-md border border-line-strong bg-surface px-4 text-base text-fg outline-none transition-colors placeholder:text-faint hover:border-ink focus:border-accent"
               />
-            </div>
-            <div className="flex items-center gap-2">
-              <label htmlFor="repository-sort" className="text-sm text-faint">
-                Sort
-              </label>
-              <select
-                id="repository-sort"
-                name="sort"
-                value={sort}
-                onChange={(event) =>
-                  router.replace(
-                    hrefWith(searchParams, { sort: event.target.value }),
-                    { scroll: false },
-                  )
-                }
-                className="h-12 rounded-md border border-line-strong bg-surface px-3 text-sm text-fg outline-none transition-colors hover:border-ink focus:border-accent"
-              >
-                {REPOSITORY_SORTS.map((value) => (
-                  <option key={value} value={value}>
-                    {SORT_LABELS[value]}
-                  </option>
-                ))}
-              </select>
             </div>
           </form>
 
