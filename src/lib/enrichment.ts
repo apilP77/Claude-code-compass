@@ -96,7 +96,7 @@ export function buildEnrichmentPrompt(readme: string): string {
   ].join("\n\n");
 }
 
-function stripGeneratedMarkup(value: string): string {
+export function stripGeneratedMarkup(value: string): string {
   return value
     .replace(/<[^>]*>/g, " ")
     .replace(/\b(?:https?:\/\/|ftp:\/\/)[^\s<>()]+|\bwww\.[^\s<>()]+/gi, " ")

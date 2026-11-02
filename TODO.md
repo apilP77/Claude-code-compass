@@ -61,13 +61,13 @@ What's wrong now: there are three visual systems. The header and cards use dark 
 
 The user describes what they're working on and gets a recommended set of skills/plugins from the directory.
 
-- [ ] New page `/skill-set` with a textbox ("I'm building a Next.js SaaS with Stripe and Supabase…") plus optional chips (frontend, backend, testing, data, docs, security).
-- [ ] Server route `/api/skill-set` sends Gemini the user's text plus the catalog (id, summary, tags, category). **Gemini may only pick IDs that exist in our catalog.** Validate with zod and drop unknown IDs, so it can't invent repos.
-- [ ] Return 3–7 picks grouped by role (Planning, Building UI, Testing, Review, …). Each pick gets a one-line reason and its install command when known.
-- [ ] "Copy all install commands" button and a shareable URL (`/skill-set?q=…`).
-- [ ] Fallback when Gemini fails or the key is missing: tag/keyword matching via `search.ts`.
-- [ ] Safety: input length cap, per-IP rate limit, user text treated as data, Gemini key server-only.
-- [ ] Label: "AI suggestions — check each repo before installing."
+- [x] New page `/skill-set` with a textbox ("I'm building a Next.js SaaS with Stripe and Supabase…") plus example chips.
+- [x] Server route `/api/skill-set` sends Gemini the user's text plus the catalog (id, summary, tags, category). **Gemini may only pick IDs that exist in our catalog.** Validate with zod and drop unknown IDs, so it can't invent repos.
+- [x] Return 3–7 picks grouped by role (Planning, Building UI, Testing, Review, …). Each pick gets a one-line reason and its install command when known.
+- [x] "Copy all install commands" button and a shareable URL (`/skill-set?q=…`).
+- [x] Fallback when Gemini fails or the key is missing: tag/keyword matching via `search.ts`.
+- [x] Safety: input length cap, per-IP rate limit, user text treated as data, Gemini key server-only.
+- [x] Label: "AI suggestions — check each repo before installing."
 - [ ] Later: hand-picked **starter kits** ("Web app", "Python data", "Code review") as a non-AI option.
 - [ ] Depends on item 2 (good summaries = good matches).
 
