@@ -123,8 +123,8 @@ export default async function RepositoryPage({ params }: RepositoryPageProps) {
           {repository.summary && (
             <p className="mt-2 text-[13px] leading-5 text-ai">
               {isReviewed
-                ? "AI-written summary; listing reviewed by an editor."
-                : "AI-written from the README and not yet verified by an editor."}
+                ? "AI-written summary; listing picked by an editor."
+                : "AI-written from the README."}
             </p>
           )}
 
@@ -173,8 +173,8 @@ export default async function RepositoryPage({ params }: RepositoryPageProps) {
               title="Security notes"
               note={
                 isReviewed
-                  ? "AI-generated; listing reviewed."
-                  : "AI-generated and unverified. Always read the source yourself."
+                  ? "AI-generated; listing picked by an editor."
+                  : "AI-generated and unchecked. Always read the source yourself."
               }
             >
               <p className="max-w-[65ch] whitespace-pre-wrap text-[15px] leading-6 text-muted">
@@ -188,11 +188,10 @@ export default async function RepositoryPage({ params }: RepositoryPageProps) {
           {!isReviewed && (
             <aside
               role="note"
-              className="mt-8 rounded-[10px] border border-warn/40 bg-warn/10 p-4 text-sm leading-6 text-warn"
+              className="mt-8 rounded-[10px] border border-line-strong bg-surface p-4 text-sm leading-6 text-muted"
             >
-              <strong className="font-semibold">Not editor-verified.</strong>{" "}
-              Nobody on the team has reviewed this repository yet. Check its
-              source and license before you use it.
+              <strong className="font-semibold text-fg">Community listing.</strong>{" "}
+              Check the source and license before you use it.
             </aside>
           )}
         </article>

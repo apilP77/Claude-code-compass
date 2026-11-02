@@ -8,11 +8,11 @@ import { REPOSITORY_SORTS, type RepositorySort } from "@/lib/search";
 import { QUERY_MAX_LENGTH, QUERY_MIN_LENGTH } from "@/lib/skill-set";
 
 const SORT_LABELS: Record<RepositorySort, string> = {
-  verified: "Reviewed first",
+  verified: "Editor's picks first",
   stars: "Most stars",
   newest: "Recently added",
   name: "Name (A–Z)",
-  last_checked: "Recently reviewed",
+  last_checked: "Recently checked",
 };
 
 const DEBOUNCE_MS = 250;
@@ -95,8 +95,8 @@ export default function HeroFinder({ query, sort, resultCount }: HeroFinderProps
           </h1>
           <p className="mt-4 max-w-[60ch] text-base text-muted">
             A directory of community-built skills, plugins and collections.
-            Every entry shows its license, whether anyone has reviewed it, and
-            a plain-English summary.
+            Every entry shows its license and a plain-English summary, and
+            editor&rsquo;s picks are marked.
           </p>
 
           <form
