@@ -4,6 +4,86 @@
 
 This checklist describes a sensible build order. Keep milestones small, verify each one, and update this file as work is completed.
 
+---
+
+## 🔜 Next round (Nov 2026)
+
+Suggested order: **1 → 2 → 3 → 4 → 5**. Fix voting first because it's broken. Better AI summaries (2) make the UI (3) and the Skill Set Finder (4) much better, so do 2 before them.
+
+### 1. Fix upvote / downvote
+
+What I checked: the `get_repository_vote_score` function is deployed in Supabase (HTTP 200), and GitHub sign-in is enabled. So the bug is most likely in the app's auth wiring, not the database.
+
+- [ ] **Reproduce first.** Open a repo detail page, open DevTools → Network, and click Upvote. Write down the `/api/votes` status code and the error text shown under the buttons.
+- [x] Add `src/proxy.ts` (Next 16 renamed `middleware.ts` → `proxy.ts`, see `node_modules/next/dist/docs/`) to refresh the Supabase session on every request. Without it, the access token expires after about an hour. Then `/api/votes` returns "Sign in before voting." even though the header still shows you as logged in.
+- [x] Add `src/app/auth/callback/route.ts` that calls `exchangeCodeForSession`. Point `redirectTo` in `Header.tsx` and `VoteButtons.tsx` at it, with a `next` param, so the user lands back on the repo they were voting on instead of the homepage.
+- [ ] In Supabase → Auth → URL Configuration, check that the Site URL and redirect allowlist include `http://localhost:3000/**` and the production domain.
+- [ ] Confirm migration `002_vote_rate_limits.sql` is applied (`submit_repository_vote` exists).
+- [x] Clicking your current vote again should remove it (toggle). Add a `remove_repository_vote` RPC. *(Done in code: `003_remove_vote.sql` + `DELETE /api/votes`. **You must run the SQL in Supabase.**)*
+- [ ] Show separate up/down counts and your own vote state, not just the net score.
+- [x] Signed-out users should see "Sign in with GitHub to vote" instead of being silently redirected.
+- [ ] Show scores on homepage cards via one batched RPC (`get_repository_vote_scores(ids text[])`), not one request per card.
+- [ ] Tests: signed-out vote, vote change, vote removal, expired session.
+
+### 2. Gemini-written descriptions instead of a bare "⚠ Unreviewed"
+
+Today all 20 listings show an orange "⚠ Unreviewed" badge, which reads like a danger warning. Only 2 of 20 have pros/cons. Descriptions are the raw GitHub one-liners.
+
+- [ ] Extend the enrichment output (`src/lib/enrichment.ts` + `src/lib/schema.ts`):
+  - `summary`: 2–3 plain-English sentences on what it does.
+  - `best_for`: who should use it and when.
+  - `highlights`: 3 short bullets.
+  - `getting_started`: install command, **quoted from the README only**, or null.
+  - Keep `pros`, `cons`, and `security_notes`.
+- [ ] Add `ai_generated_at` and `ai_model` fields so every AI text says where it came from.
+- [ ] Replace the badge: "✨ AI summary · not editor-verified" (neutral/info style) for enriched repos. Keep "Unreviewed" only for repos with no summary yet. Never present AI text as verified.
+- [ ] Improve the prompt: a good vs. bad example, no marketing words ("powerful", "seamless"), every claim grounded in the README, plain language, and a length cap.
+- [ ] Backfill: add `npm run enrich -- --all` to re-enrich the 20 existing repos, not only new candidates.
+- [ ] Make one failure non-fatal. Right now a single README 404 or Gemini error throws inside the loop in `scripts/enrich.ts` and aborts the whole run. Catch it per repo, log it, and continue.
+- [ ] Log which model actually answered (it silently falls back to `gemini-2.5-flash-lite` on *any* error), and confirm the primary model ID is current.
+- [ ] Keep the prompt-injection defenses and the `malicious-readme.md` test passing. Add tests for the new fields.
+
+### 3. Better interface / UI (items 3 + 5 combined)
+
+What's wrong now: there are three visual systems. The header and cards use dark slate/cyan, and the homepage and detail page use zinc/teal with light/dark variants. `layout.tsx` forces a dark body, but the homepage wrapper turns light grey in light mode, so the page is light under a dark header. `globals.css` also sets `font-family: Arial`, which overrides the Geist font.
+
+- [ ] Use the **website-design** plugin to pick a design direction and write `DESIGN.md` (colors, type, spacing, components) *before* restyling.
+- [ ] Choose dark-only *or* real light/dark, then put one palette in `globals.css` `@theme` tokens. Remove the hard-coded slate/zinc/teal mix.
+- [ ] Remove the Arial override so Geist actually loads.
+- [ ] Homepage: shorter hero, instant search as you type, and a **sort dropdown** (stars, votes, name, newest). `search.ts` already supports sorting, but the UI doesn't expose it.
+- [ ] Cards: AI summary snippet, stars + vote score, category icon, new badge style.
+- [ ] Detail page layout: summary → best for → highlights → getting started (with a copy button) → pros/cons side by side → security notes → votes. Add a sidebar with stars, license, and links.
+- [ ] "Log In" → "Sign in with GitHub".
+- [ ] Loading skeletons, a friendly empty state, mobile layout check, keyboard focus, and contrast check.
+- [ ] Run the **frontend-design** skill for polish once DESIGN.md exists.
+
+### 4. Skill Set Finder ("I'm building X, what should I install?")
+
+The user describes what they're working on and gets a recommended set of skills/plugins from the directory.
+
+- [ ] New page `/skill-set` with a textbox ("I'm building a Next.js SaaS with Stripe and Supabase…") plus optional chips (frontend, backend, testing, data, docs, security).
+- [ ] Server route `/api/skill-set` sends Gemini the user's text plus the catalog (id, summary, tags, category). **Gemini may only pick IDs that exist in our catalog.** Validate with zod and drop unknown IDs, so it can't invent repos.
+- [ ] Return 3–7 picks grouped by role (Planning, Building UI, Testing, Review, …). Each pick gets a one-line reason and its install command when known.
+- [ ] "Copy all install commands" button and a shareable URL (`/skill-set?q=…`).
+- [ ] Fallback when Gemini fails or the key is missing: tag/keyword matching via `search.ts`.
+- [ ] Safety: input length cap, per-IP rate limit, user text treated as data, Gemini key server-only.
+- [ ] Label: "AI suggestions — check each repo before installing."
+- [ ] Later: hand-picked **starter kits** ("Web app", "Python data", "Code review") as a non-AI option.
+- [ ] Depends on item 2 (good summaries = good matches).
+
+### 5. Suggestions (my ideas)
+
+- [ ] **Grow the catalog.** There are only 20 repos, and `CATEGORIES` has 4 (skills, plugins, collections, directories). Add hooks, MCP servers, subagents, and commands, which the project definition below already lists.
+- [ ] **Save my kit:** signed-in users bookmark repos or save a Skill Set result (Supabase table, same RLS pattern as votes).
+- [ ] **Compare view:** 2–3 repos side by side (pros, cons, license, stars, install).
+- [ ] **"New this week"** section on the homepage, fed by the nightly discovery runs.
+- [ ] **Submit a repo** button that opens a prefilled GitHub issue.
+- [ ] **Stale/archived warning** when a repo hasn't been updated in 6+ months or is archived.
+- [ ] **Per-repo social preview images** (Open Graph) so shared links look good.
+- [ ] **Privacy-friendly analytics** on searches. Zero-result searches show what to add next and can feed discovery queries.
+
+---
+
 ## MVP (M1) — static curated directory
 
 ### Project definition
@@ -17,17 +97,17 @@ This checklist describes a sensible build order. Keep milestones small, verify e
 
 ### Build the directory
 
-- [ ] Scaffold the Next.js + TypeScript + Tailwind application.
+- [x] Scaffold the Next.js + TypeScript + Tailwind application.
 - [ ] Establish the visual design system, responsive navigation, typography, spacing, and accessible colors.
 - [ ] Create a small structured local dataset of real, verified repositories.
 - [ ] Record each repository's canonical URL, owner/name, short description, categories, tags, and source links.
-- [ ] Build the homepage and searchable repository directory.
+- [x] Build the homepage and searchable repository directory.
 - [ ] Implement search by repository name, description, category, and tags.
 - [ ] Add category filters and sorting for fields that actually exist in the dataset.
-- [ ] Add repository cards with clear labels and links to original sources.
-- [ ] Build an individual repository detail page.
+- [x] Add repository cards with clear labels and links to original sources.
+- [x] Build an individual repository detail page.
 - [ ] Add sections for what it does, who it is for, examples, setup instructions, pros, cons, compatibility, and caveats.
-- [ ] Label unknown or unverified data instead of making assumptions.
+- [x] Label unknown or unverified data instead of making assumptions.
 - [ ] Add loading, empty, error, and not-found states.
 - [ ] Check keyboard navigation, responsive layouts, and basic accessibility.
 - [ ] Add automated tests for search, filtering, sorting, and data validation.
@@ -45,7 +125,7 @@ This checklist describes a sensible build order. Keep milestones small, verify e
 
 ### Ship it
 
-- [ ] Add `.env.example` with placeholder values only.
+- [x] Add `.env.example` with placeholder values only.
 - [ ] Ensure real secrets and `.env.local` are ignored by Git.
 - [ ] Add linting, type checking, build checks, and tests to CI.
 - [ ] Deploy a preview environment and verify critical flows.
@@ -75,7 +155,7 @@ This checklist describes a sensible build order. Keep milestones small, verify e
 - [ ] Normalize repository identity and deduplicate by canonical `owner/name` and URL.
 - [ ] Add database constraints that prevent duplicate repository records. *(M2: uniqueness is enforced in `src/lib/repos.ts` and in CI; the Postgres constraint is added in M4.)*
 - [ ] Add new eligible repositories automatically to a `New Discoveries` section. *(M2: writes to `data/repos.json` with `listing_status: "unreviewed"`; DB-backed in M4.)*
-- [ ] Mark automatic entries clearly as `Auto-discovered — not yet reviewed`.
+- [x] Mark automatic entries clearly as `Auto-discovered — not yet reviewed`.
 - [ ] Preserve original repository links and source metadata.
 - [ ] Show missing license data as unknown rather than implying permission to reuse code.
 - [ ] Flag archived, broken, irrelevant, or stale candidates rather than silently recommending them.
@@ -92,18 +172,18 @@ This checklist describes a sensible build order. Keep milestones small, verify e
 
 ### M3 — Voting (Postgres + auth)
 
-- [ ] Choose and configure a database (proposed: PostgreSQL through Supabase).
-- [ ] Choose an authentication approach (proposed: Supabase Auth, possibly with GitHub sign-in).
+- [x] Choose and configure a database (proposed: PostgreSQL through Supabase).
+- [x] Choose an authentication approach (proposed: Supabase Auth, possibly with GitHub sign-in).
 - [ ] Design the `votes` table with `repository_id`, `user_id`, vote value (`1` or `-1`), and timestamps.
-- [ ] Enforce a database uniqueness constraint on `(repository_id, user_id)`.
+- [x] Enforce a database uniqueness constraint on `(repository_id, user_id)`.
 - [ ] Add upvote and downvote buttons to repository cards and detail pages.
 - [ ] Show upvote count, downvote count, and/or net score with a clear scoring explanation.
 - [ ] Let a signed-in user change or remove their vote.
-- [ ] Enforce authorization and vote validation server-side and in database policies.
+- [x] Enforce authorization and vote validation server-side and in database policies.
 - [ ] Add basic rate limiting and monitoring for suspicious vote behavior.
 - [ ] Handle signed-out users, missing votes, failed requests, and loading states.
 - [ ] Add tests for duplicate voting, vote changes, vote removal, and unauthorized access.
-- [ ] Explain in the interface that community votes measure opinion, not security or factual correctness.
+- [x] Explain in the interface that community votes measure opinion, not security or factual correctness.
 
 #### Done when
 
