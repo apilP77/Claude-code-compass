@@ -4,6 +4,7 @@ import CategorySymbol from "@/components/CategorySymbol";
 import FeaturedEntry from "@/components/FeaturedEntry";
 import HeroFinder from "@/components/HeroFinder";
 import RepoRow from "@/components/RepoRow";
+import SearchBar from "@/components/SearchBar";
 import SortSelect from "@/components/SortSelect";
 import { repositories } from "@/lib/repos";
 import {
@@ -122,7 +123,14 @@ async function RepositoryDirectory({ searchParams }: HomeProps) {
       <HeroFinder query={query} resultCount={results.length} />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-8 sm:py-10">
-        <nav aria-label="Filter by category" className="flex flex-wrap items-center gap-2">
+        <div className="max-w-2xl">
+          <SearchBar query={query} />
+        </div>
+
+        <nav
+          aria-label="Filter by category"
+          className="mt-4 flex flex-wrap items-center gap-2"
+        >
           <span className="mr-1 text-sm text-faint">Legend</span>
           <Link
             href={directoryHref(query, sort)}

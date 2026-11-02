@@ -1,32 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import Compass from "@/components/Compass";
 import Contour from "@/components/Contour";
 import { bearingFor, bearingToPoint, nearestBearing } from "@/lib/bearing";
 import { QUERY_MAX_LENGTH, QUERY_MIN_LENGTH } from "@/lib/skill-set";
 
-const DEBOUNCE_MS = 250;
 /** Where the needle starts before it swings to north on first load. */
 const START_BEARING = 150;
-
-/** Returns the URL with `changes` applied; empty values remove the param. */
-function hrefWith(
-  current: { toString(): string },
-  changes: Record<string, string>,
-): string {
-  const next = new URLSearchParams(current.toString());
-  for (const [key, value] of Object.entries(changes)) {
-    if (value) {
-      next.set(key, value);
-    } else {
-      next.delete(key);
-    }
-  }
-  const search = next.toString();
-  return search ? `/?${search}` : "/";
-}
 
 type HeroFinderProps = {
   query: string;
@@ -34,14 +15,11 @@ type HeroFinderProps = {
 };
 
 /**
- * The URL is the source of truth (?q=&category=&sort=). Typing updates `q`
- * after a short pause; other params (category, sort) are preserved. Sorting
- * lives next to the list, in SortSelect.
+ * The top of the home page: the title, the Skill Set Finder entry, and the
+ * compass. Searching and sorting the list live next to the list, in SearchBar
+ * and SortSelect; the needle reads the current search from the URL.
  */
 export default function HeroFinder({ query, resultCount }: HeroFinderProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [text, setText] = useState(query);
   const [armed, setArmed] = useState(false);
   const [pointerBearing, setPointerBearing] = useState<number | null>(null);
   const compassRef = useRef<SVGSVGElement>(null);
@@ -86,24 +64,13 @@ export default function HeroFinder({ query, resultCount }: HeroFinderProps) {
     };
   }, []);
 
-  useEffect(() => {
-    const trimmed = text.trim();
-    if (trimmed === (searchParams.get("q") ?? "").trim()) {
-      return;
-    }
-    const timer = setTimeout(() => {
-      router.replace(hrefWith(searchParams, { q: trimmed }), { scroll: false });
-    }, DEBOUNCE_MS);
-    return () => clearTimeout(timer);
-  }, [text, searchParams, router]);
-
   const lost = resultCount === 0 && query.trim() !== "";
-  const following = text.trim() === "" && pointerBearing !== null;
+  const following = query.trim() === "" && pointerBearing !== null;
   const bearing = !armed
     ? START_BEARING
     : following
       ? pointerBearing
-      : bearingFor(text);
+      : bearingFor(query);
 
   return (
     <section className="relative overflow-hidden border-b border-line bg-[radial-gradient(ellipse_at_78%_48%,var(--c-glow),transparent_58%)]">
@@ -120,38 +87,9 @@ export default function HeroFinder({ query, resultCount }: HeroFinderProps) {
           </p>
 
           <form
-            action="/"
-            method="get"
-            role="search"
-            onSubmit={(event) => {
-              event.preventDefault();
-              router.replace(hrefWith(searchParams, { q: text.trim() }), {
-                scroll: false,
-              });
-            }}
-            className="mt-8 max-w-2xl"
-          >
-            <div className="min-w-0 flex-1">
-              <label htmlFor="repository-search" className="sr-only">
-                Search repositories
-              </label>
-              <input
-                id="repository-search"
-                name="q"
-                type="search"
-                value={text}
-                onChange={(event) => setText(event.target.value)}
-                placeholder="Search skills, plugins, collections"
-                autoComplete="off"
-                className="h-12 w-full rounded-md border border-line-strong bg-surface px-4 text-base text-fg outline-none transition-colors placeholder:text-faint hover:border-ink focus:border-accent"
-              />
-            </div>
-          </form>
-
-          <form
             action="/skill-set"
             method="get"
-            className="mt-6 max-w-2xl rounded-[10px] border border-accent/60 bg-surface p-4 shadow-sm sm:p-5"
+            className="mt-8 max-w-2xl rounded-[10px] border border-accent/60 bg-surface p-4 shadow-sm sm:p-5"
           >
             <p className="text-[13px] font-semibold uppercase tracking-wide text-accent">
               New · Skill set finder
