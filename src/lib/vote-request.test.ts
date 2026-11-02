@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseVoteRequest } from "./vote-request";
+import { parseRemoveVoteRequest, parseVoteRequest } from "./vote-request";
 
 const knownRepositoryIds = new Set(["owner/repository"]);
 
@@ -36,6 +36,26 @@ describe("parseVoteRequest", () => {
           voteType: 1,
           user_id: "attacker-controlled",
         },
+        knownRepositoryIds,
+      ),
+    ).toBeNull();
+  });
+});
+
+describe("parseRemoveVoteRequest", () => {
+  it("accepts a known repository", () => {
+    expect(
+      parseRemoveVoteRequest({ repositoryId: "owner/repository" }, knownRepositoryIds),
+    ).toEqual({ repositoryId: "owner/repository" });
+  });
+
+  it("rejects unknown repositories and extra fields", () => {
+    expect(
+      parseRemoveVoteRequest({ repositoryId: "owner/unknown" }, knownRepositoryIds),
+    ).toBeNull();
+    expect(
+      parseRemoveVoteRequest(
+        { repositoryId: "owner/repository", user_id: "x" },
         knownRepositoryIds,
       ),
     ).toBeNull();
