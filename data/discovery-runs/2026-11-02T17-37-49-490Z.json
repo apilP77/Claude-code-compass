@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "status": "success",
+  "completed_at": "2026-11-02T17:37:49.490Z",
+  "repositories": [
+    {
+      "id": "anthropics/knowledge-work-plugins",
+      "stars": 34456,
+      "forks": 3809
+    },
+    {
+      "id": "openai/codex-plugin-cc",
+      "stars": 34810,
+      "forks": 2409
+    },
+    {
+      "id": "jarrodwatts/claude-hud",
+      "stars": 29082,
+      "forks": 1330
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "status": "success",
+  "completed_at": "2026-11-02T17:40:19.457Z",
+  "repositories": [
+    {
+      "id": "coreyhaines31/marketingskills",
+      "stars": 58028,
+      "forks": 8531
+    },
+    {
+      "id": "nutlope/hallmark",
+      "stars": 45745,
+      "forks": 2427
+    },
+    {
+      "id": "zarazhangrui/frontend-slides",
+      "stars": 31749,
+      "forks": 2435
+    },
+    {
+      "id": "twostraws/swiftui-agent-skill",
+      "stars": 6439,
+      "forks": 251
+    },
+    {
+      "id": "czlonkowski/n8n-skills",
+      "stars": 6572,
+      "forks": 1078
+    }
+  ]
+}
