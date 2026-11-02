@@ -27,7 +27,7 @@ config({ path: resolve(projectRoot, ".env.local") });
 
 type Candidate = Repository;
 
-const geminiTimeoutMs = 15_000;
+const geminiTimeoutMs = Number(process.env.GEMINI_TIMEOUT_MS) || 15_000;
 // gemini-2.5-flash-lite is no longer available to new users (404), so there is no
 // working fallback model. Set GEMINI_MODEL to override the default.
 const geminiModel = process.env.GEMINI_MODEL?.trim() || "gemini-3.5-flash-lite";

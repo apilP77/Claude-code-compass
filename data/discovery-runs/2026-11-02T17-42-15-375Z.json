@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "status": "success",
+  "completed_at": "2026-11-02T17:42:15.375Z",
+  "repositories": [
+    {
+      "id": "florianbruniaux/claude-code-ultimate-guide",
+      "stars": 6322,
+      "forks": 824
+    },
+    {
+      "id": "deanpeters/product-manager-skills",
+      "stars": 7837,
+      "forks": 944
+    },
+    {
+      "id": "mengto/skills",
+      "stars": 7195,
+      "forks": 838
+    }
+  ]
+}

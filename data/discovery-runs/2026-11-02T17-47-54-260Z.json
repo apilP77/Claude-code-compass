@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "status": "success",
+  "completed_at": "2026-11-02T17:47:54.260Z",
+  "repositories": [
+    {
+      "id": "mksglu/context-mode",
+      "stars": 33258,
+      "forks": 2295
+    },
+    {
+      "id": "voltagent/awesome-agent-skills",
+      "stars": 36762,
+      "forks": 4050
+    }
+  ]
+}

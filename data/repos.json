@@ -110,6 +110,106 @@
       "last_reviewed": null
     },
     {
+      "id": "tt-a1i/archify",
+      "owner": "tt-a1i",
+      "name": "archify",
+      "url": "https://github.com/tt-a1i/archify",
+      "description": "Turn any idea, plan, or codebase into a beautiful interactive diagram. An agent skill for Claude Code, Codex, and more.",
+      "category": "skills",
+      "tags": [
+        "agent-skills",
+        "ai-agents",
+        "architecture-diagram",
+        "claude-code",
+        "claude-skills",
+        "codex",
+        "coding-agents",
+        "deepseek-harness",
+        "developer-tools",
+        "diagrams",
+        "diagrams-as-code",
+        "dsh-plugin",
+        "flowchart",
+        "llm",
+        "mermaid",
+        "opencode",
+        "sequence-diagram",
+        "software-architecture",
+        "system-design",
+        "visualization"
+      ],
+      "license_spdx": "Apache-2.0",
+      "stars": 92675,
+      "forks": 6328,
+      "pros": [
+        "Generates interactive and portable standalone HTML documents requiring no special viewer installation.",
+        "Offers robust validation and machine-readable repair receipts to catch schema or layout issues early."
+      ],
+      "cons": [
+        "Does not support automatic Mermaid parsing or general-purpose auto-layout.",
+        "Requires a compatible AI coding agent or Node.js environment to generate and validate diagrams."
+      ],
+      "security_notes": "The repository README does not document arbitrary code execution. Regarding API keys, the README mentions third-party sponsor relay services that provide an API key, but contains no other documentation or security instructions regarding API keys.",
+      "summary": "Archify is an open-source tool that turns text descriptions or repository code into interactive visual diagrams and explainer pages. It outputs self-contained HTML files that can be explored, customized, and shared without requiring any viewer installation.",
+      "best_for": "Developers and technical users looking to generate interactive architecture diagrams and documentation pages directly from text prompts or codebases using an AI agent.",
+      "highlights": [
+        "Supports multiple diagram types including architecture, workflows, sequences, data flow, ERD, and class diagrams.",
+        "Produces self-contained HTML output files with interactive node details, path exploration, and themes.",
+        "Includes bundled validation rules and local preview modes for inspecting and repairing generated sources."
+      ],
+      "getting_started": null,
+      "ai_generated_at": "2026-11-02T17:44:12.361Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
+      "id": "voltagent/awesome-agent-skills",
+      "owner": "VoltAgent",
+      "name": "awesome-agent-skills",
+      "url": "https://github.com/VoltAgent/awesome-agent-skills",
+      "description": "A curated collection of 1000+ agent skills from official dev teams and the community, compatible with Claude Code, Codex, Gemini CLI, Cursor, and more.",
+      "category": "skills",
+      "tags": [
+        "agent-skills",
+        "ai-agents",
+        "awesome-list",
+        "claude-code",
+        "claude-code-skills",
+        "claude-skills",
+        "codex",
+        "codex-skills",
+        "cursor",
+        "cursor-skills",
+        "gemini-skills",
+        "skills"
+      ],
+      "license_spdx": "MIT",
+      "stars": 36762,
+      "forks": 4050,
+      "pros": [
+        "High-quality curated collection rather than automated AI-generated slop.",
+        "Broad compatibility across multiple modern AI assistant platforms."
+      ],
+      "cons": [
+        "Skills are maintained by third parties and may change or break over time.",
+        "No single automated installation command provided in the main documentation."
+      ],
+      "security_notes": "The repository notes that agent skills can include arbitrary code execution, prompt injections, hidden malware payloads, or unsafe data handling patterns. Regarding API keys, the README mentions them in the context of specific tool authentication and third-party integrations, but does not document a centralized policy.",
+      "summary": "This repository provides a comprehensive curated collection of agent skills from leading development teams and the community. It includes thousands of production-ready skills compatible with Claude Code, Codex, Cursor, and other AI coding assistants.",
+      "best_for": "Developers and engineering teams looking to extend their AI coding assistants with verified, specialized skills across development, testing, and marketing.",
+      "highlights": [
+        "Over 1,400 curated agent skills from leading development teams and the community.",
+        "Support for multiple AI coding tools including Claude Code, Codex, and Cursor.",
+        "Comprehensive coverage spanning development, testing, security, and product management."
+      ],
+      "getting_started": null,
+      "ai_generated_at": "2026-11-02T17:47:53.377Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
       "id": "hesreallyhim/awesome-claude-code",
       "owner": "hesreallyhim",
       "name": "awesome-claude-code",
@@ -300,6 +400,106 @@
       "last_reviewed": null
     },
     {
+      "id": "ykdojo/claude-code-tips",
+      "owner": "ykdojo",
+      "name": "claude-code-tips",
+      "url": "https://github.com/ykdojo/claude-code-tips",
+      "description": "45+ tips for getting the most out of Claude Code, from basics to advanced - includes a custom status line script and Claude Code running itself in a container. Also includes the dx plugin: skills for everyday dev workflows.",
+      "category": "skills",
+      "tags": [
+        "agentic",
+        "agentic-ai",
+        "agentic-coding",
+        "agentic-workflow",
+        "ai",
+        "claude",
+        "claude-ai",
+        "claude-code",
+        "cli",
+        "developer-tools",
+        "productivity",
+        "tips-and-tricks"
+      ],
+      "license_spdx": null,
+      "stars": 10299,
+      "forks": 826,
+      "pros": [
+        "Extensive collection of real-world productivity tips and practical scripts",
+        "Bundles ready-to-install skills and plugins for common developer tasks"
+      ],
+      "cons": [
+        "Requires manual configuration of multiple shell scripts and settings files",
+        "Relies on third-party command-line utilities and external tools for full functionality"
+      ],
+      "security_notes": "The README notes that arbitrary code execution risks apply when running sessions with permissions skipped or via remote control. It does not document specific details regarding API keys.",
+      "summary": "This repository provides a comprehensive collection of advanced tips, custom scripts, and a developer experience (dx) plugin to optimize Claude Code workflows. Users get practical guides on voice transcription, git management, context handling, custom status lines, and multi-account setups.",
+      "best_for": "Developers and power users looking to optimize and automate their daily workflow using Claude Code.",
+      "highlights": [
+        "Includes a dx plugin bundling multiple workflow and research skills",
+        "Provides custom scripts for context bar status lines and conversation management",
+        "Offers detailed tips and setup instructions for voice input and terminal aliases"
+      ],
+      "getting_started": "claude plugin marketplace add ykdojo/claude-code-tips",
+      "ai_generated_at": "2026-11-02T17:43:02.393Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
+      "id": "florianbruniaux/claude-code-ultimate-guide",
+      "owner": "FlorianBruniaux",
+      "name": "claude-code-ultimate-guide",
+      "url": "https://github.com/FlorianBruniaux/claude-code-ultimate-guide",
+      "description": "The most comprehensive Claude Code guide: agentic workflows, hooks, skills, MCP servers, quizzes, and production-ready templates. 430K+ lines.",
+      "category": "skills",
+      "tags": [
+        "agentic-coding",
+        "ai-assistant",
+        "ai-coding",
+        "ai-pair-programming",
+        "ai-security",
+        "anthropic",
+        "best-practices",
+        "claude",
+        "claude-code",
+        "claude-code-guide",
+        "claude-code-tutorial",
+        "cli-tool",
+        "coding-assistant",
+        "cursor-alternative",
+        "developer-tools",
+        "llm",
+        "mcp-servers",
+        "prompt-engineering",
+        "tutorial",
+        "vibe-coding"
+      ],
+      "license_spdx": "CC-BY-SA-4.0",
+      "stars": 6322,
+      "forks": 824,
+      "pros": [
+        "Extensive coverage of real-world operational concerns like context engineering, production safety, and finops.",
+        "Available in multiple formats including an interactive website, downloadable ebooks, cheat sheets, and an MCP server."
+      ],
+      "cons": [
+        "Requires navigating across a large number of modular files and external links to gather complete workflows.",
+        "External threat counts and security claims require manual verification against linked databases."
+      ],
+      "security_notes": "The README does not document arbitrary code execution or API keys.",
+      "summary": "This repository provides a comprehensive guide and resource collection for learning Claude Code, building reliable agents, and scaling their use safely. It contains canonical Markdown sources, reusable examples, machine-readable indexes, and an MCP server implementation.",
+      "best_for": "Developers, technical leads, and engineering managers looking to design agent systems, establish security boundaries, and structure AI-assisted delivery workflows.",
+      "highlights": [
+        "Canonical Markdown guides covering architecture, agent harness engineering, security hardening, and workflows.",
+        "Reusable examples including starter CLAUDE.md templates, agents, skills, and hooks.",
+        "An stdio Model Context Protocol (MCP) server package providing tools and resources for coding clients."
+      ],
+      "getting_started": null,
+      "ai_generated_at": "2026-11-02T17:41:23.513Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
       "id": "fcakyon/claude-codex-settings",
       "owner": "fcakyon",
       "name": "claude-codex-settings",
@@ -328,6 +528,47 @@
       ],
       "getting_started": "claude plugin marketplace add fcakyon/claude-codex-settings",
       "ai_generated_at": "2026-11-02T15:53:09.920Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
+      "id": "jarrodwatts/claude-hud",
+      "owner": "jarrodwatts",
+      "name": "claude-hud",
+      "url": "https://github.com/jarrodwatts/claude-hud",
+      "description": "A Claude Code plugin that shows what's happening - context usage, active tools, running agents, and todo progress",
+      "category": "plugins",
+      "tags": [
+        "anthropic",
+        "claude",
+        "claude-code",
+        "cli",
+        "plugin",
+        "statusline",
+        "typescript"
+      ],
+      "license_spdx": "MIT",
+      "stars": 29082,
+      "forks": 1330,
+      "pros": [
+        "Keeps critical session metrics constantly visible below the input area.",
+        "Runs inside a restricted Node process with import fences and permission limits."
+      ],
+      "cons": [
+        "Does not auto-update third-party plugins by default unless enabled manually.",
+        "Requires manual setup steps inside Claude Code and a recent Node.js version."
+      ],
+      "security_notes": "The README states that --extra-cmd acts as arbitrary code execution and should never be used with a command from an untrusted source. Regarding API keys, the README does not document them.",
+      "summary": "Claude HUD is a plugin for Claude Code that displays system status information like context usage, rate limits, active tools, running agents, and todo progress beneath your input line. It runs within a locked-down Node process and can be configured through natural language commands.",
+      "best_for": "Developers using Claude Code who want real-time visibility into context limits, token usage, and session activity.",
+      "highlights": [
+        "Displays context usage, rate limits, active tools, running agents, and todo progress.",
+        "Supports natural language configuration via the /hud command.",
+        "Requires Node.js 22.18 or later and Claude Code v2.1.260 or later."
+      ],
+      "getting_started": "/plugin marketplace add jarrodwatts/claude-hud",
+      "ai_generated_at": "2026-11-02T17:37:48.193Z",
       "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
@@ -465,6 +706,47 @@
       "last_reviewed": null
     },
     {
+      "id": "agricidaniel/claude-seo",
+      "owner": "AgriciDaniel",
+      "name": "claude-seo",
+      "url": "https://github.com/AgriciDaniel/claude-seo",
+      "description": "Universal SEO skill for Claude Code. 26 sub-skills + 19 sub-agents covering technical SEO, E-E-A-T, schema, GEO/AEO, agent readiness (Lighthouse Agentic Browsing, WebMCP, llms.txt), backlinks, local SEO, e-commerce, international SEO, Google APIs, and PDF/Excel reporting. 9 optio",
+      "category": "skills",
+      "tags": [
+        "ai",
+        "ai-seo",
+        "claude-code",
+        "claude-code-skill",
+        "marketing-automation",
+        "open-source",
+        "seo"
+      ],
+      "license_spdx": "MIT",
+      "stars": 25892,
+      "forks": 3389,
+      "pros": [
+        "Completely free and open-source under the MIT license with no per-site pricing or usage limits.",
+        "Runs locally on your machine, keeping your sensitive data private."
+      ],
+      "cons": [
+        "Full audits consume significant usage of your Claude plan because multiple agents rely on Opus.",
+        "Pages that load content dynamically after scrolling or clicking can produce noisy results."
+      ],
+      "security_notes": "The README states that Claude Code's security guardrails flag remote piping methods like irm | iex as a supply chain risk due to arbitrary code execution without verification. It also notes regarding API keys that you do not need API keys to use Claude SEO out of the box, but you can optionally connect free Google API keys which stay on your machine.",
+      "summary": "Claude SEO is a free, open-source SEO audit plugin designed to run entirely inside Claude Code. It features dozens of sub-skills and specialist agents that analyze websites for technical SEO, content quality, schema markup, and AI search readiness, delivering a prioritized action plan.",
+      "best_for": "SEO agencies, in-house teams, and freelance consultants looking to automate comprehensive website audits and action plans inside Claude Code.",
+      "highlights": [
+        "Runs full website audits in 10 to 15 minutes using parallel specialist agents.",
+        "Covers technical SEO, structured data validation, E-E-A-T, and Generative Engine Optimization (GEO).",
+        "Provides 30 core and extension commands including drift monitoring and XML sitemap generation."
+      ],
+      "getting_started": "/plugin marketplace add AgriciDaniel/claude-seo",
+      "ai_generated_at": "2026-11-02T17:43:27.407Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
       "id": "alirezarezvani/claude-skills",
       "owner": "alirezarezvani",
       "name": "claude-skills",
@@ -564,6 +846,39 @@
       "last_reviewed": null
     },
     {
+      "id": "openai/codex-plugin-cc",
+      "owner": "openai",
+      "name": "codex-plugin-cc",
+      "url": "https://github.com/openai/codex-plugin-cc",
+      "description": "Use Codex from Claude Code to review code or delegate tasks.",
+      "category": "plugins",
+      "tags": [],
+      "license_spdx": "Apache-2.0",
+      "stars": 34810,
+      "forks": 2409,
+      "pros": [
+        "Enables seamless task handoffs and code reviews between Claude Code and Codex.",
+        "Supports background execution and progress tracking for long-running jobs."
+      ],
+      "cons": [
+        "Requires a separate Node.js environment and a local installation of the Codex CLI.",
+        "Can consume usage limits quickly if long-running reviews or review gates are mismanaged."
+      ],
+      "security_notes": "The README does not document arbitrary code execution risks. It mentions that you need a ChatGPT subscription or an OpenAI API keys to use Codex.",
+      "summary": "This repository provides a plugin for Claude Code that integrates Codex functionality directly into your development workflow. It offers slash commands and background jobs for code reviews, adversarial design challenges, task delegation, and session transfers.",
+      "best_for": "Claude Code users who want to use Codex for code reviews, bug investigations, and task delegation without leaving their current workflow.",
+      "highlights": [
+        "Provides slash commands like /codex:review, /codex:adversarial-review, and /codex:rescue for code analysis and task delegation.",
+        "Includes status and result tracking commands for managing background Codex jobs.",
+        "Supports transferring active Claude Code sessions into persistent Codex threads."
+      ],
+      "getting_started": "/plugin marketplace add openai/codex-plugin-cc",
+      "ai_generated_at": "2026-11-02T17:37:19.780Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
       "id": "everyinc/compound-engineering-plugin",
       "owner": "EveryInc",
       "name": "compound-engineering-plugin",
@@ -597,6 +912,261 @@
       "last_reviewed": null
     },
     {
+      "id": "mksglu/context-mode",
+      "owner": "mksglu",
+      "name": "context-mode",
+      "url": "https://github.com/mksglu/context-mode",
+      "description": "Free, local plugin that keeps tool output out of your coding agent's context window. Sandbox and SQLite FTS5 search, 99% fewer bytes in context. Works with Claude Code, Codex, Pi, OpenCode, Gemini CLI, Copilot CLI and 4 more agents. Zero telemetry.",
+      "category": "skills",
+      "tags": [
+        "antigravity",
+        "claude",
+        "claude-code",
+        "claude-code-hooks",
+        "claude-code-plugins",
+        "claude-code-skill",
+        "codex",
+        "codex-cli",
+        "context-mode",
+        "copilot",
+        "cursor-plugin",
+        "kiro",
+        "mcp",
+        "mcp-server",
+        "mcp-tools",
+        "openclaw",
+        "opencode",
+        "pi-agent",
+        "skills",
+        "zed-extension"
+      ],
+      "license_spdx": null,
+      "stars": 33258,
+      "forks": 2295,
+      "pros": [
+        "Reduces context window token consumption by up to 98% through output sandboxing.",
+        "Maintains local storage with zero cloud telemetry or account requirement."
+      ],
+      "cons": [
+        "Requires platform-specific configuration or hook setups for automatic routing.",
+        "Some supported platforms have limited hook capabilities, affecting full session continuity."
+      ],
+      "security_notes": "The README states that `ctx_execute` and `ctx_batch_execute` run arbitrary code and inherit process filesystem access, meaning any execution tool should be treated as running arbitrary code. It also mentions that tool inputs containing API keys and other sensitive credentials are automatically redacted before persistence in the session database.",
+      "summary": "Context Mode is an MCP server and plugin system designed to dramatically reduce context window bloat by sandboxing tool outputs and indexing content using SQLite FTS5. It tracks session state across conversation compactions to preserve working context and routing across various AI coding assistants.",
+      "best_for": "Developers using AI coding assistants who want to prevent large tool outputs from overflowing their context windows.",
+      "highlights": [
+        "Provides 11 MCP tools for sandboxed execution, batching, and full-text search indexing.",
+        "Tracks session events in a local SQLite database to survive conversation compaction.",
+        "Supports multiple AI platforms including Claude Code, Gemini CLI, Cursor, and OpenCode."
+      ],
+      "getting_started": "/plugin marketplace add mksglu/context-mode",
+      "ai_generated_at": "2026-11-02T17:47:50.207Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
+      "id": "zarazhangrui/frontend-slides",
+      "owner": "zarazhangrui",
+      "name": "frontend-slides",
+      "url": "https://github.com/zarazhangrui/frontend-slides",
+      "description": "Create beautiful slides on the web using a coding agent's frontend skills",
+      "category": "skills",
+      "tags": [
+        "ai-slides",
+        "anthropic",
+        "claude",
+        "claude-code",
+        "claude-skill",
+        "generative-ui",
+        "html",
+        "presentation",
+        "slides",
+        "vibe-coding"
+      ],
+      "license_spdx": "MIT",
+      "stars": 31749,
+      "forks": 2435,
+      "pros": [
+        "Produces self-contained, highly customizable single HTML files with inline styles.",
+        "Offers progressive disclosure architecture to load supporting files on-demand."
+      ],
+      "cons": [
+        "Relies on external CLI tools or scripts for specific actions like PDF export and Vercel deployment.",
+        "Requires a local coding agent with filesystem and shell command access."
+      ],
+      "security_notes": "The README does not document arbitrary code execution. The README does not document API keys.",
+      "summary": "Frontend Slides is a Claude Code skill and coding-agent plugin that helps users create custom HTML presentations or convert PowerPoint files into web slideshows. It avoids generic styling by offering visual style discovery, letting you pick from generated style previews before building the final presentation.",
+      "best_for": "Developers and non-designers using Claude Code or other coding agents to quickly generate professional, self-contained HTML presentations or convert existing PPTX files.",
+      "highlights": [
+        "Generates single HTML files with zero npm or framework dependencies.",
+        "Includes support for converting PowerPoint files to web slideshows while preserving assets.",
+        "Provides progressive style discovery with dozens of curated visual presets and templates."
+      ],
+      "getting_started": "/plugin marketplace add https://github.com/zarazhangrui/frontend-slides",
+      "ai_generated_at": "2026-11-02T17:39:29.745Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
+      "id": "nutlope/hallmark",
+      "owner": "Nutlope",
+      "name": "hallmark",
+      "url": "https://github.com/Nutlope/hallmark",
+      "description": "Anti-AI-slop design skill for Claude Code, Cursor, and Codex.",
+      "category": "skills",
+      "tags": [],
+      "license_spdx": "MIT",
+      "stars": 45745,
+      "forks": 2427,
+      "pros": [
+        "Enforces strict design rules and layout floors to prevent broken pages.",
+        "Captures real screenshots and includes openly licensed photo integrations."
+      ],
+      "cons": [
+        "Requires Node 18 or later to run.",
+        "Full browser checks depend on having Puppeteer-core and Chrome installed."
+      ],
+      "security_notes": "The provided README does not document arbitrary code execution or API keys.",
+      "summary": "Hallmark is a design skill for coding assistants that helps generate web pages while actively preventing common artificial intelligence aesthetic clichés. It includes fifty themes, automated browser rendering checks, and tools to audit or redesign existing code.",
+      "best_for": "Developers using AI coding agents who want to generate or redesign web pages that avoid looking machine-generated.",
+      "highlights": [
+        "Includes fifty distinct material-based themes and a custom design mode.",
+        "Features a browser-based linter that checks pages against common AI design tells.",
+        "Provides commands for auditing and redesigning existing paths or files."
+      ],
+      "getting_started": "npx skills add nutlope/hallmark -g",
+      "ai_generated_at": "2026-11-02T17:39:04.812Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
+      "id": "anthropics/knowledge-work-plugins",
+      "owner": "anthropics",
+      "name": "knowledge-work-plugins",
+      "url": "https://github.com/anthropics/knowledge-work-plugins",
+      "description": "Open source repository of plugins primarily intended for knowledge workers to use in Claude Cowork",
+      "category": "plugins",
+      "tags": [],
+      "license_spdx": "Apache-2.0",
+      "stars": 34456,
+      "forks": 3809,
+      "pros": [
+        "Modular file-based architecture requires no build steps or complex infrastructure",
+        "Easy to customize for company-specific tools, terminology, and workflows"
+      ],
+      "cons": [
+        "Plugins are generic starting points that require manual configuration to match company processes",
+        "Relies on external tool connectors and MCP servers which must be configured separately"
+      ],
+      "security_notes": "The README does not document arbitrary code execution. The README does not document API keys.",
+      "summary": "This repository provides eleven open-source knowledge work plugins that customize Claude for specific roles like sales, legal, engineering, and finance. Each plugin bundles skills, connectors, slash commands, and sub-agents into a file-based structure.",
+      "best_for": "Teams and individuals using Claude Cowork or Claude Code who want to adapt Claude into a role-specific specialist.",
+      "highlights": [
+        "Includes eleven open-source plugins covering job functions such as productivity, sales, legal, finance, and bio-research",
+        "Bundles skills, commands, and MCP tool connectors for external tools into standard markdown and JSON files",
+        "Provides a cowok-plugin-management plugin to create new plugins or customize existing ones"
+      ],
+      "getting_started": "claude plugin marketplace add anthropics/knowledge-work-plugins",
+      "ai_generated_at": "2026-11-02T17:36:52.325Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
+      "id": "coreyhaines31/marketingskills",
+      "owner": "coreyhaines31",
+      "name": "marketingskills",
+      "url": "https://github.com/coreyhaines31/marketingskills",
+      "description": "Marketing skills for Claude Code and AI agents. CRO, copywriting, SEO, analytics, and growth engineering.",
+      "category": "skills",
+      "tags": [
+        "agent-skills",
+        "ai-agents",
+        "ai-seo",
+        "claude",
+        "claude-code",
+        "claude-code-plugin",
+        "claude-skills",
+        "codex",
+        "content-marketing",
+        "conversion-rate-optimization",
+        "copywriting",
+        "cursor",
+        "email-marketing",
+        "generative-engine-optimization",
+        "growth-marketing",
+        "marketing",
+        "marketing-automation",
+        "saas-marketing",
+        "seo",
+        "skill-md"
+      ],
+      "license_spdx": "MIT",
+      "stars": 58028,
+      "forks": 8531,
+      "pros": [
+        "Compatible with a wide range of AI agents via the Agent Skills spec.",
+        "Provides multiple flexible installation methods such as CLI, submodules, and plugins."
+      ],
+      "cons": [
+        "Upgrading from v1.x to v2.0 leaves stale old-name folders that require manual cleanup.",
+        "Certain installation options like interactive plugins have strict environment limitations."
+      ],
+      "security_notes": "The README does not document arbitrary code execution or API keys.",
+      "summary": "This repository provides a collection of markdown-based marketing skills designed to guide AI coding agents through growth, SEO, copywriting, and analytics tasks. Users can install the library into various agent environments to help execute marketing workflows and strategies directly from their terminal or editor.",
+      "best_for": "Technical founders and marketers who want their AI coding agents to assist with marketing tasks.",
+      "highlights": [
+        "Contains dozens of specialized markdown skills covering SEO, CRO, copywriting, and growth.",
+        "Supports multiple installation options including a CLI tool, direct cloning, and plugins.",
+        "Features interconnected skills that build upon a foundational product marketing context document."
+      ],
+      "getting_started": "npx skills add coreyhaines31/marketingskills",
+      "ai_generated_at": "2026-11-02T17:38:41.475Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
+      "id": "czlonkowski/n8n-skills",
+      "owner": "czlonkowski",
+      "name": "n8n-skills",
+      "url": "https://github.com/czlonkowski/n8n-skills",
+      "description": "n8n skillset for Claude Code to build flawless n8n workflows",
+      "category": "skills",
+      "tags": [
+        "ai-agents",
+        "n8n",
+        "workflow-automation"
+      ],
+      "license_spdx": "MIT",
+      "stars": 6572,
+      "forks": 1078,
+      "pros": [
+        "Comprehensive guidance covering diverse aspects of n8n development from expressions to self-hosting",
+        "Proactive reminders and validation hooks surface relevant advice at the moment of decision"
+      ],
+      "cons": [
+        "Proactive hooks enforcement layer runs only in the Claude Code plugin install",
+        "Requires a separately installed and configured n8n-mcp server to function fully"
+      ],
+      "security_notes": "The README does not document arbitrary code execution. The README does not document API keys.",
+      "summary": "This repository provides 14 Claude Code skills and an enforcement layer designed to guide AI assistants in building and deploying n8n workflows. It teaches correct expression syntax, MCP tool usage, validation error handling, and production-ready patterns.",
+      "best_for": "Developers using Claude Code who want to build, debug, and deploy n8n automation workflows using the n8n-mcp server.",
+      "highlights": [
+        "14 complementary Claude Code skills covering expression syntax, node configuration, code nodes, and error handling",
+        "Always-on enforcement layer with a session router and PreToolUse/PostToolUse hooks",
+        "Self-hosting deployment skill for setting up n8n on a fresh Linux VM via Docker Compose and Caddy"
+      ],
+      "getting_started": "/plugin install czlonkowski/n8n-skills",
+      "ai_generated_at": "2026-11-02T17:40:18.106Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
       "id": "phuryn/pm-skills",
       "owner": "phuryn",
       "name": "pm-skills",
@@ -625,6 +1195,45 @@
       ],
       "getting_started": "claude plugin marketplace add phuryn/pm-skills",
       "ai_generated_at": "2026-11-02T15:54:31.480Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
+      "id": "deanpeters/product-manager-skills",
+      "owner": "deanpeters",
+      "name": "Product-Manager-Skills",
+      "url": "https://github.com/deanpeters/Product-Manager-Skills",
+      "description": "Product Management skills framework built on battle-tested methods for Claude Code, Cowork, Codex, and AI agents.",
+      "category": "skills",
+      "tags": [
+        "ai-agents",
+        "ai-product-management",
+        "claude-skills",
+        "pm-frameworks",
+        "product-management"
+      ],
+      "license_spdx": null,
+      "stars": 7837,
+      "forks": 944,
+      "pros": [
+        "Comprehensive coverage of diverse product management scenarios from initial problem framing to product sunsetting.",
+        "Works across multiple AI platforms and local interfaces rather than being locked to a single tool."
+      ],
+      "cons": [
+        "Non-commercial license (CC BY-NC-SA 4.0) restricts selling the skills or bundling them into paid products.",
+        "Manual setup required for uploading individual skills or configuring plugins depending on the chosen platform."
+      ],
+      "security_notes": "The README does not document arbitrary code execution. For API keys, the README states they are supported via environment variables only, with no in-app key entry.",
+      "summary": "This repository provides a collection of 77 product management skills and workflows designed for AI agents like Claude Code, Codex, and ChatGPT. Each skill supplies structured frameworks, prompts, and guidance to help product managers execute strategy, discovery, prioritization, and roadmapping without relying on generic AI outputs.",
+      "best_for": "Product managers looking to use AI assistants to structure complex tasks like market research, stakeholder mapping, and PRD generation.",
+      "highlights": [
+        "Includes 77 battle-tested PM frameworks organized into workflow, interactive, and component skills.",
+        "Provides multi-platform compatibility for Claude Code, Claude Desktop, OpenAI Codex, and a Streamlit playground.",
+        "Comes with themed packs and specific guides for discovery, strategy, delivery, AI product work, and lifecycle end-of-life management."
+      ],
+      "getting_started": null,
+      "ai_generated_at": "2026-11-02T17:41:48.294Z",
       "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
@@ -731,6 +1340,72 @@
       "last_reviewed": null
     },
     {
+      "id": "mengto/skills",
+      "owner": "MengTo",
+      "name": "Skills",
+      "url": "https://github.com/MengTo/Skills",
+      "description": "Agent skills for designers and builders using Codex, Claude, Cursor, and other AI coding agents",
+      "category": "skills",
+      "tags": [],
+      "license_spdx": "MIT",
+      "stars": 7195,
+      "forks": 838,
+      "pros": [
+        "Comprehensive library of reusable procedural workflows instead of vague chat answers",
+        "Supports multiple popular AI coding assistants including Codex, Claude Code, and Cursor"
+      ],
+      "cons": [
+        "Requires manual copying or referencing of skill files into individual projects",
+        "Large number of separate skill folders may require time to navigate and select the right workflow"
+      ],
+      "security_notes": "The README does not document arbitrary code execution. The README does not document API keys.",
+      "summary": "Agent Skills is a collection of 176 portable markdown playbooks designed to guide AI coding assistants in building rich user interfaces, web design systems, animations, and game combat mechanics. Each skill folder provides procedural steps, constraints, and default patterns that can be loaded directly into developer workflows.",
+      "best_for": "Developers and designers using AI agents like Claude Code, Codex, or Cursor to build frontends, 3D scenes, or web games.",
+      "highlights": [
+        "Includes 176 markdown-based agent skills across nine distinct categories",
+        "Provides runnable visual demos with HTML, CSS, and recreation prompts",
+        "Covers specialized domains including Three.js VFX, SVG illustrations, and web animation"
+      ],
+      "getting_started": null,
+      "ai_generated_at": "2026-11-02T17:42:12.089Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
+      "id": "google-labs-code/stitch-skills",
+      "owner": "google-labs-code",
+      "name": "stitch-skills",
+      "url": "https://github.com/google-labs-code/stitch-skills",
+      "description": "A library of Agent Skills designed to work with the Stitch MCP server. Each skill follows the Agent Skills open standard, for compatibility with coding agents such as Antigravity, Gemini CLI, Claude Code, Cursor.",
+      "category": "skills",
+      "tags": [],
+      "license_spdx": "Apache-2.0",
+      "stars": 8659,
+      "forks": 1050,
+      "pros": [
+        "Supports multiple coding agents including Codex, Claude Code, Cursor, and OpenCode.",
+        "Provides structured plugins divided clearly into design, build, and utility categories."
+      ],
+      "cons": [
+        "Requires the separate Stitch MCP server to be configured and running in the agent environment.",
+        "Selective installation of skills requires manual verification of inter-dependencies to prevent errors."
+      ],
+      "security_notes": "The README does not document arbitrary code execution. The README mentions that credentials and environment variables apply from the Stitch MCP setup guide, but does not explicitly document API keys.",
+      "summary": "This repository provides a collection of agent plugins and skills designed to integrate Google Stitch into coding assistants like Claude Code, Codex, and Cursor. It equips developers with tools to handle design generation, code-to-design conversions, component building, and utility workflows.",
+      "best_for": "Developers using AI coding agents who want to connect their workflow directly with Google Stitch design projects and build components from them.",
+      "highlights": [
+        "Includes stitch-design plugins for converting frontend code to designs, generating screens, and managing design systems.",
+        "Includes stitch-build plugins for transforming Stitch screens into React, React Native, or Remotion video components.",
+        "Includes stitch-utilities plugins for enhancing prompts, analyzing projects, and generating DESIGN.md files."
+      ],
+      "getting_started": "npx skills add google-labs-code/stitch-skills",
+      "ai_generated_at": "2026-11-02T17:43:52.759Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
       "id": "obra/superpowers",
       "owner": "obra",
       "name": "superpowers",
@@ -759,6 +1434,39 @@
       ],
       "getting_started": "/plugin install superpowers@claude-plugins-official",
       "ai_generated_at": "2026-11-02T15:54:49.442Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
+      "id": "twostraws/swiftui-agent-skill",
+      "owner": "twostraws",
+      "name": "SwiftUI-Agent-Skill",
+      "url": "https://github.com/twostraws/SwiftUI-Agent-Skill",
+      "description": "SwiftUI agent skill for Claude Code, Codex, and other AI tools.",
+      "category": "skills",
+      "tags": [],
+      "license_spdx": "MIT",
+      "stars": 6439,
+      "forks": 251,
+      "pros": [
+        "Integrates practical, real-world knowledge to prevent common LLM SwiftUI mistakes.",
+        "Compatible with multiple AI coding assistants and platforms via standard installation methods."
+      ],
+      "cons": [
+        "Requires Node or Homebrew installation if using the recommended npx command.",
+        "Adds token costs to agent workflows depending on the skill size."
+      ],
+      "security_notes": "The provided README does not document arbitrary code execution or API keys.",
+      "summary": "This repository provides an agent skill designed to help AI coding assistants write modern and correct SwiftUI code. It targets common LLM mistakes across navigation, layout, animations, state management, and accessibility.",
+      "best_for": "Developers using AI coding assistants who want to build SwiftUI applications targeting iOS 26 and later.",
+      "highlights": [
+        "Covers API usage, design, performance, and accessibility guidance for SwiftUI.",
+        "Uses the Agent Skills format compatible with Claude Code, Codex, Gemini, and Cursor.",
+        "Targets frequent LLM errors like deprecated API usage and VoiceOver oversights."
+      ],
+      "getting_started": "npx skills add https://github.com/twostraws/swiftui-agent-skill --skill swiftui-pro",
+      "ai_generated_at": "2026-11-02T17:39:52.366Z",
       "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
