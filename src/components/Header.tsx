@@ -107,6 +107,12 @@ export default function Header() {
         </Link>
 
         <nav aria-label="Account" className="flex items-center gap-3">
+          <Link
+            href="/skill-set"
+            className="rounded-md px-3 py-2 text-sm font-medium text-fg transition-colors hover:text-accent"
+          >
+            Skill set finder
+          </Link>
           <ThemeToggle />
           <a
             href="https://github.com/apilP77/Claude-code-compass"
