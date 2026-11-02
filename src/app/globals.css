@@ -29,17 +29,20 @@
   --c-warn: #9a4720;
   --c-danger: #b3261e;
 
+  --c-contour: #9fb4a9;
+  --c-glow: rgba(246, 248, 246, 0.75);
+
   --c-code: #16233a;
   --c-code-fg: #e8ede9;
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --c-bg: #0f1b2a; /* deep chart navy */
-  --c-surface: #162538;
-  --c-surface-2: #1b2d43;
-  --c-line: #2a3e55;
-  --c-line-strong: #3f5a74;
+  --c-bg: #0a121d; /* deep chart navy */
+  --c-surface: #14233a;
+  --c-surface-2: #1b2f4b;
+  --c-line: #26394f;
+  --c-line-strong: #4a6a8c;
 
   --c-fg: #e6edf3;
   --c-ink: #e6edf3;
@@ -54,7 +57,10 @@
   --c-warn: #f2a06a;
   --c-danger: #f29b94;
 
-  --c-code: #0a121d;
+  --c-contour: #5a86ad;
+  --c-glow: rgba(109, 182, 217, 0.2);
+
+  --c-code: #050a11;
   --c-code-fg: #e6edf3;
 }
 
@@ -75,6 +81,8 @@
   --color-ai: var(--c-ai);
   --color-warn: var(--c-warn);
   --color-danger: var(--c-danger);
+  --color-contour: var(--c-contour);
+  --color-glow: var(--c-glow);
   --color-code: var(--c-code);
   --color-code-fg: var(--c-code-fg);
 }

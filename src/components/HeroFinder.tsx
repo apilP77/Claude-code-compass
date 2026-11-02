@@ -85,7 +85,7 @@ export default function HeroFinder({ query, sort, resultCount }: HeroFinderProps
   const lost = resultCount === 0 && query.trim() !== "";
 
   return (
-    <section className="relative overflow-hidden border-b border-line">
+    <section className="relative overflow-hidden border-b border-line bg-[radial-gradient(ellipse_at_78%_48%,var(--c-glow),transparent_58%)]">
       <Contour />
       <div className="relative mx-auto grid w-full max-w-6xl items-center gap-8 px-5 py-12 sm:px-8 sm:py-16 md:grid-cols-[minmax(0,1fr)_auto]">
         <div className="min-w-0">
