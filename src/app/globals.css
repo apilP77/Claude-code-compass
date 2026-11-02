@@ -1,40 +1,58 @@
 @import "tailwindcss";
 
 /*
- * Design tokens. See DESIGN.md. Dark only: components use these names
- * (bg-bg, bg-surface, border-line, text-fg, text-muted, text-accent, ...)
- * and never raw slate/zinc/teal classes.
+ * Design tokens: the "survey chart" palette from DESIGN.md. Light only.
+ * Components use these names (bg-bg, bg-surface, border-line, text-fg,
+ * text-muted, text-accent, bg-ink, ...) and never raw Tailwind colors.
  */
 @theme {
-  --color-bg: #0b0e13;
-  --color-surface: #11161d;
-  --color-surface-2: #171e27;
-  --color-line: #242d39;
-  --color-line-strong: #34404f;
+  --color-bg: #e8ede9; /* chart: cool map paper */
+  --color-surface: #f6f8f6; /* sheet: raised entries */
+  --color-surface-2: #edf1ee;
+  --color-line: #cbd6cf;
+  --color-line-strong: #9fb4a9; /* contour */
 
-  --color-fg: #e8edf3;
-  --color-muted: #a3afbd;
-  --color-faint: #7a8796;
+  --color-fg: #16233a; /* ink: survey navy */
+  --color-ink: #16233a;
+  --color-muted: #46546a;
+  --color-faint: #596573;
 
-  --color-accent: #5eead4;
-  --color-ai: #c4b5fd;
-  --color-verified: #6ee7b7;
-  --color-star: #fcd34d;
-  --color-warn: #fdba74;
-  --color-danger: #fca5a5;
+  --color-accent: #2f6a8a; /* lake: links, focus, selected */
+  --color-blaze: #d9a21b; /* trail-blaze yellow: needle and fills only */
+  --color-star: #7d5800; /* blaze, dark enough to read as text */
+  --color-verified: #25694b;
+  --color-ai: #5f4f9e;
+  --color-warn: #9a4720;
+  --color-danger: #b3261e;
 
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-archivo), var(--font-public-sans), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
+  /* A damped spring: overshoots, then settles, like a real compass needle. */
+  --ease-needle: linear(
+    0, 0.34 7%, 0.82 15%, 1.1 24%, 1.16 30%, 1.08 38%, 0.97 48%, 0.95 56%,
+    1.01 70%, 1
+  );
 }
 
 body {
   background: var(--color-bg);
   color: var(--color-fg);
   font-family: var(--font-sans);
+  line-height: 1.6;
+}
+
+/* Map lettering: Archivo set expanded. Used for titles only. */
+.display {
+  font-family: var(--font-display);
+  font-stretch: 118%;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
 }
 
 /* One focus style for every interactive element. */
@@ -44,14 +62,102 @@ body {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  background: color-mix(in srgb, var(--color-blaze) 45%, transparent);
 }
 
+/* ---- Hero: contour lines draw in once -------------------------------- */
+.contour path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: contour-draw 1600ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.contour path:nth-child(2) { animation-delay: 120ms; }
+.contour path:nth-child(3) { animation-delay: 240ms; }
+.contour path:nth-child(4) { animation-delay: 360ms; }
+.contour path:nth-child(5) { animation-delay: 480ms; }
+.contour path:nth-child(6) { animation-delay: 600ms; }
+
+@keyframes contour-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---- Compass needle -------------------------------------------------- */
+.needle {
+  transform-origin: 50% 50%;
+  transform: rotate(var(--bearing, 0deg));
+  transition: transform 1100ms var(--ease-needle);
+}
+.needle[data-lost="true"] {
+  animation: needle-wobble 900ms ease-in-out 2;
+}
+
+@keyframes needle-wobble {
+  0%, 100% { transform: rotate(var(--bearing, 0deg)); }
+  25% { transform: rotate(calc(var(--bearing, 0deg) + 14deg)); }
+  75% { transform: rotate(calc(var(--bearing, 0deg) - 14deg)); }
+}
+
+/* ---- Vote count rolls to its new value ------------------------------- */
+.roll-up { animation: roll-up 260ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+.roll-down { animation: roll-down 260ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+@keyframes roll-up {
+  from { transform: translateY(60%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes roll-down {
+  from { transform: translateY(-60%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ---- View transitions (React <ViewTransition>, no extra library) ----- */
+::view-transition-group(.morph) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+::view-transition-old(.slide-down) {
+  animation:
+    150ms ease-out both fade-out,
+    150ms ease-out both slide-down;
+}
+::view-transition-new(.slide-up) {
+  animation:
+    220ms ease-out 150ms both fade-in,
+    380ms cubic-bezier(0.2, 0.8, 0.2, 1) both slide-up;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fade-out {
+  to { opacity: 0; }
+}
+@keyframes slide-up {
+  from { transform: translateY(10px); }
+  to { transform: translateY(0); }
+}
+@keyframes slide-down {
+  to { transform: translateY(10px); }
+}
+
+/* Anyone who asks for reduced motion gets no animation at all. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
+    animation: none !important;
+    transition: none !important;
+  }
+  .contour path {
+    stroke-dashoffset: 0;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }

@@ -1,11 +1,11 @@
 import type { Repository } from "@/lib/schema";
 
 const base =
-  "inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium";
+  "inline-flex items-center gap-1.5 rounded border px-2 py-0.5 text-[13px] font-medium leading-5";
 
 /**
- * One badge per listing, in order of how much we can vouch for it:
- * verified by an editor, AI-written but unverified, or nothing checked yet.
+ * One badge per listing, in order of how much we can vouch for it. Each one
+ * carries words, never color alone.
  */
 export default function ListingBadge({
   repository,
@@ -14,8 +14,11 @@ export default function ListingBadge({
 }) {
   if (repository.listing_status === "reviewed") {
     return (
-      <span className={`${base} border-verified/25 bg-verified/10 text-verified`}>
-        Verified
+      <span className={`${base} border-verified/40 bg-verified/10 text-verified`}>
+        <svg viewBox="0 0 12 12" aria-hidden="true" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m2.5 6.5 2.2 2.2 4.8-5.4" />
+        </svg>
+        Reviewed
       </span>
     );
   }
@@ -23,17 +26,17 @@ export default function ListingBadge({
   if (repository.summary) {
     return (
       <span
-        title="Written by AI from the README. Not yet verified by an editor."
-        className={`${base} border-ai/25 bg-ai/10 text-ai`}
+        title="The summary was written by AI from the project's README. Nobody has checked it yet."
+        className={`${base} border-ai/40 bg-ai/10 text-ai`}
       >
-        AI summary · not editor-verified
+        AI-written summary
       </span>
     );
   }
 
   return (
-    <span className={`${base} border-warn/25 bg-warn/10 text-warn`}>
-      Unreviewed
+    <span className={`${base} border-warn/40 bg-warn/10 text-warn`}>
+      Not yet reviewed
     </span>
   );
 }

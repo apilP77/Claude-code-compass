@@ -14,6 +14,7 @@ export default function VoteButtons({ repositoryId }: VoteButtonsProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
+  const [rollDirection, setRollDirection] = useState<"up" | "down" | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -145,6 +146,7 @@ export default function VoteButtons({ repositoryId }: VoteButtonsProps) {
         throw new Error("The vote service returned an invalid score.");
       }
 
+      setRollDirection(result.score >= (score ?? 0) ? "up" : "down");
       setScore(result.score);
       setUserVote(removing ? null : voteType);
     } catch (error) {
@@ -158,12 +160,12 @@ export default function VoteButtons({ repositoryId }: VoteButtonsProps) {
 
   return (
     <section className="mt-8 border-t border-line pt-6">
-      <h2 className="text-xl font-semibold leading-7">Community score</h2>
+      <h2 className="display text-xl">Community score</h2>
       <div className="mt-3 flex items-center gap-3">
         <div
           role="group"
           aria-label="Vote on this repository"
-          className="inline-flex items-center overflow-hidden rounded-lg border border-line"
+          className="inline-flex items-center overflow-hidden rounded-md border border-line-strong bg-surface"
         >
           <button
             type="button"
@@ -181,9 +183,14 @@ export default function VoteButtons({ repositoryId }: VoteButtonsProps) {
           </button>
           <p
             aria-live="polite"
-            className="min-w-12 border-x border-line px-3 text-center font-mono text-base tabular-nums text-fg"
+            className="min-w-14 overflow-hidden border-x border-line-strong px-3 text-center text-lg font-semibold tabular-nums leading-[2.75rem] text-fg"
           >
-            {score ?? (isLoading ? "…" : "—")}
+            <span
+              key={score ?? "none"}
+              className={`inline-block ${rollDirection === "up" ? "roll-up" : rollDirection === "down" ? "roll-down" : ""}`}
+            >
+              {score ?? (isLoading ? "…" : "—")}
+            </span>
             <span className="sr-only"> points</span>
           </p>
           <button

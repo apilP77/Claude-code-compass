@@ -17,15 +17,34 @@ export default function CopyCommand({ command }: { command: string }) {
 
   return (
     <div className="flex items-stretch gap-2">
-      <code className="min-w-0 flex-1 overflow-x-auto whitespace-pre rounded-lg border border-line bg-surface-2 px-4 py-3 font-mono text-sm text-fg">
+      <code className="min-w-0 flex-1 overflow-x-auto whitespace-pre rounded-md border border-line-strong bg-ink px-4 py-3 font-mono text-sm text-bg">
         {command}
       </code>
       <button
         type="button"
         onClick={() => void copy()}
-        className="min-h-11 shrink-0 rounded-lg border border-line px-4 text-sm font-medium text-fg transition-colors hover:border-line-strong hover:bg-surface-2"
+        className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-md border border-line-strong bg-surface px-4 text-sm font-medium text-fg transition-colors hover:border-ink"
       >
-        {state === "copied" ? "Copied" : state === "failed" ? "Copy failed" : "Copy"}
+        <svg
+          viewBox="0 0 16 16"
+          aria-hidden="true"
+          className="h-4 w-4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          {state === "copied" ? (
+            <path d="m3 8.5 3.2 3.2L13 4.5" />
+          ) : (
+            <>
+              <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" />
+              <path d="M10.5 5.5v-2a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2" />
+            </>
+          )}
+        </svg>
+        {state === "copied" ? "Copied" : state === "failed" ? "Copy failed" : "Copy command"}
       </button>
       <span aria-live="polite" className="sr-only">
         {state === "copied" ? "Command copied to clipboard" : ""}

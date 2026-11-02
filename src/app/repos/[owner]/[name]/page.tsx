@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ViewTransition } from "react";
+import CategorySymbol from "@/components/CategorySymbol";
 import CopyCommand from "@/components/CopyCommand";
 import ListingBadge from "@/components/ListingBadge";
 import VoteButtons from "@/components/VoteButtons";
@@ -49,7 +51,7 @@ function Section({
 }) {
   return (
     <section className="mt-8 border-t border-line pt-6">
-      <h2 className="text-xl font-semibold leading-7 text-fg">{title}</h2>
+      <h2 className="display text-xl">{title}</h2>
       {note && <p className="mt-1 text-[13px] leading-5 text-faint">{note}</p>}
       <div className="mt-3">{children}</div>
     </section>
@@ -61,7 +63,7 @@ function BulletList({ items }: { items: readonly string[] }) {
     <ul className="space-y-2 text-[15px] leading-6 text-muted">
       {items.map((item) => (
         <li key={item} className="flex gap-3">
-          <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+          <span aria-hidden="true" className="mt-2.5 h-1.5 w-1.5 shrink-0 rotate-45 bg-accent" />
           <span>{item}</span>
         </li>
       ))}
@@ -96,16 +98,20 @@ export default async function RepositoryPage({ params }: RepositoryPageProps) {
         <span aria-hidden="true" className="mx-2">
           /
         </span>
-        <span className="font-mono">{repository.id}</span>
+        <span >{repository.id}</span>
       </nav>
 
       <div className="mt-6 grid gap-10 lg:grid-cols-[minmax(0,1fr)_280px]">
         <article className="min-w-0">
           <header>
-            <p className="font-mono text-sm text-faint">{repository.id}</p>
-            <h1 className="mt-2 text-4xl font-bold tracking-tight sm:text-[40px] sm:leading-[48px]">
-              {repository.name}
-            </h1>
+            <p className="flex items-center gap-2 text-sm capitalize text-faint">
+              <CategorySymbol category={repository.category} />
+              {repository.category}
+              <span className="normal-case">by {repository.owner}</span>
+            </p>
+            <ViewTransition name={`repo-${repository.id}`} share="morph" default="none">
+              <h1 className="display mt-3 text-4xl sm:text-5xl">{repository.name}</h1>
+            </ViewTransition>
             <div className="mt-4">
               <ListingBadge repository={repository} />
             </div>
@@ -148,13 +154,13 @@ export default async function RepositoryPage({ params }: RepositoryPageProps) {
           {repository.pros && repository.cons && (
             <section className="mt-8 grid gap-6 border-t border-line pt-6 sm:grid-cols-2">
               <div>
-                <h2 className="text-xl font-semibold leading-7">Pros</h2>
+                <h2 className="display text-xl">Pros</h2>
                 <div className="mt-3">
                   <BulletList items={repository.pros} />
                 </div>
               </div>
               <div>
-                <h2 className="text-xl font-semibold leading-7">Cons</h2>
+                <h2 className="display text-xl">Cons</h2>
                 <div className="mt-3">
                   <BulletList items={repository.cons} />
                 </div>
@@ -182,7 +188,7 @@ export default async function RepositoryPage({ params }: RepositoryPageProps) {
           {!isReviewed && (
             <aside
               role="note"
-              className="mt-8 rounded-xl border border-warn/25 bg-warn/10 p-4 text-sm leading-6 text-warn"
+              className="mt-8 rounded-[10px] border border-warn/40 bg-warn/10 p-4 text-sm leading-6 text-warn"
             >
               <strong className="font-semibold">Not editor-verified.</strong>{" "}
               Nobody on the team has reviewed this repository yet. Check its
@@ -196,16 +202,17 @@ export default async function RepositoryPage({ params }: RepositoryPageProps) {
             href={repository.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex min-h-11 w-full items-center justify-center rounded-lg bg-accent px-5 text-sm font-semibold text-bg transition-opacity hover:opacity-90"
+            className="flex min-h-11 w-full items-center justify-center rounded-md bg-ink px-5 text-sm font-semibold text-bg transition-colors hover:bg-accent"
           >
-            View on GitHub
+            Open on GitHub
             <span className="sr-only"> (opens in a new tab)</span>
           </a>
 
-          <dl className="mt-6 space-y-5 rounded-xl border border-line bg-surface p-5">
+          <h2 className="display mt-8 text-lg">At a glance</h2>
+          <dl className="mt-3 space-y-5 rounded-[10px] border border-line-strong bg-surface p-5">
             <Fact label="Stars">
               {repository.stars !== null ? (
-                <span className="font-mono text-star">
+                <span className="font-semibold text-star">
                   ★ {repository.stars.toLocaleString()}
                 </span>
               ) : (
@@ -214,14 +221,14 @@ export default async function RepositoryPage({ params }: RepositoryPageProps) {
             </Fact>
             <Fact label="Forks">
               {repository.forks !== null ? (
-                <span className="font-mono">{repository.forks.toLocaleString()}</span>
+                <span >{repository.forks.toLocaleString()}</span>
               ) : (
                 <span className="text-faint">Unknown</span>
               )}
             </Fact>
             <Fact label="License">
               {repository.license_spdx ? (
-                <span className="font-mono">{repository.license_spdx}</span>
+                <span >{repository.license_spdx}</span>
               ) : (
                 <span className="text-warn">No license detected</span>
               )}
@@ -235,7 +242,7 @@ export default async function RepositoryPage({ params }: RepositoryPageProps) {
                   {repository.tags.map((tag) => (
                     <li
                       key={tag}
-                      className="rounded-full border border-line px-2.5 py-0.5 text-xs text-muted"
+                      className="rounded border border-line-strong px-2 py-0.5 text-[13px] text-muted"
                     >
                       {tag}
                     </li>
@@ -247,11 +254,11 @@ export default async function RepositoryPage({ params }: RepositoryPageProps) {
             </Fact>
             {repository.ai_generated_at && (
               <Fact label="AI text generated">
-                <span className="font-mono text-xs">
+                <span className="text-xs">
                   {repository.ai_generated_at.slice(0, 10)}
                 </span>
                 {repository.ai_model && (
-                  <span className="mt-0.5 block font-mono text-xs text-faint">
+                  <span className="mt-0.5 block text-xs text-faint">
                     {repository.ai_model}
                   </span>
                 )}

@@ -1,7 +1,9 @@
-import { Suspense } from "react";
+import { Suspense, ViewTransition } from "react";
 import Link from "next/link";
-import RepoCard from "@/components/RepoCard";
-import SearchControls from "@/components/SearchControls";
+import CategorySymbol from "@/components/CategorySymbol";
+import FeaturedEntry from "@/components/FeaturedEntry";
+import HeroFinder from "@/components/HeroFinder";
+import RepoRow from "@/components/RepoRow";
 import { repositories } from "@/lib/repos";
 import {
   REPOSITORY_SORTS,
@@ -16,6 +18,13 @@ type HomeProps = {
     category?: string | string[];
     sort?: string | string[];
   }>;
+};
+
+const CATEGORY_LABELS: Record<Category, string> = {
+  skills: "Skills",
+  plugins: "Plugins",
+  collections: "Collections",
+  directories: "Directories",
 };
 
 function firstValue(value: string | string[] | undefined): string {
@@ -50,43 +59,45 @@ function directoryHref(
   return search ? `/?${search}` : "/";
 }
 
-const chipBase =
-  "inline-flex min-h-10 items-center rounded-full border px-4 text-sm font-medium capitalize transition-colors";
-const chipOff =
-  "border-line text-muted hover:border-line-strong hover:text-fg";
-const chipOn = "border-accent/40 bg-accent/10 text-accent";
+const categoryCounts = CATEGORIES.reduce(
+  (counts, category) => ({
+    ...counts,
+    [category]: repositories.filter((repo) => repo.category === category).length,
+  }),
+  {} as Record<Category, number>,
+);
+
+const legendBase =
+  "inline-flex min-h-10 items-center gap-2 rounded-md border px-3 text-sm font-medium transition-colors";
+const legendOff = "border-line-strong text-fg hover:border-ink hover:bg-surface";
+const legendOn = "border-ink bg-ink text-bg";
 
 function DirectorySkeleton() {
   return (
-    <ul
-      aria-label="Loading repositories"
-      className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-    >
-      {Array.from({ length: 6 }, (_, index) => (
-        <li
-          key={index}
-          className="h-56 animate-pulse rounded-xl border border-line bg-surface"
-        />
-      ))}
-    </ul>
+    <div aria-busy="true" aria-label="Loading repositories">
+      <div className="h-80 border-b border-line bg-surface-2" />
+      <div className="mx-auto mt-8 w-full max-w-6xl space-y-px px-5 sm:px-8">
+        {Array.from({ length: 6 }, (_, index) => (
+          <div key={index} className="h-24 animate-pulse rounded bg-surface" />
+        ))}
+      </div>
+    </div>
   );
 }
 
 export default function Home({ searchParams }: HomeProps) {
   return (
-    <main className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 sm:px-8 sm:py-14">
-      <header className="max-w-2xl">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-[40px] sm:leading-[48px]">
-          Find the right tools for Claude Code
-        </h1>
-        <p className="mt-3 text-[15px] leading-6 text-muted">
-          A searchable directory of community-built skills, plugins and
-          collections, with licenses, review status and plain-English summaries.
-        </p>
-      </header>
-
-      <Suspense fallback={<div className="mt-8"><DirectorySkeleton /></div>}>
-        <RepositoryDirectory searchParams={searchParams} />
+    <main className="flex-1">
+      <Suspense
+        fallback={
+          <ViewTransition exit="slide-down" default="none">
+            <DirectorySkeleton />
+          </ViewTransition>
+        }
+      >
+        <ViewTransition enter="slide-up" default="none">
+          <RepositoryDirectory searchParams={searchParams} />
+        </ViewTransition>
       </Suspense>
     </main>
   );
@@ -101,78 +112,106 @@ async function RepositoryDirectory({ searchParams }: HomeProps) {
   const sort = isSort(sortValue) ? sortValue : "verified";
   const results = searchRepositories(repositories, { query, category, sort });
   const filtered = query !== "" || category !== undefined;
+  const featured = filtered
+    ? []
+    : searchRepositories(repositories, { sort: "stars" }).slice(0, 3);
 
   return (
     <>
-      <section
-        className="mt-8 flex flex-col gap-4"
-        aria-label="Search and filter repositories"
-      >
-        <SearchControls query={query} sort={sort} />
+      <HeroFinder query={query} sort={sort} resultCount={results.length} />
 
-        <nav aria-label="Filter by category" className="flex flex-wrap gap-2">
+      <div className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-8 sm:py-10">
+        <nav aria-label="Filter by category" className="flex flex-wrap items-center gap-2">
+          <span className="mr-1 text-sm text-faint">Legend</span>
           <Link
             href={directoryHref(query, sort)}
             aria-current={category === undefined ? "page" : undefined}
-            className={`${chipBase} ${category === undefined ? chipOn : chipOff}`}
+            className={`${legendBase} ${category === undefined ? legendOn : legendOff}`}
           >
             All
+            <span className="opacity-70">{repositories.length}</span>
           </Link>
           {CATEGORIES.map((item) => (
             <Link
               key={item}
               href={directoryHref(query, sort, item)}
               aria-current={category === item ? "page" : undefined}
-              className={`${chipBase} ${category === item ? chipOn : chipOff}`}
+              className={`${legendBase} ${category === item ? legendOn : legendOff}`}
             >
-              {item}
+              <CategorySymbol category={item} />
+              {CATEGORY_LABELS[item]}
+              <span className="opacity-70">{categoryCounts[item]}</span>
             </Link>
           ))}
         </nav>
-      </section>
 
-      <section className="mt-8" aria-label="Repository directory">
-        <div className="mb-4 flex items-center justify-between gap-4">
-          <p aria-live="polite" className="text-sm text-faint">
-            {results.length}{" "}
-            {results.length === 1 ? "repository" : "repositories"}
-            {filtered && " match"}
-          </p>
-          {filtered && (
-            <Link
-              href={directoryHref("", sort)}
-              className="rounded-lg px-2 py-1 text-sm text-accent underline-offset-4 hover:underline"
-            >
-              Clear filters
-            </Link>
-          )}
-        </div>
-
-        {results.length > 0 ? (
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {results.map((repository) => (
-              <li key={repository.id}>
-                <RepoCard repository={repository} />
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div className="rounded-xl border border-dashed border-line-strong bg-surface px-6 py-14 text-center">
-            <p className="text-lg font-semibold">
-              {query ? `No repositories match “${query}”` : "Nothing here yet"}
-            </p>
-            <p className="mt-2 text-sm text-muted">
-              Try a different word, or clear the filters to see everything.
-            </p>
-            <Link
-              href={directoryHref("", sort)}
-              className="mt-5 inline-flex min-h-10 items-center rounded-lg border border-line px-4 text-sm font-medium text-fg transition-colors hover:border-line-strong hover:bg-surface-2"
-            >
-              Clear filters
-            </Link>
-          </div>
+        {featured.length > 0 && (
+          <section className="mt-10" aria-labelledby="featured-heading">
+            <h2 id="featured-heading" className="display text-2xl">
+              Most starred
+            </h2>
+            <ul className="mt-4 grid gap-4 md:grid-cols-3">
+              {featured.map((repository) => (
+                <li key={repository.id}>
+                  <FeaturedEntry repository={repository} />
+                </li>
+              ))}
+            </ul>
+          </section>
         )}
-      </section>
+
+        <section
+          className="mt-10"
+          aria-labelledby="index-heading"
+        >
+          <div className="flex flex-wrap items-baseline justify-between gap-3">
+            <h2 id="index-heading" className="display text-2xl">
+              {filtered ? "Results" : "All repositories"}
+            </h2>
+            <div className="flex items-center gap-4">
+              <p aria-live="polite" className="text-sm text-faint">
+                {results.length}{" "}
+                {results.length === 1 ? "repository" : "repositories"}
+                {filtered && " match"}
+              </p>
+              {filtered && (
+                <Link
+                  href={directoryHref("", sort)}
+                  className="rounded text-sm font-medium text-accent underline underline-offset-4"
+                >
+                  Clear filters
+                </Link>
+              )}
+            </div>
+          </div>
+
+          {results.length > 0 ? (
+            <ul className="mt-4 divide-y divide-line overflow-hidden rounded-[10px] border border-line-strong bg-surface">
+              {results.map((repository) => (
+                <li key={repository.id}>
+                  <RepoRow repository={repository} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="mt-4 rounded-[10px] border border-dashed border-line-strong bg-surface px-6 py-14 text-center">
+              <p className="display text-xl">
+                {query ? `Nothing matches “${query}”` : "Nothing in this category yet"}
+              </p>
+              <p className="mx-auto mt-2 max-w-md text-[15px] text-muted">
+                Try a shorter or different word, or clear the filters to see
+                every repository.
+              </p>
+              <Link
+                href={directoryHref("", sort)}
+                className="mt-6 inline-flex min-h-11 items-center rounded-md bg-ink px-5 text-sm font-semibold text-bg transition-colors hover:bg-accent"
+              >
+                Clear filters
+              </Link>
+            </div>
+          )}
+        </section>
+      </div>
     </>
   );
 }

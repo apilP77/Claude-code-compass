@@ -1,159 +1,176 @@
-# Claude Code Compass — Design Direction
+# Claude Code Compass — Design Direction (v2)
 
-Status: **implemented on `feat/ui-redesign`** (steps 1-6 below). Vote counts on cards and mobile/contrast checks are still open.
+Status: **implemented on `feat/ui-redesign` (v2, light survey chart).** Not yet reviewed visually in a browser. Vote counts on rows are still open.
+`feat/ui-redesign` now; this replaces it once approved.
 
-## Intent
+## Why v1 has to change
 
-A calm, dark, developer-tool directory. It should feel like a well-made CLI
-docs site: dense enough to scan quickly, quiet enough to trust. The product
-promise is *honest curation*, so the design must make **verified vs AI-written
-vs unreviewed** obvious at a glance without shouting.
+v1 hits two of the patterns that make a site read as AI-generated: a
+near-black background with one bright accent (teal), and template chrome
+(monospace micro-labels, "A · B" middle-dot labels, the ◈ glyph, a grid of
+identical rounded cards). It was a safe default, not a choice made for this
+product.
 
-Not: a neon "AI product" landing page, gradients everywhere, emoji as
-decoration, or fake stats.
+## Brief (proposed)
 
-## Principles
+- **Subject:** a compass for Claude Code tools — a field guide that helps a
+  developer find their way through a fast-growing, messy landscape of skills,
+  plugins and collections.
+- **Audience:** developers who use Claude Code and want something trustworthy
+  to install, not a hype list.
+- **Primary job:** search → judge quickly (what it is, is it checked, how to
+  install) → open the right repo.
+- **Feeling:** a well-made survey map. Precise, calm, quietly crafted. Trust
+  comes from honesty labels, not from glow.
 
-1. **One palette, dark only.** No light mode and no `dark:` variants. One set
-   of tokens in `globals.css`; components use tokens, never raw `slate-*` /
-   `zinc-*` / `teal-*` classes.
-2. **Content first.** Summaries and install commands are the product. Chrome
-   (borders, glows, shadows) stays subtle.
-3. **Color means something.** Each accent has exactly one job (below).
-4. **Honest labels.** AI text is always labelled. "Verified" is only for
-   reviewed listings.
-5. **Accessible by default.** Text contrast >= 4.5:1, visible focus rings,
-   44px touch targets, everything works with keyboard only.
+The world this borrows from: topographic survey maps, trail markers, a
+compass needle, map legends, grid references. Used with restraint — no
+pirate maps, no parchment, no puns in every heading.
 
-## Color tokens
+## Tokens
 
-Background and surfaces (cool near-black, slightly blue):
+Color — "survey chart", light, cool paper (not cream):
 
-| Token | Hex | Use |
+| Name | Hex | Role |
 |---|---|---|
-| `--bg` | `#0b0e13` | page background |
-| `--surface` | `#11161d` | cards, panels |
-| `--surface-2` | `#171e27` | hover, inputs, code blocks |
-| `--border` | `#242d39` | default borders |
-| `--border-strong` | `#34404f` | hover/focus borders |
+| `chart` | `#E8EDE9` | page background: cool grey-green map paper |
+| `sheet` | `#F6F8F6` | raised surfaces: entries, sidebar, inputs |
+| `ink` | `#16233A` | text, headings, primary button fill (deep survey navy) |
+| `contour` | `#9FB4A9` | contour lines, borders, dividers (sage) |
+| `lake` | `#2F6A8A` | links, focus, active filter, selected states |
+| `blaze` | `#D9A21B` | trail-blaze yellow: stars, votes, the compass needle; one job, used sparingly |
 
-Text:
+Plus `ink-2 #4A5868` for secondary text and `ink-3 #66727F` for meta (both
+>= 4.5:1 on `chart`), and status colors that carry text, never color alone:
+verified `#2E7D5B`, AI-written `#6A5BA8`, unreviewed `#B0562A`, error `#B3261E`.
 
-| Token | Hex | Use |
-|---|---|---|
-| `--text` | `#e8edf3` | headings, primary text |
-| `--text-muted` | `#a3afbd` | body copy, descriptions |
-| `--text-faint` | `#7a8796` | meta, ids, captions (still >= 4.5:1 on `--bg`) |
+Type:
 
-Accents, **one job each**:
+- **Archivo** (variable width) for headings, set **expanded** (width ~115)
+  and semibold, like map lettering. The type itself is the visual identity.
+- **Public Sans** for body and UI: plain, sturdy, built for government/map
+  readability. 16px body, 1.6 line height, lines capped at 70ch.
+- **JetBrains Mono** only for install commands and code. No monospace
+  labels anywhere else.
+- Scale: 48 / 32 / 24 / 20 / 16 / 14. Sentence case everywhere; no
+  all-caps eyebrows, no accented single words, no "→" on buttons.
 
-| Token | Hex | Job |
-|---|---|---|
-| `--accent` | `#5eead4` (teal) | primary actions, links, focus ring, active filter |
-| `--ai` | `#c4b5fd` (violet) | AI-written content and its label, nothing else |
-| `--verified` | `#6ee7b7` (green) | editor-verified listings only |
-| `--star` | `#fcd34d` (amber) | star counts |
-| `--warn` | `#fdba74` (orange) | unreviewed / stale / archived warnings |
-| `--danger` | `#fca5a5` (red) | errors |
+Shape: radius 6px on controls, 10px on panels, nothing fully rounded except
+the compass and avatar. Depth from contour-colored hairlines and one soft
+paper shadow on the sidebar only; no shadow under every card.
 
-Each accent also has a 10-12% alpha fill and a 25% alpha border for badges
-(e.g. `--ai` text on `--ai/10` fill with `--ai/25` border).
+## Layout
 
-Category colors are **dropped**: four rainbow category pills made the cards
-noisy. Category becomes a neutral label with a small icon.
+**Home**: left-aligned, map-like. The hero is the memorable element.
 
-## Typography
-
-- **Sans:** Geist Sans (already loaded). Remove the `font-family: Arial`
-  override in `globals.css` so it actually applies.
-- **Mono:** Geist Mono for repo ids, commands, and counts.
-- Scale: page title 40/48 (bold, -0.02em), section title 20/28 (semibold),
-  card title 18/26 (semibold), body 15/24, small 13/20, mono-small 12/18.
-- Line length for prose capped at ~65ch.
-
-## Layout and spacing
-
-- Spacing unit 4px; use 8 / 12 / 16 / 24 / 32 / 48.
-- Page container `max-w-6xl`, horizontal padding 20px mobile, 32px desktop.
-- Detail page: single column on mobile; on `lg` a two-column layout, content
-  (`minmax(0, 1fr)`) plus a 280px sidebar.
-- Radius: 8px controls, 12px cards and panels, full for chips and badges.
-- Elevation: borders instead of shadows. Hover raises the border color, no
-  large drop shadows or translate-up animations.
-
-## Components
-
-**Header** (sticky): wordmark left, `GitHub` link and a single
-**Sign in with GitHub** button right (signed in: avatar + menu with Log out).
-Solid `--bg` with a bottom border; no blur.
-
-**Home hero**: shorter. Title, one-line value prop, search. Drop the eyebrow
-and the second grey paragraph.
-
-**Search + sort + filters**: search input updates results as you type (with a
-small debounce), a **Sort** select (Most voted, Most stars, Recently added,
-Name), and category chips. Result count and a "clear filters" link sit under
-them. The URL stays the source of truth (`?q=&category=&sort=`).
-
-**Repo card**:
 ```
-owner/name (mono, faint)                     [category icon]
-Repo name (title)
-Summary, 3 lines max (muted)
-[AI summary · not editor-verified]  or  [Verified]  or  [Unreviewed]
------------------------------------------------------
-* 1.2k stars   MIT license                 ▲ 12 votes
+┌──────────────────────────────────────────────────────────────┐
+│ ◯ Claude Code Compass                    GitHub  [Sign in]   │
+├──────────────────────────────────────────────────────────────┤
+│  ~~~ contour lines drawn across the whole hero ~~~           │
+│                                                    ╭──────╮  │
+│  Find your way through                             │  N   │  │
+│  Claude Code tools                                 │  ↑   │  │  <- live compass
+│                                                    ╰──────╯  │
+│  [ search skills, plugins, collections…      ] [Sort ▾]      │
+│  Legend: ◆ Skills  ⬡ Plugins  ▤ Collections  ☰ Directories    │  <- legend = filters
+├──────────────────────────────────────────────────────────────┤
+│  Most starred                                                │
+│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐             │  <- 3 larger entries
+│  └─────────────┘ └─────────────┘ └─────────────┘             │
+│  All repositories (22)                                       │
+│  ◆ agent-skills      25 engineering skills mapped…   MIT ★9k │  <- index rows,
+│  ⬡ superpowers       A development methodology…      MIT ★4k │     not a card grid
+│  …                                                           │
+└──────────────────────────────────────────────────────────────┘
 ```
-Whole card is a link; one hover state (border to `--border-strong`, name to
-`--accent`). Badge text is sentence case, no emoji.
 
-**Badges**: `Verified` (green), `AI summary · not editor-verified` (violet),
-`Unreviewed` (orange, only when there is no summary). Neutral for license and
-category.
+The full list is an **index of rows** (symbol, name, one-line summary,
+status, license, stars, votes), like a field-guide index. Only the top three
+"Most starred" get a larger entry. This breaks the identical-card grid and
+scans faster. On phones, rows stack into two lines.
 
-**Detail page**, in order: breadcrumb, title + id + badges, **Summary**,
-**Best for**, **Highlights**, **Getting started** (code block with Copy
-button), **Pros / Cons** side by side, **Security notes**, **Community
-score**. Sidebar (sticky on desktop): View on GitHub (primary button), stars,
-forks, license, category, tags, last AI generation date and model.
+The category filter becomes a **map legend**: each category has its own
+small symbol, and the same symbol marks each row.
 
-**Vote control**: a compact pill, `▲ 12 ▼`, own vote highlighted
-(`--accent` for up, `--danger` for down), disabled state while saving, and
-the text "Sign in with GitHub to vote" for signed-out users. Keep the line
-"Votes measure opinion, not security or correctness."
+**Detail page**: a field-guide entry.
 
-**Buttons**: primary = `--accent` fill with dark text; secondary = border +
-`--text`; ghost for icon actions. 40px high, 44px on touch.
+```
+ Directory / addyosmani / agent-skills
+ ◆ agent-skills                                   ┌ Legend ──────┐
+ addyosmani · Skills                              │ [View on GH] │
+ AI-written summary — check the README            │ ★ 9,412      │
+                                                  │ Forks 610    │
+ Summary paragraph…                               │ MIT          │
+ Best for … / Highlights … / Getting started [⧉]  │ Votes ▲ 12 ▼ │
+ Pros | Cons / Security notes                     └──────────────┘
+```
 
-**States**: loading skeletons shaped like cards, friendly empty state ("No
-repos match 'x'" with a clear button), inline error with a retry, and a real
-404 page.
+## Motion — one orchestrated moment, plus motion that answers you
 
-## Motion
+Realistic means physical: things have weight, ease out, and settle. Nothing
+loops for attention.
 
-Only `transition-colors` (150ms) and the focus ring. Respect
-`prefers-reduced-motion`.
+1. **On first load (the one moment):** the contour lines draw in (SVG
+   stroke animation, ~1.2s), then the compass needle swings and settles with
+   a damped spring, overshooting slightly like a real needle.
+2. **The needle answers search:** as you type, it turns toward a bearing
+   derived from the query and settles again. When nothing matches it wobbles
+   and points to "clear filters".
+3. **Results move, not flash:** filtering and sorting animate rows to
+   their new positions (React `<ViewTransition>`), so you can see what
+   changed.
+4. **Row → detail morph:** the repo name and symbol morph from the list
+   into the detail page heading (shared-element view transition), and back.
+5. **Vote:** the arrow presses in, and the count rolls up or down to the new
+   number.
+6. **Copy:** the copy icon turns into a check, then back.
+7. **Skeleton → content:** loading placeholders cross-fade into real rows.
 
-## Accessibility checklist
+Rules: no fade-and-slide on every section, no hover animation on every
+card, no parallax. Hover changes color only. Everything respects
+`prefers-reduced-motion` (animations become instant). No new animation
+library: CSS, SVG and React's built-in `<ViewTransition>` (React 19.3,
+supported by this Next.js with no config).
 
-- Focus ring: 2px `--accent`, 2px offset, on every interactive element.
-- Do not rely on color alone: badges carry text; votes show numbers.
-- Skip-to-content link in the header.
-- `aria-live` for vote and copy confirmations.
-- Check contrast of `--text-faint` and every accent-on-fill combo.
+## Copy changes
 
-## Out of scope for this pass
+- Hero: "Find your way through Claude Code tools", with a plain one-line
+  explanation.
+- Badges in plain words with no middle dot: "Reviewed", "AI-written
+  summary", "Not yet reviewed".
+- Buttons say what happens: "Sign in with GitHub", "Copy command", "Open on
+  GitHub".
 
-Light mode, a logo/brand mark, illustrations, new pages (the Skill Set Finder
-is item 4 and will reuse these tokens and components).
+## Review against the brief (what I changed in this plan and why)
 
-## Implementation order
+- First draft was dark navy with a glowing amber accent. That is still
+  "near-black + one bright accent", so it moved to light chart paper.
+- First draft used a serif display. Serif headings on pale paper read as
+  the cream/serif AI default, so it moved to expanded Archivo, which
+  comes from map lettering.
+- Dropped numbered sections and the ALL-CAPS legend labels (template
+  chrome). The legend uses symbols plus words in sentence case.
 
-1. Tokens in `globals.css` (`@theme`), remove the Arial override, remove light
-   mode, set the `<body>` background once in `layout.tsx`.
-2. Header and footer.
-3. Home: hero, search, sort, filters.
-4. Repo card and badges.
-5. Detail page and sidebar.
-6. Vote control polish, states (loading, empty, error, 404).
-7. Accessibility and mobile pass; typecheck, lint, test, build.
+Not based on real-site references: UXKIN is not connected, so this
+direction comes from the subject (survey maps) and the design rules, not
+from comparing live sites.
+
+## Quality floor (not announced in the UI)
+
+Responsive at 375 / 768 / 1440, keyboard-only works, visible focus,
+contrast >= 4.5:1, reduced motion respected, no layout shift while fonts
+load (next/font).
+
+## Build order
+
+1. Tokens + fonts (Archivo, Public Sans, JetBrains Mono via next/font),
+   remove v1 tokens.
+2. Header, hero with contour SVG and compass (load animation + reduced
+   motion).
+3. Search, sort and legend filters; needle reacts to search.
+4. "Most starred" entries + index rows; `<ViewTransition>` reordering.
+5. Detail page as a field-guide entry; row→detail morph.
+6. Vote count roll, copy check, skeleton cross-fade.
+7. Review pass at three widths, keyboard and contrast; typecheck, lint,
+   test, build; push the branch for a preview.

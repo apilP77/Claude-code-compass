@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { User } from "@supabase/supabase-js";
+import Compass from "@/components/Compass";
 import { createBrowserSupabaseClient } from "@/lib/supabase";
 
 export default function Header() {
@@ -98,11 +99,9 @@ export default function Header() {
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-5 py-3 sm:px-8">
         <Link
           href="/"
-          className="flex items-center gap-2 text-base font-semibold tracking-tight text-fg transition-colors hover:text-accent"
+          className="flex items-center gap-2 display text-lg text-fg transition-colors hover:text-accent"
         >
-          <span aria-hidden="true" className="text-accent">
-            ◈
-          </span>
+          <Compass className="h-7 w-7" bearing={0} lost={false} />
           Claude Code Compass
         </Link>
 
@@ -111,7 +110,7 @@ export default function Header() {
             href="https://github.com/apilP77/Claude-code-compass"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden rounded-lg px-3 py-2 text-sm text-muted transition-colors hover:text-fg sm:inline-flex"
+            className="hidden rounded-md px-3 py-2 text-sm text-muted transition-colors hover:text-fg sm:inline-flex"
           >
             GitHub
             <span className="sr-only"> (opens in a new tab)</span>
@@ -136,7 +135,7 @@ export default function Header() {
                 type="button"
                 disabled={isSubmitting}
                 onClick={() => void logOut()}
-                className="min-h-10 rounded-lg border border-line px-4 text-sm font-medium text-fg transition-colors hover:border-line-strong hover:bg-surface-2 disabled:opacity-50"
+                className="min-h-10 rounded-md border border-line px-4 text-sm font-medium text-fg transition-colors hover:border-line-strong hover:bg-surface-2 disabled:opacity-50"
               >
                 Log out
               </button>
@@ -146,7 +145,7 @@ export default function Header() {
               type="button"
               disabled={isSubmitting}
               onClick={() => void logIn()}
-              className="min-h-10 rounded-lg bg-accent px-4 text-sm font-semibold text-bg transition-opacity hover:opacity-90 disabled:opacity-50"
+              className="min-h-10 rounded-md bg-ink px-4 text-sm font-semibold text-bg transition-colors hover:bg-accent disabled:opacity-50"
             >
               Sign in with GitHub
             </button>
