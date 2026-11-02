@@ -137,8 +137,8 @@ supported by this Next.js with no config).
 
 - Hero: "Find your way through Claude Code tools", with a plain one-line
   explanation.
-- Badges in plain words with no middle dot: "Reviewed", "AI-written
-  summary", "Not yet reviewed".
+- Badges in plain words with no middle dot: "Editor's pick", "AI-written
+  summary". Unreviewed listings with no summary get no badge.
 - Buttons say what happens: "Sign in with GitHub", "Copy command", "Open on
   GitHub".
 
