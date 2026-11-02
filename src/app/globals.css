@@ -151,6 +151,9 @@ body {
   transform: rotate(var(--bearing, 0deg));
   transition: transform 1100ms var(--ease-needle);
 }
+.needle[data-tracking="true"] {
+  transition-duration: 420ms;
+}
 .needle[data-lost="true"] {
   animation: needle-wobble 900ms ease-in-out 2;
 }
@@ -159,6 +162,24 @@ body {
   0%, 100% { transform: rotate(var(--bearing, 0deg)); }
   25% { transform: rotate(calc(var(--bearing, 0deg) + 14deg)); }
   75% { transform: rotate(calc(var(--bearing, 0deg) - 14deg)); }
+}
+
+/* ---- Finder results drawn as a route --------------------------------- */
+.route-stop {
+  animation: route-in 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 140ms);
+}
+.route-line {
+  transform-origin: top;
+  animation: route-draw 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes route-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes route-draw {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
 }
 
 /* ---- Vote count rolls to its new value ------------------------------- */

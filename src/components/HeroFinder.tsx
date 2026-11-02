@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Compass from "@/components/Compass";
 import Contour from "@/components/Contour";
+import { bearingFor, bearingToPoint, nearestBearing } from "@/lib/bearing";
 import { QUERY_MAX_LENGTH, QUERY_MIN_LENGTH } from "@/lib/skill-set";
 
 const DEBOUNCE_MS = 250;
@@ -27,19 +28,6 @@ function hrefWith(
   return search ? `/?${search}` : "/";
 }
 
-/** A stable bearing from the text: the same query always points the same way. */
-function bearingFor(text: string): number {
-  const query = text.trim().toLowerCase();
-  if (query === "") {
-    return 0;
-  }
-  let hash = 0;
-  for (const char of query) {
-    hash = (hash * 31 + char.charCodeAt(0)) % 1000;
-  }
-  return (hash % 141) - 70;
-}
-
 type HeroFinderProps = {
   query: string;
   resultCount: number;
@@ -55,11 +43,47 @@ export default function HeroFinder({ query, resultCount }: HeroFinderProps) {
   const searchParams = useSearchParams();
   const [text, setText] = useState(query);
   const [armed, setArmed] = useState(false);
+  const [pointerBearing, setPointerBearing] = useState<number | null>(null);
+  const compassRef = useRef<SVGSVGElement>(null);
+  const lastBearing = useRef(START_BEARING);
 
   // Let the first paint show the needle off-north, then swing it to its bearing.
   useEffect(() => {
     const timer = setTimeout(() => setArmed(true), 120);
     return () => clearTimeout(timer);
+  }, []);
+
+  // While the search box is empty, the needle follows the pointer. People who
+  // ask for reduced motion keep a still needle.
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (reduced.matches) {
+      return;
+    }
+    let frame = 0;
+    function onMove(event: PointerEvent) {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const box = compassRef.current?.getBoundingClientRect();
+        if (!box || box.width === 0) {
+          return;
+        }
+        const raw = bearingToPoint(
+          box.left + box.width / 2,
+          box.top + box.height / 2,
+          event.clientX,
+          event.clientY,
+        );
+        const next = nearestBearing(lastBearing.current, raw);
+        lastBearing.current = next;
+        setPointerBearing(next);
+      });
+    }
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      cancelAnimationFrame(frame);
+    };
   }, []);
 
   useEffect(() => {
@@ -74,6 +98,12 @@ export default function HeroFinder({ query, resultCount }: HeroFinderProps) {
   }, [text, searchParams, router]);
 
   const lost = resultCount === 0 && query.trim() !== "";
+  const following = text.trim() === "" && pointerBearing !== null;
+  const bearing = !armed
+    ? START_BEARING
+    : following
+      ? pointerBearing
+      : bearingFor(text);
 
   return (
     <section className="relative overflow-hidden border-b border-line bg-[radial-gradient(ellipse_at_78%_48%,var(--c-glow),transparent_58%)]">
@@ -156,7 +186,9 @@ export default function HeroFinder({ query, resultCount }: HeroFinderProps) {
         </div>
 
         <Compass
-          bearing={armed ? bearingFor(text) : START_BEARING}
+          ref={compassRef}
+          bearing={bearing}
+          tracking={following}
           lost={lost}
           className="hidden h-40 w-40 justify-self-center md:block"
         />

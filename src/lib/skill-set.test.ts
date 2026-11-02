@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { bearingFor, bearingToPoint, nearestBearing } from "./bearing";
 import { createRateLimiter } from "./rate-limit";
 import type { Repository } from "./schema";
 import {
@@ -212,5 +213,26 @@ describe("toEntries", () => {
       has_ai_summary: true,
       getting_started: null,
     });
+  });
+});
+
+describe("bearing helpers", () => {
+  it("gives the same bearing for the same text, inside the range", () => {
+    expect(bearingFor("  Next.js app ")).toBe(bearingFor("next.js app"));
+    expect(bearingFor("")).toBe(0);
+    expect(Math.abs(bearingFor("anything at all"))).toBeLessThanOrEqual(70);
+  });
+
+  it("measures clockwise from north", () => {
+    expect(bearingToPoint(0, 0, 0, -10)).toBeCloseTo(0);
+    expect(bearingToPoint(0, 0, 10, 0)).toBeCloseTo(90);
+    expect(bearingToPoint(0, 0, 0, 10)).toBeCloseTo(180);
+    expect(bearingToPoint(0, 0, -10, 0)).toBeCloseTo(-90);
+  });
+
+  it("turns the short way across north", () => {
+    expect(nearestBearing(170, -170)).toBe(190);
+    expect(nearestBearing(-170, 170)).toBe(-190);
+    expect(nearestBearing(10, 20)).toBe(20);
   });
 });
