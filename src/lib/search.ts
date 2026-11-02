@@ -1,6 +1,14 @@
 import type { Category, Repository } from "./schema";
 
-export type RepositorySort = "name" | "verified" | "last_checked";
+export const REPOSITORY_SORTS = [
+  "verified",
+  "stars",
+  "newest",
+  "name",
+  "last_checked",
+] as const;
+
+export type RepositorySort = (typeof REPOSITORY_SORTS)[number];
 
 export interface SearchOptions {
   query?: string;
@@ -77,8 +85,17 @@ export function searchRepositories(
   });
 
   const sort = options.sort ?? "verified";
+  // The nightly job appends new repositories to the end of data/repos.json, so a
+  // later position means more recently added.
+  const position = new Map(repositories.map((repo, index) => [repo.id, index]));
   return filtered.sort((left, right) => {
     switch (sort) {
+      case "stars":
+        return (
+          (right.stars ?? -1) - (left.stars ?? -1) || compareNames(left, right)
+        );
+      case "newest":
+        return (position.get(right.id) ?? 0) - (position.get(left.id) ?? 0);
       case "name":
         return compareNames(left, right);
       case "last_checked":

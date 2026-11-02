@@ -94,54 +94,70 @@ export default function Header() {
   const email = user?.email ?? "Signed in";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/80 shadow-lg shadow-black/10 backdrop-blur-xl">
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
+    <header className="sticky top-0 z-50 border-b border-line bg-bg">
+      <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-5 py-3 sm:px-8">
         <Link
           href="/"
-          className="text-lg font-bold tracking-tight text-white transition-colors hover:text-cyan-200"
+          className="flex items-center gap-2 text-base font-semibold tracking-tight text-fg transition-colors hover:text-accent"
         >
+          <span aria-hidden="true" className="text-accent">
+            ◈
+          </span>
           Claude Code Compass
         </Link>
 
-        {user ? (
-          <div className="flex items-center gap-3">
-            {avatarUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={avatarUrl}
-                alt=""
-                className="h-9 w-9 rounded-full object-cover"
-              />
-            ) : (
-              <span className="max-w-40 truncate text-sm text-slate-300">
-                {email}
-              </span>
-            )}
-            {avatarUrl && (
-              <span className="sr-only">{email}</span>
-            )}
+        <nav aria-label="Account" className="flex items-center gap-3">
+          <a
+            href="https://github.com/apilP77/Claude-code-compass"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden rounded-lg px-3 py-2 text-sm text-muted transition-colors hover:text-fg sm:inline-flex"
+          >
+            GitHub
+            <span className="sr-only"> (opens in a new tab)</span>
+          </a>
+
+          {user ? (
+            <>
+              {avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={avatarUrl}
+                  alt=""
+                  className="h-8 w-8 rounded-full border border-line object-cover"
+                />
+              ) : (
+                <span className="max-w-40 truncate text-sm text-muted">
+                  {email}
+                </span>
+              )}
+              {avatarUrl && <span className="sr-only">{email}</span>}
+              <button
+                type="button"
+                disabled={isSubmitting}
+                onClick={() => void logOut()}
+                className="min-h-10 rounded-lg border border-line px-4 text-sm font-medium text-fg transition-colors hover:border-line-strong hover:bg-surface-2 disabled:opacity-50"
+              >
+                Log out
+              </button>
+            </>
+          ) : (
             <button
               type="button"
               disabled={isSubmitting}
-              onClick={() => void logOut()}
-              className="rounded-full border border-slate-700 bg-slate-900/70 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-slate-600 hover:bg-slate-800 disabled:opacity-50"
+              onClick={() => void logIn()}
+              className="min-h-10 rounded-lg bg-accent px-4 text-sm font-semibold text-bg transition-opacity hover:opacity-90 disabled:opacity-50"
             >
-              Log Out
+              Sign in with GitHub
             </button>
-          </div>
-        ) : (
-          <button
-            type="button"
-            disabled={isSubmitting}
-            onClick={() => void logIn()}
-            className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-sm font-semibold text-cyan-100 shadow-sm shadow-cyan-300/10 transition hover:bg-cyan-300/20 disabled:opacity-50"
-          >
-            Log In
-          </button>
-        )}
+          )}
+        </nav>
       </div>
       {errorMessage && (
-        <p role="alert" className="mx-auto max-w-6xl px-5 pb-3 text-sm text-red-300 sm:px-8">
+        <p
+          role="alert"
+          className="mx-auto max-w-6xl px-5 pb-3 text-sm text-danger sm:px-8"
+        >
           {errorMessage}
         </p>
       )}

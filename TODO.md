@@ -47,13 +47,13 @@ Today all 20 listings show an orange "⚠ Unreviewed" badge, which reads like a 
 
 What's wrong now: there are three visual systems. The header and cards use dark slate/cyan, and the homepage and detail page use zinc/teal with light/dark variants. `layout.tsx` forces a dark body, but the homepage wrapper turns light grey in light mode, so the page is light under a dark header. `globals.css` also sets `font-family: Arial`, which overrides the Geist font.
 
-- [ ] Use the **website-design** plugin to pick a design direction and write `DESIGN.md` (colors, type, spacing, components) *before* restyling.
-- [ ] Choose dark-only *or* real light/dark, then put one palette in `globals.css` `@theme` tokens. Remove the hard-coded slate/zinc/teal mix.
-- [ ] Remove the Arial override so Geist actually loads.
-- [ ] Homepage: shorter hero, instant search as you type, and a **sort dropdown** (stars, votes, name, newest). `search.ts` already supports sorting, but the UI doesn't expose it.
+- [x] Pick a design direction and write `DESIGN.md` (colors, type, spacing, components) *before* restyling. *(Written by hand; the plugin was not loaded in that session.)*
+- [x] Choose dark-only *or* real light/dark, then put one palette in `globals.css` `@theme` tokens. Remove the hard-coded slate/zinc/teal mix.
+- [x] Remove the Arial override so Geist actually loads.
+- [x] Homepage: shorter hero, instant search as you type, and a **sort dropdown** (stars, votes, name, newest). `search.ts` already supports sorting, but the UI doesn't expose it.
 - [ ] Cards: AI summary snippet, stars + vote score, category icon, new badge style.
-- [ ] Detail page layout: summary → best for → highlights → getting started (with a copy button) → pros/cons side by side → security notes → votes. Add a sidebar with stars, license, and links.
-- [ ] "Log In" → "Sign in with GitHub".
+- [x] Detail page layout: summary → best for → highlights → getting started (with a copy button) → pros/cons side by side → security notes → votes. Add a sidebar with stars, license, and links.
+- [x] "Log In" → "Sign in with GitHub".
 - [ ] Loading skeletons, a friendly empty state, mobile layout check, keyboard focus, and contrast check.
 - [ ] Run the **frontend-design** skill for polish once DESIGN.md exists.
 

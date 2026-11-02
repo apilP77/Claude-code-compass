@@ -13,6 +13,7 @@ export default function VoteButtons({ repositoryId }: VoteButtonsProps) {
   const [userVote, setUserVote] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [signedIn, setSignedIn] = useState<boolean | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -53,6 +54,7 @@ export default function VoteButtons({ repositoryId }: VoteButtonsProps) {
 
       setScore(scoreResult.data);
       const user = userResult.data.user;
+      setSignedIn(Boolean(user));
       if (user) {
         const voteResult = await supabase
           .from("votes")
@@ -155,48 +157,59 @@ export default function VoteButtons({ repositoryId }: VoteButtonsProps) {
   }
 
   return (
-    <section className="mt-8 border-t border-slate-800 pt-6">
-      <h2 className="text-sm font-semibold text-slate-200">
-        Community score
-      </h2>
+    <section className="mt-8 border-t border-line pt-6">
+      <h2 className="text-xl font-semibold leading-7">Community score</h2>
       <div className="mt-3 flex items-center gap-3">
-        <button
-          type="button"
-          aria-label="Upvote"
-          aria-pressed={userVote === 1}
-          disabled={isLoading || isSubmitting}
-          onClick={() => void castVote(1)}
-          className={`rounded-full border px-4 py-2 text-sm font-medium transition-all disabled:cursor-not-allowed disabled:opacity-50 ${
-            userVote === 1
-              ? "border-emerald-300/40 bg-emerald-300/15 text-emerald-100 shadow-sm shadow-emerald-300/10"
-              : "border-slate-700 bg-slate-900 text-slate-300 hover:border-emerald-300/30 hover:bg-emerald-300/10 hover:text-emerald-100"
-          }`}
+        <div
+          role="group"
+          aria-label="Vote on this repository"
+          className="inline-flex items-center overflow-hidden rounded-lg border border-line"
         >
-          👍 Upvote
-        </button>
-        <button
-          type="button"
-          aria-label="Downvote"
-          aria-pressed={userVote === -1}
-          disabled={isLoading || isSubmitting}
-          onClick={() => void castVote(-1)}
-          className={`rounded-full border px-4 py-2 text-sm font-medium transition-all disabled:cursor-not-allowed disabled:opacity-50 ${
-            userVote === -1
-              ? "border-rose-300/40 bg-rose-300/15 text-rose-100 shadow-sm shadow-rose-300/10"
-              : "border-slate-700 bg-slate-900 text-slate-300 hover:border-rose-300/30 hover:bg-rose-300/10 hover:text-rose-100"
-          }`}
-        >
-          👎 Downvote
-        </button>
-        <p aria-live="polite" className="ml-auto text-sm text-slate-400">
-          Score:{" "}
-          <span className="text-2xl font-bold tabular-nums text-white">
+          <button
+            type="button"
+            aria-label={userVote === 1 ? "Remove upvote" : "Upvote"}
+            aria-pressed={userVote === 1}
+            disabled={isLoading || isSubmitting}
+            onClick={() => void castVote(1)}
+            className={`min-h-11 min-w-11 px-3 text-base transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+              userVote === 1
+                ? "bg-accent/15 text-accent"
+                : "text-muted hover:bg-surface-2 hover:text-fg"
+            }`}
+          >
+            <span aria-hidden="true">▲</span>
+          </button>
+          <p
+            aria-live="polite"
+            className="min-w-12 border-x border-line px-3 text-center font-mono text-base tabular-nums text-fg"
+          >
             {score ?? (isLoading ? "…" : "—")}
-          </span>
-        </p>
+            <span className="sr-only"> points</span>
+          </p>
+          <button
+            type="button"
+            aria-label={userVote === -1 ? "Remove downvote" : "Downvote"}
+            aria-pressed={userVote === -1}
+            disabled={isLoading || isSubmitting}
+            onClick={() => void castVote(-1)}
+            className={`min-h-11 min-w-11 px-3 text-base transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+              userVote === -1
+                ? "bg-danger/15 text-danger"
+                : "text-muted hover:bg-surface-2 hover:text-fg"
+            }`}
+          >
+            <span aria-hidden="true">▼</span>
+          </button>
+        </div>
+        {signedIn === false && (
+          <p className="text-sm text-muted">Sign in with GitHub to vote.</p>
+        )}
       </div>
+      <p className="mt-3 text-[13px] leading-5 text-faint">
+        Votes measure opinion, not security or correctness.
+      </p>
       {errorMessage && (
-        <p role="alert" className="mt-3 text-sm text-red-300">
+        <p role="alert" className="mt-3 text-sm text-danger">
           {errorMessage}
         </p>
       )}
