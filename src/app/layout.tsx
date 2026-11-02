@@ -26,12 +26,24 @@ export const metadata: Metadata = {
     "Find community-built skills, plugins, and tools for Claude Code.",
 };
 
+// A saved choice wins; otherwise follow the system setting.
+const THEME_SCRIPT = `try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){}`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${display.variable} ${body.variable} ${mono.variable} h-full antialiased`}
     >
+      <head>
+        {/* Sets the theme before first paint so there is no flash. Static text, no user input. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: THEME_SCRIPT,
+          }}
+        />
+      </head>
       <body className="flex min-h-full flex-col bg-bg text-fg">
         <a
           href="#main-content"

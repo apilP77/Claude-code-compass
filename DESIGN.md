@@ -174,3 +174,30 @@ load (next/font).
 6. Vote count roll, copy check, skeleton cross-fade.
 7. Review pass at three widths, keyboard and contrast; typecheck, lint,
    test, build; push the branch for a preview.
+
+## Dark theme: "night chart"
+
+The same design at night: deep chart navy paper, the same contour lines,
+compass and layout. Switches with `<html data-theme="light|dark">`.
+
+- **Default:** follows the system setting. A button in the header overrides it
+  and the choice is saved in `localStorage` (`theme`).
+- **No flash:** a tiny inline script in `layout.tsx` sets the attribute before
+  first paint.
+- **How it works:** `globals.css` defines `--c-*` variables per theme;
+  Tailwind's `bg-bg`, `text-fg`, etc. point at them. Components never use raw
+  colors, so nothing else changes per theme.
+
+| Token | Light | Dark |
+|---|---|---|
+| bg / surface / surface-2 | `#e8ede9` / `#f6f8f6` / `#edf1ee` | `#0f1b2a` / `#162538` / `#1b2d43` |
+| line / line-strong | `#cbd6cf` / `#9fb4a9` | `#2a3e55` / `#3f5a74` |
+| fg / muted / faint | `#16233a` / `#46546a` / `#596573` | `#e6edf3` / `#b3c0ce` / `#93a3b4` |
+| accent (lake) | `#2f6a8a` | `#6db6d9` |
+| blaze (needle) / star text | `#d9a21b` / `#7d5800` | `#e8b93a` / `#f0c75a` |
+| verified / ai / warn / danger | `#25694b` / `#5f4f9e` / `#9a4720` / `#b3261e` | `#5fcb9b` / `#b7a8f0` / `#f2a06a` / `#f29b94` |
+| code block | `#16233a` on `#e8ede9` | `#0a121d` on `#e6edf3` |
+
+Contrast (WCAG): every text token is >= 4.99:1 on its page background in
+light and >= 5.41:1 in dark. The primary button (`ink` fill, `bg` text) is
+13:1 / 14.7:1.

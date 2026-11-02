@@ -1,37 +1,91 @@
 @import "tailwindcss";
 
 /*
- * Design tokens: the "survey chart" palette from DESIGN.md. Light only.
- * Components use these names (bg-bg, bg-surface, border-line, text-fg,
- * text-muted, text-accent, bg-ink, ...) and never raw Tailwind colors.
+ * Design tokens (DESIGN.md): "survey chart" (light) and "night chart" (dark).
+ * Components use the Tailwind names below (bg-bg, bg-surface, border-line,
+ * text-fg, text-muted, text-accent, bg-ink, ...) and never raw colors. Those
+ * names point at the --c-* variables, which switch with <html data-theme>.
+ * The theme is set before first paint by the script in layout.tsx.
  */
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+  --c-bg: #e8ede9; /* chart: cool map paper */
+  --c-surface: #f6f8f6; /* sheet: raised entries */
+  --c-surface-2: #edf1ee;
+  --c-line: #cbd6cf;
+  --c-line-strong: #9fb4a9; /* contour */
+
+  --c-fg: #16233a; /* ink: survey navy */
+  --c-ink: #16233a; /* primary button fill */
+  --c-muted: #46546a;
+  --c-faint: #596573;
+
+  --c-accent: #2f6a8a; /* lake: links, focus, selected */
+  --c-blaze: #d9a21b; /* trail-blaze yellow: needle and fills only */
+  --c-star: #7d5800; /* blaze, dark enough to read as text */
+  --c-verified: #25694b;
+  --c-ai: #5f4f9e;
+  --c-warn: #9a4720;
+  --c-danger: #b3261e;
+
+  --c-code: #16233a;
+  --c-code-fg: #e8ede9;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --c-bg: #0f1b2a; /* deep chart navy */
+  --c-surface: #162538;
+  --c-surface-2: #1b2d43;
+  --c-line: #2a3e55;
+  --c-line-strong: #3f5a74;
+
+  --c-fg: #e6edf3;
+  --c-ink: #e6edf3;
+  --c-muted: #b3c0ce;
+  --c-faint: #93a3b4;
+
+  --c-accent: #6db6d9;
+  --c-blaze: #e8b93a;
+  --c-star: #f0c75a;
+  --c-verified: #5fcb9b;
+  --c-ai: #b7a8f0;
+  --c-warn: #f2a06a;
+  --c-danger: #f29b94;
+
+  --c-code: #0a121d;
+  --c-code-fg: #e6edf3;
+}
+
+@theme inline {
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-surface-2: var(--c-surface-2);
+  --color-line: var(--c-line);
+  --color-line-strong: var(--c-line-strong);
+  --color-fg: var(--c-fg);
+  --color-ink: var(--c-ink);
+  --color-muted: var(--c-muted);
+  --color-faint: var(--c-faint);
+  --color-accent: var(--c-accent);
+  --color-blaze: var(--c-blaze);
+  --color-star: var(--c-star);
+  --color-verified: var(--c-verified);
+  --color-ai: var(--c-ai);
+  --color-warn: var(--c-warn);
+  --color-danger: var(--c-danger);
+  --color-code: var(--c-code);
+  --color-code-fg: var(--c-code-fg);
+}
+
 @theme {
-  --color-bg: #e8ede9; /* chart: cool map paper */
-  --color-surface: #f6f8f6; /* sheet: raised entries */
-  --color-surface-2: #edf1ee;
-  --color-line: #cbd6cf;
-  --color-line-strong: #9fb4a9; /* contour */
-
-  --color-fg: #16233a; /* ink: survey navy */
-  --color-ink: #16233a;
-  --color-muted: #46546a;
-  --color-faint: #596573;
-
-  --color-accent: #2f6a8a; /* lake: links, focus, selected */
-  --color-blaze: #d9a21b; /* trail-blaze yellow: needle and fills only */
-  --color-star: #7d5800; /* blaze, dark enough to read as text */
-  --color-verified: #25694b;
-  --color-ai: #5f4f9e;
-  --color-warn: #9a4720;
-  --color-danger: #b3261e;
-
   --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-archivo), var(--font-public-sans), ui-sans-serif, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 }
 
 :root {
-  color-scheme: light;
   /* A damped spring: overshoots, then settles, like a real compass needle. */
   --ease-needle: linear(
     0, 0.34 7%, 0.82 15%, 1.1 24%, 1.16 30%, 1.08 38%, 0.97 48%, 0.95 56%,
@@ -40,8 +94,8 @@
 }
 
 body {
-  background: var(--color-bg);
-  color: var(--color-fg);
+  background: var(--c-bg);
+  color: var(--c-fg);
   font-family: var(--font-sans);
   line-height: 1.6;
 }
@@ -57,12 +111,12 @@ body {
 
 /* One focus style for every interactive element. */
 :where(a, button, input, select, summary, [tabindex]):focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--c-accent);
   outline-offset: 2px;
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--color-blaze) 45%, transparent);
+  background: color-mix(in srgb, var(--c-blaze) 45%, transparent);
 }
 
 /* ---- Hero: contour lines draw in once -------------------------------- */

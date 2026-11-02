@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { User } from "@supabase/supabase-js";
 import Compass from "@/components/Compass";
+import ThemeToggle from "@/components/ThemeToggle";
 import { createBrowserSupabaseClient } from "@/lib/supabase";
 
 export default function Header() {
@@ -106,6 +107,7 @@ export default function Header() {
         </Link>
 
         <nav aria-label="Account" className="flex items-center gap-3">
+          <ThemeToggle />
           <a
             href="https://github.com/apilP77/Claude-code-compass"
             target="_blank"
