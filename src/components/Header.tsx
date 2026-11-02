@@ -109,9 +109,10 @@ export default function Header() {
         <nav aria-label="Account" className="flex items-center gap-3">
           <Link
             href="/skill-set"
-            className="rounded-md px-3 py-2 text-sm font-medium text-fg transition-colors hover:text-accent"
+            className="rounded-md border border-accent px-3 py-2 text-sm font-semibold text-accent transition-colors hover:bg-accent hover:text-bg whitespace-nowrap"
           >
-            Skill set finder
+            <span className="sm:hidden">Skill finder</span>
+            <span className="hidden sm:inline">Skill set finder</span>
           </Link>
           <ThemeToggle />
           <a

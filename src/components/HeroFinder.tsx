@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Compass from "@/components/Compass";
 import Contour from "@/components/Contour";
 import { REPOSITORY_SORTS, type RepositorySort } from "@/lib/search";
+import { QUERY_MAX_LENGTH, QUERY_MIN_LENGTH } from "@/lib/skill-set";
 
 const SORT_LABELS: Record<RepositorySort, string> = {
   verified: "Reviewed first",
@@ -147,6 +148,42 @@ export default function HeroFinder({ query, sort, resultCount }: HeroFinderProps
                   </option>
                 ))}
               </select>
+            </div>
+          </form>
+
+          <form
+            action="/skill-set"
+            method="get"
+            className="mt-6 max-w-2xl rounded-[10px] border border-accent/60 bg-surface p-4 shadow-sm sm:p-5"
+          >
+            <p className="text-[13px] font-semibold uppercase tracking-wide text-accent">
+              New · Skill set finder
+            </p>
+            <label htmlFor="hero-project" className="display mt-1 block text-xl">
+              Building something? Get a whole skill set.
+            </label>
+            <p className="mt-1 text-sm text-muted">
+              Describe your project and get a short list of skills that work
+              together, with install commands.
+            </p>
+            <div className="mt-3 flex flex-col gap-3 sm:flex-row">
+              <input
+                id="hero-project"
+                name="q"
+                type="text"
+                required
+                minLength={QUERY_MIN_LENGTH}
+                maxLength={QUERY_MAX_LENGTH}
+                autoComplete="off"
+                placeholder="A Next.js SaaS with Stripe and Supabase"
+                className="h-12 min-w-0 rounded-md border border-line-strong bg-bg sm:flex-1 px-4 text-base text-fg outline-none transition-colors placeholder:text-faint hover:border-ink focus:border-accent"
+              />
+              <button
+                type="submit"
+                className="h-12 rounded-md bg-accent px-5 text-sm font-semibold text-bg transition-colors hover:bg-ink"
+              >
+                Find my skill set
+              </button>
             </div>
           </form>
         </div>
