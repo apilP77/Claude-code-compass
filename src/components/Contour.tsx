@@ -55,7 +55,7 @@ export default function Contour() {
       aria-hidden="true"
       viewBox="0 0 1200 460"
       preserveAspectRatio="xMaxYMid slice"
-      className="contour pointer-events-none absolute inset-0 h-full w-full text-line-strong"
+      className="contour pointer-events-none absolute inset-0 h-full w-full text-contour opacity-30 md:opacity-100"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.2"

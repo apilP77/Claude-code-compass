@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { createBrowserSupabaseClient } from "@/lib/supabase";
+import { createBrowserSupabaseClient, isSessionMissing } from "@/lib/supabase";
 
 type VoteButtonsProps = {
   repositoryId: string;
@@ -47,7 +47,7 @@ export default function VoteButtons({ repositoryId }: VoteButtonsProps) {
         return;
       }
 
-      if (userResult.error) {
+      if (userResult.error && !isSessionMissing(userResult.error)) {
         setErrorMessage(`Could not check your login status: ${userResult.error.message}`);
         setIsLoading(false);
         return;
@@ -100,7 +100,7 @@ export default function VoteButtons({ repositoryId }: VoteButtonsProps) {
 
     try {
       const { data, error } = await supabase.auth.getUser();
-      if (error) {
+      if (error && !isSessionMissing(error)) {
         throw new Error(`Could not check your login status: ${error.message}`);
       }
 

@@ -5,7 +5,7 @@ import Link from "next/link";
 import type { User } from "@supabase/supabase-js";
 import Compass from "@/components/Compass";
 import ThemeToggle from "@/components/ThemeToggle";
-import { createBrowserSupabaseClient } from "@/lib/supabase";
+import { createBrowserSupabaseClient, isSessionMissing } from "@/lib/supabase";
 
 export default function Header() {
   const supabase = useMemo(() => createBrowserSupabaseClient(), []);
@@ -27,7 +27,7 @@ export default function Header() {
         if (!active) {
           return;
         }
-        if (error) {
+        if (error && !isSessionMissing(error)) {
           setErrorMessage(`Could not load login status: ${error.message}`);
           return;
         }
@@ -102,7 +102,7 @@ export default function Header() {
           href="/"
           className="flex items-center gap-2 display text-lg text-fg transition-colors hover:text-accent"
         >
-          <Compass className="h-7 w-7" bearing={0} lost={false} />
+          <Compass className="h-7 w-7 shrink-0" bearing={0} lost={false} />
           Claude Code Compass
         </Link>
 
