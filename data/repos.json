@@ -400,6 +400,39 @@
       "last_reviewed": null
     },
     {
+      "id": "daymade/claude-code-skills",
+      "owner": "daymade",
+      "name": "claude-code-skills",
+      "url": "https://github.com/daymade/claude-code-skills",
+      "description": "Professional Claude Code skills marketplace featuring production-ready skills for enhanced development workflows.",
+      "category": "skills",
+      "tags": [],
+      "license_spdx": "MIT",
+      "stars": 1512,
+      "forks": 232,
+      "pros": [
+        "Wide-ranging collection of specialized skills covering diverse domains like financial research, iOS development, and QA testing.",
+        "Production-ready utilities and structured suites designed for reliable multi-agent and CLI integration."
+      ],
+      "cons": [
+        "Many skills are bundled into shared namespaces and cannot be installed entirely as standalone individual plugins.",
+        "Requires external tools and specific runtimes like Python 3.10+, uv, or ffmpeg depending on the selected skill or suite."
+      ],
+      "security_notes": "The README documents security validation tools such as security_scan.py with gitleaks integration to prevent credential leaks, and notes that various skills require API keys like BIGDATA_API_KEY, STEPFUN_API_KEY, and JINA_API_KEY. However, it does not explicitly guarantee safety against arbitrary code execution beyond standard open-source inspection caveats.",
+      "summary": "A professional marketplace containing numerous Claude Code skills, documentation suites, and operational tools for development, research, and financial analysis. It includes the skill-creator meta-skill for building custom workflows and offers bundled namespaces like document processing, macOS administration, and financial data collectors.",
+      "best_for": "Developers and power users looking to extend Claude Code with specialized workflows, document tools, financial analysis pipelines, and repository maintenance utilities.",
+      "highlights": [
+        "Includes the production-hardened skill-creator meta-skill for building and validating custom Claude Code skills.",
+        "Provides pre-bundled suites for documentation, Apple platforms, Codex setup, financial workflows, and audio processing.",
+        "Features dedicated tools for GitHub operations, automated QA testing, prompt optimization via EARS, and network troubleshooting."
+      ],
+      "getting_started": "/plugin marketplace add daymade/claude-code-skills",
+      "ai_generated_at": "2026-11-03T02:23:21.708Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
       "id": "ykdojo/claude-code-tips",
       "owner": "ykdojo",
       "name": "claude-code-tips",
@@ -1267,6 +1300,39 @@
       ],
       "getting_started": "npx repomix@latest",
       "ai_generated_at": "2026-11-02T15:54:37.185Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
+      "id": "zhaoxuya520/reverse-skill",
+      "owner": "zhaoxuya520",
+      "name": "reverse-skill",
+      "url": "https://github.com/zhaoxuya520/reverse-skill",
+      "description": "Reverse Engineering / Authorized Penetration Testing / Security Research Skill Router Pack AI-powered routing + On-demand toolchain bootstrapping + Self-evolving knowledge base  Supports Claude Code, Kiro, Cursor, Cline, and other AI coding clients 逆向/渗透/安全技能路由包 - AI 自动路由 + 按需自举工",
+      "category": "skills",
+      "tags": [],
+      "license_spdx": "MIT",
+      "stars": 44001,
+      "forks": 6526,
+      "pros": [
+        "Comprehensive coverage of diverse security scenarios including malware, CTF, firmware, and mobile reverse engineering.",
+        "Client-neutral core works across multiple AI coding clients like Claude Code, Codex, and Cursor."
+      ],
+      "cons": [
+        "Requires several prerequisites like Java, Node.js 22.12+, and Python to be installed separately.",
+        "Platform-specific tool index refreshing and environment configuration are needed before full usage."
+      ],
+      "security_notes": "The README does not document arbitrary code execution. The README does not document API keys.",
+      "summary": "This repository provides a cybersecurity skills router and workflow package designed to guide AI agents through tasks like APK analysis, binary reverse engineering, frontend JS encryption, and CTF challenges. It organizes methodologies, routes tasks to appropriate tools, and maintains a structured investigation workflow instead of guessing commands. The package includes configuration rules, regression tests, and client-neutral instruction files.",
+      "best_for": "Developers and security analysts using AI agents for tasks like binary analysis, mobile reverse engineering, and penetration testing.",
+      "highlights": [
+        "Includes a routing system mapping security tasks to methodologies and tools across 45 tracked skill modules.",
+        "Provides automated testing scripts for validating routing regression and structure coherence.",
+        "Supports multiple platforms including Windows, Linux, Ubuntu, and Kali Linux with dedicated tool index scripts."
+      ],
+      "getting_started": "git clone https://github.com/zhaoxuya520/reverse-skill.git",
+      "ai_generated_at": "2026-11-03T02:23:24.105Z",
       "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
