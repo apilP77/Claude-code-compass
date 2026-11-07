@@ -433,6 +433,50 @@
       "last_reviewed": null
     },
     {
+      "id": "davila7/claude-code-templates",
+      "owner": "davila7",
+      "name": "claude-code-templates",
+      "url": "https://github.com/davila7/claude-code-templates",
+      "description": "Open-source registry and CLI for Claude Code components: agents, commands, skills, hooks, MCPs, settings and mods",
+      "category": "skills",
+      "tags": [
+        "agent-skills",
+        "ai-agents",
+        "anthropic",
+        "anthropic-claude",
+        "claude",
+        "claude-code",
+        "claude-code-plugins",
+        "cli",
+        "mcp",
+        "registry"
+      ],
+      "license_spdx": "MIT",
+      "stars": 33174,
+      "forks": 3883,
+      "pros": [
+        "Extensive collection of community and official templates available through a single command-line interface.",
+        "Built-in analytics and conversation browsing tools for monitoring and searching Claude Code sessions locally."
+      ],
+      "cons": [
+        "Numerous command-line flags and features have been removed or replaced in version 1.31.0.",
+        "Relies on external community and official repositories whose continued compatibility depends on upstream changes."
+      ],
+      "security_notes": "The README does not document arbitrary code execution. The README does not document API keys.",
+      "summary": "This repository provides a large open catalog of components and ready-to-use configurations for Anthropic's Claude Code. It includes skills, agents, slash commands, MCP integrations, settings, hooks, mods, loops, sandboxes, and project templates installable via a CLI tool.",
+      "best_for": "Developers using Anthropic's Claude Code who want to extend its capabilities with pre-built skills, agents, commands, and integrations.",
+      "highlights": [
+        "Provides an open catalog of about 1,900 components including skills, agents, slash commands, and MCP integrations.",
+        "Includes local developer tools such as a real-time session analytics dashboard and a conversation browser.",
+        "Features a built-in health check and diagnostics tool for Claude Code installations and project setups."
+      ],
+      "getting_started": "npx claude-code-templates@latest --agent development-team/frontend-developer --command testing/generate-tests --mcp integration/github-integration --yes",
+      "ai_generated_at": "2026-11-07T02:44:00.406Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
       "id": "ykdojo/claude-code-tips",
       "owner": "ykdojo",
       "name": "claude-code-tips",
@@ -841,6 +885,39 @@
       ],
       "getting_started": "/plugin marketplace add jeffallan/claude-skills",
       "ai_generated_at": "2026-11-02T15:53:25.276Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
+      "id": "tradermonty/claude-trading-skills",
+      "owner": "tradermonty",
+      "name": "claude-trading-skills",
+      "url": "https://github.com/tradermonty/claude-trading-skills",
+      "description": "Claude Code skills for equity investors and traders — market analysis, technical charting, economic calendars, screeners, and trading strategy development.",
+      "category": "skills",
+      "tags": [],
+      "license_spdx": "MIT",
+      "stars": 3669,
+      "forks": 802,
+      "pros": [
+        "Modular skill architecture allows users to select and run only the routines they need.",
+        "Includes offline-friendly starter paths that do not require paid market-data API subscriptions."
+      ],
+      "cons": [
+        "Requires manual execution of decision gates and does not provide fully automated trading or signal outsourcing.",
+        "Certain advanced workflows depend on external paid subscriptions such as Financial Modeling Prep, FINVIZ Elite, or Alpaca."
+      ],
+      "security_notes": "The repository documentation does not mention or document arbitrary code execution risks. It does, however, document API keys for services like Financial Modeling Prep, FINVIZ Elite, and Alpaca, which can be configured via environment variables.",
+      "summary": "This repository provides a collection of Claude Skills and operational workflows designed to assist individual investors with market review, risk management, trade planning, and performance journaling. It helps users structure their trading and investment decision processes using a mix of local files, public CSVs, and optional financial APIs.",
+      "best_for": "Time-constrained individual investors and long-term or swing traders looking to structure their analytical processes and review routines using AI tools.",
+      "highlights": [
+        "Includes dozens of specialized modular skills categorized by market regime, core portfolio, swing opportunities, and trade planning.",
+        "Provides operational workflow manifests that coordinate multiple skills into step-by-step routines like daily market checks or portfolio reviews.",
+        "Offers a no-API-key starter path using public CSVs, chart screenshots, and local YAML/JSON files for core tasks."
+      ],
+      "getting_started": "python3 scripts/package_skills.py --skill <skill-name>",
+      "ai_generated_at": "2026-11-07T02:44:05.224Z",
       "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
