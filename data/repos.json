@@ -263,6 +263,53 @@
       "last_reviewed": null
     },
     {
+      "id": "virgiliojr94/book-to-skill",
+      "owner": "virgiliojr94",
+      "name": "book-to-skill",
+      "url": "https://github.com/virgiliojr94/book-to-skill",
+      "description": "Turn any technical book PDF into a Claude Code skill — ready to study, reference, and use while you work.",
+      "category": "skills",
+      "tags": [
+        "agent-skills",
+        "ai-agents",
+        "book-to-skill",
+        "context-engineering",
+        "document-processing",
+        "edtech",
+        "knowledge-base",
+        "knowledge-management",
+        "llm",
+        "pdf-to-markdown",
+        "rag",
+        "self-study",
+        "study-tools"
+      ],
+      "license_spdx": "MIT",
+      "stars": 37780,
+      "forks": 4014,
+      "pros": [
+        "Reduces token usage significantly compared to full document context dumps",
+        "Enables on-demand chapter loading so agents only read relevant sections when queried"
+      ],
+      "cons": [
+        "Scanned or image-only PDFs require external OCR processing prior to conversion",
+        "Requires proper third-party extraction libraries or tools depending on the source file format"
+      ],
+      "security_notes": "The repository README does not document arbitrary code execution. Regarding API keys, the README notes that if your agent's model runs in the cloud, the text you feed it follows that provider's normal data terms, but it does not detail API key configuration or management.",
+      "summary": "This repository provides a tool that converts technical books, documents, and folders into structured agent skills compatible with various AI coding assistants. It distills source materials into mental models, glossaries, patterns, and chapter files designed to load on demand. This saves tokens compared to dumping raw text into the context window.",
+      "best_for": "Developers and researchers who want to query technical books or extensive internal documentation directly inside their AI coding assistant without context overload.",
+      "highlights": [
+        "Generates structured skills containing SKILL.md, chapter files, glossaries, patterns, and cheatsheets",
+        "Supports multiple document formats including PDF, EPUB, DOCX, Markdown, and HTML",
+        "Runs a deterministic Python extractor coupled with a spec-driven generator for cross-agent compatibility"
+      ],
+      "getting_started": "npx skills add virgiliojr94/book-to-skill",
+      "ai_generated_at": "2026-11-14T00:55:34.189Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
       "id": "davepoon/buildwithclaude",
       "owner": "davepoon",
       "name": "buildwithclaude",
@@ -329,6 +376,60 @@
       ],
       "getting_started": "git clone https://github.com/Donchitos/Claude-Code-Game-Studios.git my-game",
       "ai_generated_at": "2026-11-02T15:53:01.878Z",
+      "ai_model": "gemini-3.5-flash-lite",
+      "listing_status": "unreviewed",
+      "last_reviewed": null
+    },
+    {
+      "id": "zebbern/claude-code-guide",
+      "owner": "zebbern",
+      "name": "claude-code-guide",
+      "url": "https://github.com/zebbern/claude-code-guide",
+      "description": "Claude Code Guide - Setup, Commands, workflows, agents, skills & tips-n-tricks from beginner to power user!",
+      "category": "skills",
+      "tags": [
+        "ai",
+        "ai-agent",
+        "ai-agent-tools",
+        "anthropic-claude",
+        "claude",
+        "claude-ai",
+        "claude-api",
+        "claude-code",
+        "claude-code-communication",
+        "claude-code-guide",
+        "claude-code-skills",
+        "claude-commands",
+        "claude-desktop",
+        "claude-mcp",
+        "claude-sonnet",
+        "code",
+        "mcp",
+        "mcp-agents",
+        "mcp-tools",
+        "vscode-extension"
+      ],
+      "license_spdx": "MIT",
+      "stars": 4708,
+      "forks": 471,
+      "pros": [
+        "Serves as an exhaustive, centralized guide for configuring and operating Claude Code.",
+        "Provides practical examples for advanced features like hooks, subagents, and Model Context Protocol (MCP) integrations."
+      ],
+      "cons": [
+        "Information density can be overwhelming due to the sheer volume of configuration options.",
+        "Relies heavily on external official documentation for rapidly changing model and provider mappings."
+      ],
+      "security_notes": "The README documents that command-line flags and hooks can execute arbitrary code execution if not properly constrained. It also details how to handle API keys securely through environment variables or secret managers, warning against hardcoding credentials in configuration files.",
+      "summary": "This repository provides comprehensive documentation, configuration guides, and usage instructions for Claude Code, Anthropic's command-line interface tool. It covers installation paths, slash commands, environment variables, security settings, hook systems, and integrations with third-party providers.",
+      "best_for": "Developers and system administrators looking to configure, script, or integrate Claude Code into their local workflows and CI/CD pipelines.",
+      "highlights": [
+        "Extensive reference documentation for all Claude Code CLI flags and slash commands.",
+        "Detailed guides on configuration files, environment variables, and enterprise managed settings.",
+        "Ready-to-use GitHub Actions workflows for automated PR reviews, security scans, and issue triage."
+      ],
+      "getting_started": "curl -fsSL https://claude.ai/install.sh | bash",
+      "ai_generated_at": "2026-11-14T00:55:31.863Z",
       "ai_model": "gemini-3.5-flash-lite",
       "listing_status": "unreviewed",
       "last_reviewed": null
