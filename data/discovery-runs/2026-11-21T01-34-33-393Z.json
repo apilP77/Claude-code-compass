@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "status": "success",
+  "completed_at": "2026-11-21T01:34:33.393Z",
+  "repositories": [
+    {
+      "id": "zebbern/claude-code-guide",
+      "stars": 4718,
+      "forks": 472
+    },
+    {
+      "id": "virgiliojr94/book-to-skill",
+      "stars": 38583,
+      "forks": 4108
+    }
+  ]
+}
